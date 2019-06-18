@@ -3,12 +3,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainClient implements Runnable{
 
     private ObjectOutputStream outStream;
     private ObjectInputStream inputStream;
     private Socket client;
+    private ArrayList<String> friends = new ArrayList<>();
     public MainClient() {
         String serverName = "localhost";
         int port = 6500;
