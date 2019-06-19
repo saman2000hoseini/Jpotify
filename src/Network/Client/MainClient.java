@@ -28,10 +28,10 @@ public class MainClient
         client = new Socket("localhost", port);
         try
         {
-            sharing = new Sharing(connections);
+            sharing = new Sharing(connections,client);
             Thread t = new Thread(sharing);
             t.start();
-            sharing.hiServer((ObjectOutputStream) client.getOutputStream());
+//            sharing.hiServer((ObjectOutputStream) client.getOutputStream());
         }
         catch (IOException e)
         {

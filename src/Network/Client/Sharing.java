@@ -15,10 +15,10 @@ public class Sharing implements Runnable
     private ObjectInputStream objectInputStream;
     private Vector<ObjectOutputStream> objectOutputStreams = new Vector<>();
 
-    public Sharing(Vector<Socket> connections) throws IOException
+    public Sharing(Vector<Socket> connections,Socket client) throws IOException
     {
         this.connections = connections;
-        objectInputStream = (ObjectInputStream) connections.get(0).getInputStream();
+//        objectInputStream = (ObjectInputStream) client.getInputStream();
         for (Socket socket:connections)
         {
             objectOutputStreams.add((ObjectOutputStream) socket.getOutputStream());
@@ -49,22 +49,22 @@ public class Sharing implements Runnable
     {
         while (true)
         {
-            try
-            {
-                PlayingMusic playingMusic = (PlayingMusic)objectInputStream.readObject();
-                if (!playingMusic.isLocal())
-                {
-
-                }
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            catch (ClassNotFoundException e)
-            {
-                e.printStackTrace();
-            }
+//            try
+//            {
+//                PlayingMusic playingMusic = (PlayingMusic)objectInputStream.readObject();
+//                if (!playingMusic.isLocal())
+//                {
+//
+//                }
+//            }
+//            catch (IOException e)
+//            {
+//                e.printStackTrace();
+//            }
+//            catch (ClassNotFoundException e)
+//            {
+//                e.printStackTrace();
+//            }
         }
     }
 
