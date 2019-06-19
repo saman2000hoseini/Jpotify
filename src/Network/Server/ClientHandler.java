@@ -33,7 +33,10 @@ public class ClientHandler implements Runnable
             {
                 PlayingMusic playingMusic = (PlayingMusic) objectInputStream.readObject();
                 if (playingMusic.isLocal())
+                {
                     thisOut = objectOutputStream;
+                    System.out.println("User Joined successfully");
+                }
                 else
                     thisOut.writeObject(playingMusic);
             }
