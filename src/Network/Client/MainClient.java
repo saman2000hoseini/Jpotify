@@ -32,6 +32,7 @@ public class MainClient
             Thread t = new Thread(sharing);
             t.start();
 //            sharing.hiServer((ObjectOutputStream) client.getOutputStream());
+            System.out.println();
         }
         catch (IOException e)
         {
