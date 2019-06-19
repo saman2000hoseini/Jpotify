@@ -17,5 +17,8 @@ public class buttonAddFolder implements ActionListener
         listModel.addElement(new JPanel());
         JTable jTable = new JTable();
         JPanel jPanel = new JPanel();
+
+        JSlider jSlider = new JSlider();
+//        jSlider.setValue();
     }
 }

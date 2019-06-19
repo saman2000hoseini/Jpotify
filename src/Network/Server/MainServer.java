@@ -1,7 +1,6 @@
 package Network.Server;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,7 +10,6 @@ public class MainServer implements Runnable
 {
     private ServerSocket serverSocket;
     private Vector<Socket> clients = new Vector<>();
-    private Inet4Address ip = null;
     public MainServer(int port) throws IOException
     {
         serverSocket = new ServerSocket(port);
@@ -26,10 +24,9 @@ public class MainServer implements Runnable
                 client = serverSocket.accept();
                 System.out.println("new client accepted!");
                 clients.add(client);
-                ClientHandler clientHandler = new ClientHandler(client,out);
-//                OutputStream objectOutputStream = client.getOutputStream();
-//                objectOutputStream.write();
-
+                ClientHandler clientHandler = new ClientHandler(client);
+                Thread thread = new Thread(clientHandler);
+                thread.start();
             } catch (IOException e)
             {
                 e.printStackTrace();

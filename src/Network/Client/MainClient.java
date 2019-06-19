@@ -22,25 +22,16 @@ public class MainClient
     private Sharing sharing;
     private int port;
 
-    public MainClient()
+    public MainClient() throws IOException
     {
-        friends.add("localhost");
         port = 6500;
-        try
-        {
-            if (friends != null)
-                connections.add(new Socket(friends.get(0), port));
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        client = new Socket("localhost", port);
         try
         {
             sharing = new Sharing(connections);
             Thread t = new Thread(sharing);
             t.start();
-            sharing.hiServer();
+            sharing.hiServer((ObjectOutputStream) client.getOutputStream());
         }
         catch (IOException e)
         {
@@ -48,7 +39,7 @@ public class MainClient
         }
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
         int port = 6500;
         try
