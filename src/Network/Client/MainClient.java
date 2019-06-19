@@ -1,4 +1,7 @@
 package Network.Client;
+
+import com.sun.deploy.util.SessionState;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -6,54 +9,54 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainClient implements Runnable{
+public class MainClient implements Runnable
+{
 
     private ObjectOutputStream outStream;
     private ObjectInputStream inputStream;
     private Socket client;
     private ArrayList<String> friends = new ArrayList<>();
-    public MainClient() {
-        String serverName = "localhost";
-        int port = 6500;
+    private ArrayList<Socket> connections = new ArrayList<>();
+    private int port;
+
+    public MainClient()
+    {
+        friends.add("localhost");
+        port = 6500;
         try
         {
-            System.out.println("Connecting to " + serverName + " on port " + port);
-            client = new Socket(serverName, port);
-            System.out.println("Just connected to " + client.getRemoteSocketAddress());
-            outStream = new ObjectOutputStream(client.getOutputStream());
-            System.out.println("out stream");
-//            inputStream = new ObjectInputStream(client.getInputStream());
-            System.out.println("in stream");
+
+//            client.getInetAddress();
 //            Formatter f = new Formatter(client.getOutputStream());
 //            f.format("hi");
 //            f.flush();
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
     }
 
-//    public void startNet() {
-//
-//    }
 
     @Override
-    public void run() {
-        try
-        {
-            inputStream = new ObjectInputStream(client.getInputStream());
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+    public void run()
+    {
+
         while (true)
         {
             try
             {
-            } catch (IOException e)
+                if (friends != null)
+                    for (String socket : friends)
+                    {
+                        connections.add(new Socket(socket,port));
+                    }
+            }
+            catch (IOException e)
             {
                 e.printStackTrace();
-            } catch (ClassNotFoundException e)
+            }
+            catch (ClassNotFoundException e)
             {
                 e.printStackTrace();
             }
