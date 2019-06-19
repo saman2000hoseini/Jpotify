@@ -13,6 +13,8 @@ public class buttonAddFolder implements ActionListener
         DemoJFileChooser folder = new DemoJFileChooser();
 //        folder.
         DefaultListModel listModel = new DefaultListModel();
+        JList list = new JList(listModel);
+        listModel.addElement(new JPanel());
         JTable jTable = new JTable();
         JPanel jPanel = new JPanel();
     }

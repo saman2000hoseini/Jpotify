@@ -1,18 +1,44 @@
 package Model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 public class Music implements Serializable
 {
     private String fileLocation;
     private String artist;
     private String name;
+    private LocalDateTime addDate;
+    private LocalDateTime lastPlayed;
 
-    public Music(String fileLocation, String artist, String name)
+
+    public Music(String fileLocation, String artist, String name, LocalDateTime addDate, LocalDateTime lastPlayed)
     {
         this.fileLocation = fileLocation;
         this.artist = artist;
         this.name = name;
+        this.addDate = addDate;
+        this.lastPlayed = lastPlayed;
+    }
+
+    public LocalDateTime getAddDate()
+    {
+        return addDate;
+    }
+
+    public void setAddDate(LocalDateTime addDate)
+    {
+        this.addDate = addDate;
+    }
+
+    public LocalDateTime getLastPlayed()
+    {
+        return lastPlayed;
+    }
+
+    public void setLastPlayed(LocalDateTime lastPlayed)
+    {
+        this.lastPlayed = lastPlayed;
     }
 
     public String getFileLocation()

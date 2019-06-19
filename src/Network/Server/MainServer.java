@@ -2,17 +2,16 @@ package Network.Server;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
 
 public class MainServer implements Runnable
 {
-
     private ServerSocket serverSocket;
     private Vector<Socket> clients = new Vector<>();
-    static Vector<ObjectOutputStream> outputStreams = new Vector<>();
-    private ObjectOutputStream out;
+    private Inet4Address ip = null;
     public MainServer(int port) throws IOException
     {
         serverSocket = new ServerSocket(port);
@@ -27,8 +26,6 @@ public class MainServer implements Runnable
                 client = serverSocket.accept();
                 System.out.println("new client accepted!");
                 clients.add(client);
-                out = new ObjectOutputStream(client.getOutputStream());
-                outputStreams.add(out);
                 ClientHandler clientHandler = new ClientHandler(client,out);
 //                OutputStream objectOutputStream = client.getOutputStream();
 //                objectOutputStream.write();
@@ -42,18 +39,6 @@ public class MainServer implements Runnable
             }
         }
 
-    }
-
-    public static void main(String[] args) {
-        int port = 6500;
-        try
-        {
-            Thread t = new Thread(new MainServer(port));
-            t.start();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
     }
 }
 

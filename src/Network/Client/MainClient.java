@@ -1,5 +1,7 @@
 package Network.Client;
 
+import Model.PlayingMusic;
+import Network.Server.MainServer;
 import com.sun.deploy.util.SessionState;
 
 import java.io.IOException;
@@ -8,15 +10,16 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
 
-public class MainClient implements Runnable
+public class MainClient
 {
-
     private ObjectOutputStream outStream;
     private ObjectInputStream inputStream;
     private Socket client;
-    private ArrayList<String> friends = new ArrayList<>();
-    private ArrayList<Socket> connections = new ArrayList<>();
+    private Vector<String> friends = new Vector<>();
+    private Vector<Socket> connections = new Vector<>();
+    private Sharing sharing;
     private int port;
 
     public MainClient()
@@ -25,11 +28,19 @@ public class MainClient implements Runnable
         port = 6500;
         try
         {
-
-//            client.getInetAddress();
-//            Formatter f = new Formatter(client.getOutputStream());
-//            f.format("hi");
-//            f.flush();
+            if (friends != null)
+                connections.add(new Socket(friends.get(0), port));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        try
+        {
+            sharing = new Sharing(connections);
+            Thread t = new Thread(sharing);
+            t.start();
+            sharing.hiServer();
         }
         catch (IOException e)
         {
@@ -37,29 +48,30 @@ public class MainClient implements Runnable
         }
     }
 
-
-    @Override
-    public void run()
+    public static void main(String[] args)
     {
-
-        while (true)
+        int port = 6500;
+        try
         {
-            try
-            {
-                if (friends != null)
-                    for (String socket : friends)
-                    {
-                        connections.add(new Socket(socket,port));
-                    }
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            catch (ClassNotFoundException e)
-            {
-                e.printStackTrace();
-            }
+            Thread t = new Thread(new MainServer(port));
+            t.start();
         }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        MainClient main = new MainClient();
+    }
+
+    public void addFriend(String ip) throws IOException
+    {
+        friends.add(ip);
+        openSocket(ip);
+    }
+
+    public void openSocket(String ip) throws IOException
+    {
+        connections.add(new Socket(ip, port));
+        sharing.setConnections(connections);
     }
 }

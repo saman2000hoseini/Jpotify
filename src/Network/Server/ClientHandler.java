@@ -8,9 +8,6 @@ import java.util.Vector;
 
 public class ClientHandler implements Runnable
 {
-    private Socket socket;
-    private ObjectInputStream in ;
-    private String userName;
     static Vector<String> users= new Vector<>();
     private ObjectOutputStream thisOut;
     public ClientHandler(Socket client, ObjectOutputStream thisOut) throws Exception {
@@ -29,7 +26,8 @@ public class ClientHandler implements Runnable
             {
 
             }
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             System.out.println(userName+" Left");
         } catch (ClassNotFoundException e)
