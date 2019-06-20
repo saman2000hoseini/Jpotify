@@ -13,7 +13,7 @@ public class MainFrame extends JFrame {
     MainFrame() {
         super();
         this.setTitle(WINDOW_TITLE);
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage("src/Icons/JPotify.png"));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage("src/View/Icons/JPotify.png"));
         this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         this.setSize(WIDTH, HEIGHT);
         this.setLocation(X, Y);
