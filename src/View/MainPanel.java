@@ -14,15 +14,15 @@ public class MainPanel extends JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup()
                 .addGroup(layout.createSequentialGroup()
-                        .addComponent(westPanel, 0, 100, Short.MAX_VALUE)
-                        .addComponent(centrePanel, 0, 700, Short.MAX_VALUE)
-                        .addComponent(friendsPanel, 0, 100, Short.MAX_VALUE))
+                        .addComponent(westPanel, 0, 340, Short.MAX_VALUE)
+                        .addComponent(centrePanel, 0, 1240, Short.MAX_VALUE)
+                        .addComponent(friendsPanel, 0, 340, Short.MAX_VALUE))
                 .addComponent(playPanel, 0, 100, Short.MAX_VALUE));
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup()
-                        .addComponent(westPanel, 0, 780, Short.MAX_VALUE)
-                        .addComponent(centrePanel, 0, 780, Short.MAX_VALUE)
-                        .addComponent(friendsPanel, 0, 780, Short.MAX_VALUE))
-                .addComponent(playPanel, 0, 300, Short.MAX_VALUE));
+                        .addComponent(westPanel, 0, 855, Short.MAX_VALUE)
+                        .addComponent(centrePanel, 0, 855, Short.MAX_VALUE)
+                        .addComponent(friendsPanel, 0, 855, Short.MAX_VALUE))
+                .addComponent(playPanel, 0, 225, Short.MAX_VALUE));
     }
 }

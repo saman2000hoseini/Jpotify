@@ -6,7 +6,7 @@ import java.awt.*;
 public class PlayPanel extends JPanel {
     PlayPanel() {
         super();
-        setBackground(new Color(119, 119, 21));
+        setBackground(new Color(40, 40, 40));
         setVisible(true);
     }
 }
