@@ -15,9 +15,10 @@ public class MainFrame extends JFrame {
         this.setTitle(WINDOW_TITLE);
         this.setIconImage(Toolkit.getDefaultToolkit().getImage("src/View/Icons/JPotify.png"));
         this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        this.setSize(WIDTH, HEIGHT);
-        this.setLocation(X, Y);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setLocationRelativeTo(null);
         this.add(mainPanel);
+        this.setUndecorated(true);
         this.setVisible(true);
     }
 }

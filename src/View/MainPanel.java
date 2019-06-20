@@ -15,8 +15,8 @@ public class MainPanel extends JPanel {
         layout.setHorizontalGroup(layout.createParallelGroup()
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(westPanel, 0, 340, Short.MAX_VALUE)
-                        .addComponent(centrePanel, 0, 1240, Short.MAX_VALUE)
-                        .addComponent(friendsPanel, 0, 340, Short.MAX_VALUE))
+                        .addComponent(centrePanel, 0, 1205, Short.MAX_VALUE)
+                        .addComponent(friendsPanel, 0, 375, Short.MAX_VALUE))
                 .addComponent(playPanel, 0, 100, Short.MAX_VALUE));
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup()
