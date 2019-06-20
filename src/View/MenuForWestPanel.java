@@ -58,7 +58,10 @@ public class MenuForWestPanel extends JMenuBar {
         this.menu.add(help);
         this.setBackground(new Color(18, 18, 18));
         this.setForeground(new Color(18, 18, 18));
-        this.menu.setIcon(Icons.VOLUME_ICON);
+        this.setSize(40,40);
+        this.setBorder(BorderFactory.createEmptyBorder());
+        this.menu.setIcon(Icons.rescaleIcon(Icons.MENU_ICON, 35, 35));
+        this.menu.setSize(35,50);
         this.add(menu);
     }
 }
