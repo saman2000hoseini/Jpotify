@@ -25,8 +25,11 @@ public class Main
         MainClient main = new MainClient();
 //        System.out.println(lb.getSongLyrics("Lady Gaga","Shallow"));
 //        System.out.println(lb.getSongLyrics("U2", "With or Without You"));
-//        MainFrame m = new MainFrame();
+        MainFrame m = new MainFrame();
 //        lb.getLyrics("With or Without You", "U2");
-        System.out.println(lb.getLyrics("Hello", "adele"));
+//        System.out.println(lb.getLyrics("Hello", "adele"));
+//        System.out.println(lb.getPersianSongLyrics("سالار عقیلی","سپید یا سیاه"));
+//        System.out.println(lb.findLyrics("محسن چاوشی","شبی که ماه کامل شد"));
+//        System.out.println(lb.findLyrics("U2", "With or Without You"));
     }
 }

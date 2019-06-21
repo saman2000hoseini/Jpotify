@@ -1,24 +1,72 @@
 package Controller;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
 
-public class buttonAddFolder implements ActionListener
+public class buttonAddFolder
 {
-    @Override
-    public void actionPerformed(ActionEvent e)
+    public void addFolder(String path, ArrayList<String> songs)
     {
-        DemoJFileChooser folder = new DemoJFileChooser();
-//        folder.
-        DefaultListModel listModel = new DefaultListModel();
-        JList list = new JList(listModel);
-        listModel.addElement(new JPanel());
-        JTable jTable = new JTable();
-        JPanel jPanel = new JPanel();
+        songs.addAll(new LoadingLibrary().loadFiles(path));
+        FileInputStream fileInputStream = null;
+        ArrayList<String> paths = new ArrayList<>();
+        ObjectInputStream objectInputStream = null;
+        try
+        {
+            fileInputStream = new FileInputStream("./src/Library/songs.dat");
+            objectInputStream = new ObjectInputStream(fileInputStream);
+            while (true)
+            {
+                String tempPath = (String) objectInputStream.readObject();
+                paths.add(tempPath);
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (EOFException e)
+        {
 
-        JSlider jSlider = new JSlider();
-//        jSlider.setValue();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        paths.add(path);
+        try
+        {
+            objectInputStream.close();
+            fileInputStream.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        FileOutputStream fileOutputStream;
+        ObjectOutputStream objectOutputStream;
+        try
+        {
+            fileOutputStream = new FileOutputStream("./src/Library/songs.dat");
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            for (String pth : paths)
+            {
+                objectOutputStream.writeObject(pth);
+            }
+            objectOutputStream.close();
+            fileOutputStream.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

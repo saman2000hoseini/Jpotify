@@ -57,9 +57,14 @@ public class LoadingLibrary
         //get the HTML document
         List<String> lyrics = new ArrayList<>();
         Document doc = connection.get();
-        String title = doc.title();
-        System.out.println(title);
-        Element p = doc.select("p.songLyricsV14").get(0);
+        Elements elements = doc.select("p.songLyricsV14");
+        Element p;
+        if (elements.size()>0)
+        {
+            p=elements.get(0);
+        }
+        else
+            throw new IOException("null");
         for (Node e : p.childNodes())
         {
             if (e instanceof TextNode)
@@ -79,11 +84,11 @@ public class LoadingLibrary
 
         //specify user agent
         connection.userAgent("Mozilla/5.0");
-        List<String> lyrics = new ArrayList<>();
         //get the HTML document
+        List<String> lyrics = new ArrayList<>();
         Document lyricPage = connection.get();
         Elements lyricTags = lyricPage.select("div.lyrics > p > a");
-        for (int i = 0; i <lyricTags.size(); i++)
+        for (int i = 0; i < lyricTags.size(); i++)
         {
             for (Node e : lyricTags.get(i).childNodes())
             {
@@ -95,4 +100,110 @@ public class LoadingLibrary
         }
         return lyrics;
     }
+    public List<String> getPersianSongLyrics(String band, String songTitle) throws IOException
+    {
+        Connection connection;
+        //connect to the website
+        connection = Jsoup.connect("https://www.texahang.org/متن-آهنگ-" + band.replace(" ", "-") + "-بنام-" + songTitle.replace(" ", "-") + "/");
+        //specify user agent
+        connection.userAgent("Mozilla/5.0");
+        //get the HTML document
+        List<String> lyrics = new ArrayList<>();
+        Document doc = connection.get();
+        Elements lyricTags = doc.select("div.main-post > p");
+        for (int i = 0; i < lyricTags.size(); i++)
+        {
+            for (Node e : lyricTags.get(i).childNodes())
+            {
+                if (e instanceof TextNode)
+                {
+                    lyrics.add(((TextNode) e).getWholeText());
+                }
+            }
+        }
+        return lyrics;
+    }
+
+    public List<String> getPersianLyrics(String band, String songTitle) throws IOException
+    {
+        Connection connection;
+
+        //connect to the website
+        connection = Jsoup.connect("https://nex1music.ir/آهنگ-" + band.replace(" ", "-") + "-" + songTitle.replace(" ", "-") + "/");
+
+        //specify user agent
+        connection.userAgent("Mozilla/5.0");
+
+        //get the HTML document
+        List<String> lyrics = new ArrayList<>();
+        Document doc = connection.get();
+        Elements elements = doc.select("div.lyrics");
+        Element p;
+        if (elements.size()>0)
+        {
+            p=elements.get(0);
+        }
+        else
+            throw new IOException("null");
+//        for (Node e : p.childNodes())
+//        {
+//            if (e instanceof TextNode)
+//            {
+//                lyrics.add(((TextNode) e).getWholeText());
+//            }
+//        }
+        lyrics.add(p.text());
+        return lyrics;
+    }
+    private static int counter = 0;
+
+    public List<String> findLyrics(String singer, String song)
+    {
+        List<String> lyrics = null;
+        try
+        {
+            if (counter < 2)
+            {
+                lyrics = this.getSongLyrics(singer, song);
+            }
+            else if (counter < 4)
+            {
+                try
+                {
+                    lyrics = this.getPersianSongLyrics(singer,song);
+                }
+                catch (IOException e)
+                {
+                    try
+                    {
+                        lyrics = this.getPersianLyrics(singer, song);
+                    }
+                    catch (IOException ex)
+                    {
+                        counter++;
+                        lyrics = this.findLyrics(song,singer);
+                    }
+                }
+            }
+        }
+        catch (IOException e)
+        {
+            counter++;
+            try
+            {
+                lyrics = this.getLyrics(song, singer);
+            }
+            catch (IOException ex)
+            {
+                lyrics = this.findLyrics(song, singer);
+            }
+        }
+        return lyrics;
+    }
+
+    public void restCounter()
+    {
+        counter=0;
+    }
 }
+
