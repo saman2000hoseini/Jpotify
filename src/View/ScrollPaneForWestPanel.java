@@ -17,7 +17,7 @@ public class ScrollPaneForWestPanel extends JScrollPane {
         super();
         this.setSize(205, 300);
         yourLibrary.setForeground(new Color(145, 145, 145));
-        yourLibrary.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 13));
+        yourLibrary.setFont(new Font("Proxima Nova Alt Lt", Font.PLAIN, 13));
         madeForYou.setForeground(new Color(205, 205, 205));
         madeForYou.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
         recentlyPlayed.setForeground(new Color(205, 205, 205));
@@ -29,7 +29,7 @@ public class ScrollPaneForWestPanel extends JScrollPane {
         artists.setForeground(new Color(205, 205, 205));
         artists.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
         playlists.setForeground(new Color(145, 145, 145));
-        playlists.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 13));
+        playlists.setFont(new Font("Proxima Nova Alt Lt", Font.PLAIN, 13));
         this.setBackground(new Color(18, 18, 18));
         this.setForeground(new Color(18, 18, 18));
         this.setBorder(BorderFactory.createEmptyBorder());

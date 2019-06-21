@@ -15,6 +15,9 @@ public class WestPanel extends JPanel {
     WestPanel() {
         super();
         newPlaylistSeparator = new JSeparator();
+        newPlaylistSeparator.setBackground(new Color(40, 40, 40));
+        newPlaylistSeparator.setForeground(new Color(40, 40, 40));
+        newPlaylistSeparator.setSize(215, 1);
         home = new TransparentButton("   Home", Icons.rescaleIcon(Icons.HOME_ICON, 23, 23));
         browse = new TransparentButton("   Browse", Icons.rescaleIcon(Icons.BROWSE_ICON, 23, 23));
         radio = new TransparentButton("   Radio", Icons.rescaleIcon(Icons.RADIO_ICON, 23, 23));
@@ -26,7 +29,7 @@ public class WestPanel extends JPanel {
         home.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
         browse.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
         radio.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
-        addNewPlaylist.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 16));
+        addNewPlaylist.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
         home.setHorizontalAlignment(SwingConstants.LEFT);
         browse.setHorizontalAlignment(SwingConstants.LEFT);
         radio.setHorizontalAlignment(SwingConstants.LEFT);
@@ -41,16 +44,17 @@ public class WestPanel extends JPanel {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         setBackground(new Color(18, 18, 18));
-        layout.setHorizontalGroup(layout.createSequentialGroup()
-                .addGap(10,10,10)
-                .addGroup(layout.createParallelGroup()
-                    .addComponent(menuForWestPanel, 35, 35, 35)
-                    .addComponent(home, 215, 215, 215)
-                    .addComponent(browse, 215, 215, 215)
-                    .addComponent(radio, 215, 215, 215)
-                    .addComponent(scrollPaneForWestPanel, 205, 205, 205)
-                    .addComponent(newPlaylistSeparator)
-                    .addComponent(addNewPlaylist, 215, 215, 215)));
+        layout.setHorizontalGroup(layout.createParallelGroup()
+                .addGroup(layout.createSequentialGroup()
+                            .addGap(10,10,10)
+                            .addGroup(layout.createParallelGroup()
+                                        .addComponent(menuForWestPanel, 35, 35, 35)
+                                        .addComponent(home, 215, 215, 215)
+                                        .addComponent(browse, 215, 215, 215)
+                                        .addComponent(radio, 215, 215, 215)
+                                        .addComponent(scrollPaneForWestPanel, 205, 205, 205)))
+                .addComponent(newPlaylistSeparator, 215, 215, 215)
+                .addComponent(addNewPlaylist, 215, 215, 215));
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(menuForWestPanel, 35, 35, 35)
@@ -62,7 +66,8 @@ public class WestPanel extends JPanel {
                 .addComponent(radio, 23, 23, 23)
                 .addGap(20, 20, 20)
                 .addComponent(scrollPaneForWestPanel, 0, 470, 470)
-                .addComponent(newPlaylistSeparator)
+                .addComponent(newPlaylistSeparator, 1, 1, 1)
+                .addGap(10, 10, 10)
                 .addComponent(addNewPlaylist, 40, 40, 40)
                 .addContainerGap(15, 15));
     }
