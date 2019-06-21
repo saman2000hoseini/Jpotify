@@ -17,6 +17,15 @@ public class Icons {
     static ImageIcon RIGHT_ARROW_ICON = new ImageIcon("src/View/Icons/right_arrow.png");
     static ImageIcon UP_ARROW_ICON = new ImageIcon("src/View/Icons/up_arrow.png");
     static ImageIcon USER_ICON = new ImageIcon("src/View/Icons/user.png");
+    static ImageIcon EXIT_ICON = new ImageIcon("src/View/Icons/exit.png");
+    static ImageIcon MINIMIZE_ICON = new ImageIcon("src/View/Icons/minimize.png");
+    static ImageIcon PLAY_ICON = new ImageIcon("src/View/Icons/play.png");
+    static ImageIcon PREV_SIZE_ICON = new ImageIcon("src/View/Icons/prev_size.png");
+    static ImageIcon REPEAT_ICON = new ImageIcon("src/View/Icons/repeat.png");
+    static ImageIcon SEARCH_ICON = new ImageIcon("src/View/Icons/search.png");
+    static ImageIcon SHUFFLE_ICON = new ImageIcon("src/View/Icons/shuffle.png");
+    static ImageIcon SKIP_BACKWARD_ICON = new ImageIcon("src/View/Icons/skip_backward.png");
+    static ImageIcon SKIP_FORWARD_ICON = new ImageIcon("src/View/Icons/skip_forward.png");
 
     public static ImageIcon rescaleIcon(ImageIcon imageIcon, int width, int height) {
         Image image = imageIcon.getImage();

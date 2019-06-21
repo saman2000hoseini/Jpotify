@@ -12,4 +12,11 @@ public class TransparentButton extends JButton {
         this.setOpaque(false);
         this.setContentAreaFilled(false);
     }
+    TransparentButton(ImageIcon imageIcon){
+        super(imageIcon);
+        this.setFocusPainted(false);
+        this.setBorderPainted(false);
+        this.setOpaque(true);
+        this.setContentAreaFilled(true);
+    }
 }

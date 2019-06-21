@@ -4,13 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ScrollPaneForWestPanel extends JScrollPane {
-    private JLabel yourLibrary = new JLabel("YOUR LIBRARY");
-    private JLabel madeForYou = new JLabel("Made For You");
-    private JLabel recentlyPlayed = new JLabel("Recently Played");
-    private JLabel songs = new JLabel("Songs");
-    private JLabel albums = new JLabel("Albums");
-    private JLabel artists = new JLabel("Artists");
-    private JLabel playlists = new JLabel("PLAYLISTS");
+    private JLabel yourLibrary = new JLabel("   YOUR LIBRARY");
+    private JLabel madeForYou = new JLabel("   Made For You");
+    private JLabel recentlyPlayed = new JLabel("   Recently Played");
+    private JLabel songs = new JLabel("   Songs");
+    private JLabel albums = new JLabel("   Albums");
+    private JLabel artists = new JLabel("   Artists");
+    private JLabel playlists = new JLabel("   PLAYLISTS");
     private JPanel viewportPanel = new JPanel();
 
     ScrollPaneForWestPanel() {
