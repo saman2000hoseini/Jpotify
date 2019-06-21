@@ -26,6 +26,8 @@ public class Icons {
     static ImageIcon SHUFFLE_ICON = new ImageIcon("src/View/Icons/shuffle.png");
     static ImageIcon SKIP_BACKWARD_ICON = new ImageIcon("src/View/Icons/skip_backward.png");
     static ImageIcon SKIP_FORWARD_ICON = new ImageIcon("src/View/Icons/skip_forward.png");
+    static ImageIcon ADD_NEW_ICON = new ImageIcon("src/View/Icons/add_new.png");
+    static ImageIcon ADD_ICON = new ImageIcon("src/View/Icons/add.png");
 
     public static ImageIcon rescaleIcon(ImageIcon imageIcon, int width, int height) {
         Image image = imageIcon.getImage();

@@ -15,20 +15,21 @@ public class ScrollPaneForWestPanel extends JScrollPane {
 
     ScrollPaneForWestPanel() {
         super();
+        this.setSize(205, 300);
         yourLibrary.setForeground(new Color(145, 145, 145));
-        yourLibrary.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 14));
-        madeForYou.setForeground(new Color(255, 255, 255));
+        yourLibrary.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 13));
+        madeForYou.setForeground(new Color(205, 205, 205));
         madeForYou.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
-        recentlyPlayed.setForeground(new Color(255, 255, 255));
+        recentlyPlayed.setForeground(new Color(205, 205, 205));
         recentlyPlayed.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
-        songs.setForeground(new Color(255, 255, 255));
+        songs.setForeground(new Color(205, 205, 205));
         songs.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
-        albums.setForeground(new Color(255, 255, 255));
+        albums.setForeground(new Color(205, 205, 205));
         albums.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
-        artists.setForeground(new Color(255, 255, 255));
+        artists.setForeground(new Color(205, 205, 205));
         artists.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
         playlists.setForeground(new Color(145, 145, 145));
-        playlists.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 14));
+        playlists.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 13));
         this.setBackground(new Color(18, 18, 18));
         this.setForeground(new Color(18, 18, 18));
         this.setBorder(BorderFactory.createEmptyBorder());
@@ -58,7 +59,7 @@ public class ScrollPaneForWestPanel extends JScrollPane {
                 .addComponent(albums, 0, 15, 15)
                 .addGap(15, 15, 15)
                 .addComponent(artists, 0, 15, 15)
-                .addGap(15, 15, 15)
+                .addGap(30, 30, 30)
                 .addComponent(playlists, 0, 15, 15));
         this.viewport.add(viewportPanel);
     }
