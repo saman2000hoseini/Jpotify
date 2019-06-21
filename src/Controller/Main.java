@@ -23,12 +23,10 @@ public class Main
             e.printStackTrace();
         }
         MainClient main = new MainClient();
-//        lb.getSong("Lady Gaga","Shallow");
-//        lb.getSong("adele","lay+me+down");
-//        lb.getSong("Someone like you","adele");
 //        System.out.println(lb.getSongLyrics("Lady Gaga","Shallow"));
 //        System.out.println(lb.getSongLyrics("U2", "With or Without You"));
 //        MainFrame m = new MainFrame();
-        lb.getLyrics("Hello","adele");
+//        lb.getLyrics("With or Without You", "U2");
+        System.out.println(lb.getLyrics("Hello", "adele"));
     }
 }
