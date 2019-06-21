@@ -13,7 +13,7 @@ public class MainFrame extends JFrame {
     private final int Y = 0;
     static MainPanel mainPanel = new MainPanel();
 
-    MainFrame() {
+    public MainFrame() {
         super();
         this.setTitle(WINDOW_TITLE);
         FrameComponent frame = new FrameComponent(new Insets(5, 5, 5, 5));

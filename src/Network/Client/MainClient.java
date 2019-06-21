@@ -41,21 +41,6 @@ public class MainClient
         }
     }
 
-    public static void main(String[] args) throws IOException
-    {
-        int port = 6500;
-        try
-        {
-            Thread t = new Thread(new MainServer(port));
-            t.start();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        MainClient main = new MainClient();
-    }
-
     public void addFriend(String ip) throws IOException
     {
         friends.add(ip);
