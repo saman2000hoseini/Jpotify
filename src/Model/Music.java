@@ -8,17 +8,53 @@ public class Music implements Serializable
     private String fileLocation;
     private String artist;
     private String name;
+    private String year;
+    private String genre;
+    private String album;
     private LocalDateTime addDate;
     private LocalDateTime lastPlayed;
 
 
-    public Music(String fileLocation, String artist, String name, LocalDateTime addDate, LocalDateTime lastPlayed)
+    public String getYear()
     {
+        return year;
+    }
+
+    public void setYear(String year)
+    {
+        this.year = year;
+    }
+
+    public String getGenre()
+    {
+        return genre;
+    }
+
+    public void setGenre(String genre)
+    {
+        this.genre = genre;
+    }
+
+    public String getAlbum()
+    {
+        return album;
+    }
+
+    public void setAlbum(String album)
+    {
+        this.album = album;
+    }
+
+    public Music(String fileLocation, String artist, String name, String year, LocalDateTime addDate, LocalDateTime lastPlayed, String genre, String album)
+    {
+        this.album = album;
+        this.genre = genre;
         this.fileLocation = fileLocation;
         this.artist = artist;
         this.name = name;
         this.addDate = addDate;
         this.lastPlayed = lastPlayed;
+        this.year=year;
     }
 
     public LocalDateTime getAddDate()

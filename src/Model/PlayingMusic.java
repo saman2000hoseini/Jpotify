@@ -1,5 +1,6 @@
 package Model;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDateTime;
@@ -9,9 +10,9 @@ public class PlayingMusic extends Music implements Serializable
 {
     private LocalTime startsAt;
     private boolean isLocal;
-    public PlayingMusic(String fileLocation, String artist, String name, LocalTime startsAt, LocalDateTime addDate, LocalDateTime lastPlayed,boolean isLocal)
+    public PlayingMusic(String fileLocation, String artist, String name,String genre, String year, LocalTime startsAt, LocalDateTime addDate, LocalDateTime lastPlayed,String album, boolean isLocal)
     {
-        super(fileLocation, artist, name,addDate,lastPlayed);
+        super(fileLocation, artist, name,year,addDate,lastPlayed,genre,album);
         this.startsAt = startsAt;
         this.isLocal=isLocal;
     }

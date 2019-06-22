@@ -3,12 +3,16 @@ package Controller;
 /*import com.sun.deploy.util.StringUtils;
 import getlyrics.RavGetLyrics;*/
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.ID3v1;
+import Model.Music;
+import org.farng.mp3.MP3File;
+import org.farng.mp3.TagException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
@@ -20,9 +24,10 @@ import org.jsoup.select.Elements;
 
 public class LoadingLibrary
 {
-    public ArrayList<String> loadFiles(String path)
+    public ArrayList<Music> loadFiles(String path) throws IOException, ClassNotFoundException, TagException
     {
         ArrayList<String> audios = new ArrayList<>();
+        ArrayList<Music> musics = new ArrayList<>();
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
         for (int i = 0; i < listOfFiles.length; i++)
@@ -37,7 +42,12 @@ public class LoadingLibrary
                 }
             }
         }
-        return audios;
+        for (String directory : audios)
+        {
+            Music music = this.processFile(directory);
+            musics.add(music);
+        }
+        return musics;
     }
 
 
@@ -59,9 +69,9 @@ public class LoadingLibrary
         Document doc = connection.get();
         Elements elements = doc.select("p.songLyricsV14");
         Element p;
-        if (elements.size()>0)
+        if (elements.size() > 0)
         {
-            p=elements.get(0);
+            p = elements.get(0);
         }
         else
             throw new IOException("null");
@@ -75,7 +85,7 @@ public class LoadingLibrary
         return lyrics;
     }
 
-    public List<String> getLyrics(String song, String singer) throws IOException
+    public List<String> getLyrics(String singer, String song) throws IOException
     {
         Connection connection;
 
@@ -84,6 +94,8 @@ public class LoadingLibrary
 
         //specify user agent
         connection.userAgent("Mozilla/5.0");
+        connection.header("Host", "genius.com");
+        connection.timeout(500);
         //get the HTML document
         List<String> lyrics = new ArrayList<>();
         Document lyricPage = connection.get();
@@ -100,6 +112,7 @@ public class LoadingLibrary
         }
         return lyrics;
     }
+
     public List<String> getPersianSongLyrics(String band, String songTitle) throws IOException
     {
         Connection connection;
@@ -139,9 +152,9 @@ public class LoadingLibrary
         Document doc = connection.get();
         Elements elements = doc.select("div.lyrics");
         Element p;
-        if (elements.size()>0)
+        if (elements.size() > 0)
         {
-            p=elements.get(0);
+            p = elements.get(0);
         }
         else
             throw new IOException("null");
@@ -155,6 +168,7 @@ public class LoadingLibrary
         lyrics.add(p.text());
         return lyrics;
     }
+
     private static int counter = 0;
 
     public List<String> findLyrics(String singer, String song)
@@ -162,15 +176,15 @@ public class LoadingLibrary
         List<String> lyrics = null;
         try
         {
-            if (counter < 2)
+            if (counter < 4)
             {
                 lyrics = this.getSongLyrics(singer, song);
             }
-            else if (counter < 4)
+            else if (counter < 7)
             {
                 try
                 {
-                    lyrics = this.getPersianSongLyrics(singer,song);
+                    lyrics = this.getPersianSongLyrics(singer, song);
                 }
                 catch (IOException e)
                 {
@@ -181,7 +195,7 @@ public class LoadingLibrary
                     catch (IOException ex)
                     {
                         counter++;
-                        lyrics = this.findLyrics(song,singer);
+                        lyrics = this.findLyrics(singer, song);
                     }
                 }
             }
@@ -191,11 +205,11 @@ public class LoadingLibrary
             counter++;
             try
             {
-                lyrics = this.getLyrics(song, singer);
+                lyrics = this.getLyrics(singer, song);
             }
             catch (IOException ex)
             {
-                lyrics = this.findLyrics(song, singer);
+                lyrics = this.findLyrics(singer, song);
             }
         }
         return lyrics;
@@ -203,7 +217,81 @@ public class LoadingLibrary
 
     public void restCounter()
     {
-        counter=0;
+        counter = 0;
+    }
+
+    public List<String> gatherMusic(String singer, String song) throws IOException
+    {
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        List<String> lyrics = null;
+        String directory = "./Lyrics/" + song.replace(" ", "_").toLowerCase() + "_" + singer.replace(" ", "_").toLowerCase() + ".txt";
+        try
+        {
+            fileReader = new FileReader(directory);
+            bufferedReader = new BufferedReader(fileReader);
+            lyrics = new ArrayList<>();
+            String temp = bufferedReader.readLine();
+            while (temp != null)
+            {
+                lyrics.add(temp);
+                temp = bufferedReader.readLine();
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            lyrics = this.findLyrics(singer, song);
+            this.restCounter();
+            if (lyrics != null)
+            {
+                FileWriter fileWriter = new FileWriter(directory);
+                PrintWriter printWriter = new PrintWriter(fileWriter);
+                for (String str : lyrics)
+                {
+                    printWriter.println(str);
+                }
+                printWriter.close();
+                fileWriter.close();
+            }
+            else
+            {
+                lyrics.add("Please check Your Connection and try again");
+            }
+        }
+        catch (EOFException e)
+        {
+            bufferedReader.close();
+            fileReader.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return lyrics;
+    }
+
+    public Music processFile(String directory) throws IOException, TagException
+    {
+        MP3File mp3File = new MP3File(directory);
+        String title, artist, album, year, genre;
+        if (mp3File.getID3v2Tag() != null)
+        {
+            title = mp3File.getID3v2Tag().getSongTitle();
+            artist = mp3File.getID3v2Tag().getLeadArtist();
+            album = mp3File.getID3v2Tag().getAlbumTitle();
+            year = mp3File.getID3v2Tag().getYearReleased();
+            genre = mp3File.getID3v2Tag().getSongGenre();
+        }
+        else
+        {
+            title = mp3File.getID3v1Tag().getTitle();
+            artist = mp3File.getID3v1Tag().getArtist();
+            album = mp3File.getID3v1Tag().getAlbum();
+            year = mp3File.getID3v1Tag().getYear();
+            genre = new ID3v1().getGENRES(mp3File.getID3v1Tag().getGenre());
+        }
+        Music music = new Music(directory, artist, title, year, null, null, genre,album);
+        return music;
     }
 }
 

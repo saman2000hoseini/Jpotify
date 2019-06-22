@@ -26,7 +26,7 @@ public class Sharing implements Runnable
     }
     public void hiServer(ObjectOutputStream objectOutputStream) throws IOException
     {
-       objectOutputStream.writeObject(new PlayingMusic(null,null,null,null,null,null,true));
+       objectOutputStream.writeObject(new PlayingMusic(null,null,null,null,null,null,null,null,null,true));
     }
 
     public void shareMusic(PlayingMusic playingMusic) throws IOException
