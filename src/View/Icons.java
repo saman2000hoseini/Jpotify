@@ -30,6 +30,9 @@ public class Icons {
     static ImageIcon ADD_ICON = new ImageIcon("src/View/Icons/add.png");
     static ImageIcon SEARCH2_ICON = new ImageIcon("src/View/Icons/search2.png");
     static ImageIcon CLOSE2_ICON = new ImageIcon("src/View/Icons/close2.png");
+    static ImageIcon USER2_ICON = new ImageIcon("src/View/Icons/user2.png");
+    static ImageIcon USER3_ICON = new ImageIcon("src/View/Icons/user3.png");
+    static ImageIcon USER4_ICON = new ImageIcon("src/View/Icons/user4.png");
 
     public static ImageIcon rescaleIcon(ImageIcon imageIcon, int width, int height) {
         Image image = imageIcon.getImage();

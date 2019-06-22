@@ -22,9 +22,9 @@ public class FriendsPanel extends JPanel {
         close.addMouseListener(listenerForMouse);
         restoreDown.addMouseListener(listenerForMouse);
         minimize.addMouseListener(listenerForMouse);
-        close.setSize(45,30);
-        restoreDown.setSize(45,30);
-        minimize.setSize(45,30);
+        close.setSize(45, 30);
+        restoreDown.setSize(45, 30);
+        minimize.setSize(45, 30);
         close.setHorizontalAlignment(SwingConstants.CENTER);
         restoreDown.setHorizontalAlignment(SwingConstants.CENTER);
         minimize.setHorizontalAlignment(SwingConstants.CENTER);
@@ -42,30 +42,33 @@ public class FriendsPanel extends JPanel {
                 .addComponent(close, 30, 30, 30));
         setVisible(true);
     }
+
     private class ListenerForMouse implements MouseListener {
         @Override
-        public void mouseClicked(MouseEvent e)
-        {
-            if(e.getSource()==close){
+        public void mouseClicked(MouseEvent e) {
+            if (e.getSource() == close) {
                 System.exit(0);
             }
-            if(e.getSource() == restoreDown)
-            {
+            if (e.getSource() == restoreDown) {
 
             }
         }
+
         @Override
         public void mousePressed(MouseEvent e) {
 
         }
+
         @Override
         public void mouseReleased(MouseEvent e) {
 
         }
+
         @Override
         public void mouseEntered(MouseEvent e) {
 
         }
+
         @Override
         public void mouseExited(MouseEvent e) {
 

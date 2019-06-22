@@ -8,8 +8,8 @@ public class CustomTextField extends JPanel {
     ImageIcon searchIcon;
     ImageIcon closeIcon;
     JLabel close;
-    CustomTextField(int width, int height, ImageIcon searchIcon, ImageIcon closeIcon)
-    {
+
+    CustomTextField(int width, int height, ImageIcon searchIcon, ImageIcon closeIcon) {
         super();
         this.setSize(width, height);
         textField = new SearchTextField(searchIcon, closeIcon);
@@ -19,12 +19,12 @@ public class CustomTextField extends JPanel {
         this.closeIcon = closeIcon;
         this.close = new JLabel(closeIcon);
         GroupLayout layout = new GroupLayout(this);
-        layout.setHorizontalGroup(layout.createSequentialGroup().addGap(this.getHeight()/2, this.getHeight() /2, this.getHeight() / 2)
-                                .addComponent(textField, this.getWidth() - this.getHeight(), this.getWidth() - this.getHeight(),
-                            this.getWidth() - this.getHeight())
-                                .addComponent(close, 10, 10 ,10));
+        layout.setHorizontalGroup(layout.createSequentialGroup().addGap(this.getHeight() / 2, this.getHeight() / 2, this.getHeight() / 2)
+                .addComponent(textField, this.getWidth() - this.getHeight(), this.getWidth() - this.getHeight(),
+                        this.getWidth() - this.getHeight())
+                .addComponent(close, 10, 10, 10));
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(textField, this.getHeight(), this.getHeight(), this.getHeight())
-                                                                .addComponent(close, 10, 10, 10));
+                .addComponent(close, 10, 10, 10));
         this.setLayout(layout);
         this.setVisible(true);
     }
