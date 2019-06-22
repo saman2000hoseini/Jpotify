@@ -28,6 +28,8 @@ public class Icons {
     static ImageIcon SKIP_FORWARD_ICON = new ImageIcon("src/View/Icons/skip_forward.png");
     static ImageIcon ADD_NEW_ICON = new ImageIcon("src/View/Icons/add_new.png");
     static ImageIcon ADD_ICON = new ImageIcon("src/View/Icons/add.png");
+    static ImageIcon SEARCH2_ICON = new ImageIcon("src/View/Icons/search2.png");
+    static ImageIcon CLOSE2_ICON = new ImageIcon("src/View/Icons/close2.png");
 
     public static ImageIcon rescaleIcon(ImageIcon imageIcon, int width, int height) {
         Image image = imageIcon.getImage();

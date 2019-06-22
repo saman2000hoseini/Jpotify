@@ -26,9 +26,9 @@ public class WestPanel extends JPanel {
         browse.setSize(215, 23);
         radio.setSize(215, 23);
         addNewPlaylist.setSize(215, 40);
-        home.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
-        browse.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
-        radio.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
+        home.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
+        browse.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
+        radio.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
         addNewPlaylist.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
         home.setHorizontalAlignment(SwingConstants.LEFT);
         browse.setHorizontalAlignment(SwingConstants.LEFT);

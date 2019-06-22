@@ -49,6 +49,10 @@ public class FriendsPanel extends JPanel {
             if(e.getSource()==close){
                 System.exit(0);
             }
+            if(e.getSource() == restoreDown)
+            {
+
+            }
         }
         @Override
         public void mousePressed(MouseEvent e) {
