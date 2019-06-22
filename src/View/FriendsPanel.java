@@ -6,12 +6,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class FriendsPanel extends JPanel {
-    private TransparentButton close = new TransparentButton(Icons.rescaleIcon(Icons.EXIT_ICON, 13, 13));
-    private TransparentButton restoreDown = new TransparentButton(Icons.rescaleIcon(Icons.PREV_SIZE_ICON, 13, 13));
-    private TransparentButton minimize = new TransparentButton(Icons.rescaleIcon(Icons.MINIMIZE_ICON, 13, 10));
+    private TransparentButton close = new TransparentButton("✕");
+    private TransparentButton restoreDown = new TransparentButton("◻");
+    private TransparentButton minimize = new TransparentButton("⚊");
 
     FriendsPanel() {
         super();
+        this.setSize(255, 952);
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         ListenerForMouse listenerForMouse = new ListenerForMouse();
@@ -66,12 +67,28 @@ public class FriendsPanel extends JPanel {
 
         @Override
         public void mouseEntered(MouseEvent e) {
-
+            if (e.getSource() == close) {
+                close.setBackground(new Color(255, 22, 14));
+            }
+            if (e.getSource() == restoreDown) {
+                restoreDown.setBackground(new Color(100, 100, 100));
+            }
+            if (e.getSource() == minimize) {
+                minimize.setBackground(new Color(100, 100, 100));
+            }
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-
+            if (e.getSource() == close) {
+                close.setBackground(new Color(24, 24, 24));
+            }
+            if (e.getSource() == restoreDown) {
+                restoreDown.setBackground(new Color(24, 24, 24));
+            }
+            if (e.getSource() == minimize) {
+                minimize.setBackground(new Color(24, 24, 24));
+            }
         }
     }
 }

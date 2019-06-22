@@ -15,10 +15,8 @@ public class TransparentButton extends JButton {
     TransparentButton(String text){
         super(text);
         setForeground(new Color(175, 175, 175));
-        this.setFocusPainted(false);
         this.setBorderPainted(false);
-        this.setOpaque(false);
-        this.setContentAreaFilled(false);
+        this.setFocusPainted(false);
     }
 
     TransparentButton(ImageIcon imageIcon){
