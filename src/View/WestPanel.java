@@ -21,7 +21,7 @@ public class WestPanel extends JPanel {
         home = new TransparentButton("   Home", Icons.rescaleIcon(Icons.HOME_ICON, 23, 23));
         browse = new TransparentButton("   Browse", Icons.rescaleIcon(Icons.BROWSE_ICON, 23, 23));
         radio = new TransparentButton("   Radio", Icons.rescaleIcon(Icons.RADIO_ICON, 23, 23));
-        addNewPlaylist = new TransparentButton("  New Playlist", Icons.rescaleIcon(Icons.ADD_NEW_ICON, 25, 25));
+        addNewPlaylist = new TransparentButton("  New Playlist", Icons.rescaleIcon(Icons.ADD_ICON, 28, 28));
         home.setSize(215, 23);
         browse.setSize(215, 23);
         radio.setSize(215, 23);
