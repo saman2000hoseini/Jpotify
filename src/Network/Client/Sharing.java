@@ -1,20 +1,20 @@
 package Network.Client;
 
+import Model.Library;
 import Model.PlayingMusic;
+import Model.Request;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Vector;
 
 public class Sharing implements Runnable
 {
-    private Vector<Socket> connections = new Vector<>();
+    private Vector<Socket> connections;
     private ObjectInputStream objectInputStream;
     private Vector<ObjectOutputStream> objectOutputStreams = new Vector<>();
-
+    private Library sharedLibrary;
     public Sharing(Vector<Socket> connections,Socket client) throws IOException
     {
         this.connections = connections;
@@ -26,16 +26,16 @@ public class Sharing implements Runnable
     }
     public void hiServer(ObjectOutputStream objectOutputStream) throws IOException
     {
-       objectOutputStream.writeObject(new PlayingMusic(null,null,null,null,null,null,null,null,null,true));
+       objectOutputStream.writeObject(new Request(new PlayingMusic(null,null,null,null,null,null,null,null,null,true)));
     }
 
-    public void shareMusic(PlayingMusic playingMusic) throws IOException
+    public void shareMusic(Request request) throws IOException
     {
         try
         {
             for (ObjectOutputStream outputStream : objectOutputStreams)
             {
-                outputStream.writeObject(playingMusic);
+                outputStream.writeObject(request);
             }
         }
         catch (Exception e)
@@ -51,11 +51,24 @@ public class Sharing implements Runnable
         {
             try
             {
-                PlayingMusic playingMusic = (PlayingMusic)objectInputStream.readObject();
-                if (!playingMusic.isLocal())
+                Request request = (Request) objectInputStream.readObject();
+                if (request.getReqsMusic()==0 && !request.getMusic().isLocal())
                 {
 
                 }
+                else if(request.getReqsMusic()==1 && request.wantsMusic())
+                {
+
+                }
+                else if(request.getReqsMusic()==1)
+                {
+                    byte[] byteArray  = new byte[request.getFileSize()];
+                    objectInputStream.read(byteArray);
+                    OutputStream outputStream = new ObjectOutputStream(new FileOutputStream("./SharedMusics/"+request.getMusic().getName().toLowerCase()+".mps"));
+                    outputStream.write(byteArray);
+                }
+                else if (request.getReqsMusic()==2)
+                    sharedLibrary = request.getSharedLibrary();
             }
             catch (IOException e)
             {

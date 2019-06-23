@@ -1,6 +1,7 @@
 package Network.Server;
 
 import Model.PlayingMusic;
+import Model.Request;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -31,14 +32,14 @@ public class ClientHandler implements Runnable
         {
             while (!socket.isClosed())
             {
-                PlayingMusic playingMusic = (PlayingMusic) objectInputStream.readObject();
-                if (playingMusic.isLocal())
+                Request request = (Request) objectInputStream.readObject();
+                if (request.getMusic().isLocal())
                 {
                     thisOut = objectOutputStream;
                     System.out.println("User Joined successfully");
                 }
                 else
-                    thisOut.writeObject(playingMusic);
+                    thisOut.writeObject(request);
             }
         }
         catch (IOException e)
