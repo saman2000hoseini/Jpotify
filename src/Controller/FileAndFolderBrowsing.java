@@ -7,13 +7,14 @@ import org.farng.mp3.TagException;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class FileAndFolderBrowsing
 {
     private LoadingLibrary loadingLibrary = new LoadingLibrary();
     private static final String directory = "./Library/songs.dat";
 
-    public void addFileFolder(String path, ArrayList<Music> songs) throws IOException, ClassNotFoundException, TagException
+    public void addFileFolder(String path, Vector<Music> songs) throws IOException, ClassNotFoundException, TagException
     {
         if (!(new File(path)).isFile())
         {
@@ -89,7 +90,7 @@ public class FileAndFolderBrowsing
         }
     }
 
-    public void loadFiles(ArrayList<Music> songs)
+    public void loadFiles(Vector<Music> songs)
     {
         try
         {
@@ -114,9 +115,9 @@ public class FileAndFolderBrowsing
         }
     }
 
-    public ArrayList<Library> loadLibraries()
+    public Vector<Library> loadLibraries()
     {
-        ArrayList<Library> libraries = new ArrayList<>();
+        Vector<Library> libraries = new Vector<>();
         Library library = null;
         ArrayList<Music> songs = null;
         File folder = new File("./Library/");

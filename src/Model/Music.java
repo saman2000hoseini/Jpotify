@@ -1,5 +1,7 @@
 package Model;
 
+import View.Main;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -105,5 +107,13 @@ public class Music implements Serializable
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof Music && ((Music) obj).getName().equals(this.getName())&&((Music) obj).getArtist().equals(this.getArtist()))
+            return true;
+        return false;
     }
 }

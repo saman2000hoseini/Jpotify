@@ -1,7 +1,9 @@
 package Network.Client;
 
+import Model.Music;
 import Model.PlayingMusic;
 import Network.Server.MainServer;
+import View.Main;
 //import com.sun.deploy.util.SessionState;
 
 import java.io.IOException;
@@ -19,11 +21,13 @@ public class MainClient
     private Socket client;
     private Vector<String> friends = new Vector<>();
     private Vector<Socket> connections = new Vector<>();
+    static Vector<Music> musics;
     private Sharing sharing;
     private int port;
 
-    public MainClient() throws IOException
+    public MainClient(Vector<Music> musics) throws IOException
     {
+        this.musics=musics;
         port = 6500;
         client = new Socket("localhost", port);
         try
