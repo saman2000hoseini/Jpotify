@@ -19,11 +19,16 @@ public class CentrePanel extends JPanel {
 
     CentrePanel(int width, int height) {
         super();
+        ListenerForMouse listenerForMouse = new ListenerForMouse();
         setBackground(new Color(24, 24, 24));
         search.setBackground(new Color(24, 24, 24));
         search.textField.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
+        userPic.setAlignmentY(CENTER_ALIGNMENT);
         userName.setFont(new Font("Proxima Nova Rg", Font.BOLD, 14));
+        userName.addMouseListener(listenerForMouse);
+        userName.setAlignmentY(BOTTOM_ALIGNMENT);
         userMenu.setFont(new Font("Sefir", Font.PLAIN, 24));
+        userMenu.addMouseListener(listenerForMouse);
         previous.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 45));
         next.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 45));
         userName.setForeground(new Color(255, 255, 255));
@@ -59,7 +64,6 @@ public class CentrePanel extends JPanel {
                             .addComponent(userName, 25, 25, 25)
                             .addComponent(userMenu, 20, 20, 20)));
         } else {
-            ListenerForMouse listenerForMouse = new ListenerForMouse();
             close.setBackground(new Color(24, 24, 24));
             restoreDown.setBackground(new Color(24, 24, 24));
             minimize.setBackground(new Color(24, 24, 24));
@@ -86,7 +90,7 @@ public class CentrePanel extends JPanel {
                     .addComponent(userPic, 25, 25, 25)
                     .addGap(11, 11, 11)
                     .addComponent(userName, 50, 50, 50)
-                    .addGap(12, 12, 12)
+                    .addGap(13, 13, 13)
                     .addComponent(userMenu, 20, 20, 20)
                     .addGap(20, 20, 20)
                     .addComponent(minimize, 45, 45, 45)
@@ -146,6 +150,10 @@ public class CentrePanel extends JPanel {
             if (e.getSource() == minimize) {
                 minimize.setBackground(new Color(100, 100, 100));
             }
+            if (e.getSource() == userName)
+            {
+                userName.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 14));
+            }
         }
 
         @Override
@@ -158,6 +166,10 @@ public class CentrePanel extends JPanel {
             }
             if (e.getSource() == minimize) {
                 minimize.setBackground(new Color(24, 24, 24));
+            }
+            if (e.getSource() == userName)
+            {
+                userName.setFont(new Font("Proxima Nova Rg", Font.BOLD, 14));
             }
         }
     }

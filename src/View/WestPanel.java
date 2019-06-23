@@ -2,6 +2,8 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class WestPanel extends JPanel {
     private TransparentButton home;
@@ -39,6 +41,11 @@ public class WestPanel extends JPanel {
         browse.setForeground(new Color(180, 180, 180));
         radio.setForeground(new Color(180, 180, 180));
         addNewPlaylist.setForeground(new Color(180, 180, 180));
+        ListenerForMouse listenerForMouse = new ListenerForMouse();
+        home.addMouseListener(listenerForMouse);
+        browse.addMouseListener(listenerForMouse);
+        radio.addMouseListener(listenerForMouse);
+        addNewPlaylist.addMouseListener(listenerForMouse);
         menuForWestPanel = new MenuForWestPanel();
         scrollPaneForWestPanel = new ScrollPaneForWestPanel();
         GroupLayout layout = new GroupLayout(this);
@@ -70,5 +77,151 @@ public class WestPanel extends JPanel {
                 .addGap(10, 10, 10)
                 .addComponent(addNewPlaylist, 40, 40, 40)
                 .addContainerGap(15, 15));
+    }
+    private class ListenerForMouse implements MouseListener {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getSource() == home)
+            {
+                home.setForeground(new Color(255, 255, 255));
+                home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 25, 25));
+                browse.setForeground(new Color(180, 180, 180));
+                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 23, 23));
+                radio.setForeground(new Color(180, 180, 180));
+                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 23, 23));
+                home.setFocused(true);
+                browse.setFocused(false);
+                radio.setFocused(false);
+            }
+            if (e.getSource() == browse)
+            {
+                browse.setForeground(new Color(255, 255, 255));
+                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 25, 25));
+                home.setForeground(new Color(180, 180, 180));
+                home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 23, 23));
+                radio.setForeground(new Color(180, 180, 180));
+                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 23, 23));
+                browse.setFocused(true);
+                home.setFocused(false);
+                radio.setFocused(false);
+            }
+            if (e.getSource() == radio)
+            {
+                radio.setForeground(new Color(255, 255, 255));
+                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 25, 25));
+                browse.setForeground(new Color(180, 180, 180));
+                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 23, 23));
+                home.setForeground(new Color(180, 180, 180));
+                home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 23, 23));
+                radio.setFocused(true);
+                browse.setFocused(false);
+                home.setFocused(false);
+            }
+            if (e.getSource() == addNewPlaylist)
+            {
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.getSource() == home)
+            {
+                home.setForeground(new Color(145, 145, 145));
+                home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 25, 25));
+            }
+            if (e.getSource() == browse)
+            {
+                browse.setForeground(new Color(145, 145, 145));
+                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 25, 25));
+            }
+            if (e.getSource() == radio)
+            {
+                radio.setForeground(new Color(145, 145, 145));
+                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 25, 25));
+            }
+            if (e.getSource() == addNewPlaylist)
+            {
+                addNewPlaylist.setForeground(new Color(145, 145, 145));
+                addNewPlaylist.setIcon(Icons.rescaleIcon(Icons.ADD_ICON, 30, 30));
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (e.getSource() == home)
+            {
+                home.setForeground(new Color(255, 255, 255));
+                home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 25, 25));
+            }
+            if (e.getSource() == browse)
+            {
+                browse.setForeground(new Color(255, 255, 255));
+                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 25, 25));
+            }
+            if (e.getSource() == radio)
+            {
+                radio.setForeground(new Color(255, 255, 255));
+                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 25, 25));
+            }
+            if (e.getSource() == addNewPlaylist)
+            {
+                addNewPlaylist.setForeground(new Color(255, 255, 255));
+                addNewPlaylist.setIcon(Icons.rescaleIcon(Icons.ADD_ICON, 30, 30));
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            if (e.getSource() == home)
+            {
+                home.setForeground(new Color(255, 255, 255));
+                home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 25, 25));
+            }
+            if (e.getSource() == browse)
+            {
+                browse.setForeground(new Color(255, 255, 255));
+                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 25, 25));
+            }
+            if (e.getSource() == radio)
+            {
+                radio.setForeground(new Color(255, 255, 255));
+                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 25, 25));
+            }
+            if (e.getSource() == addNewPlaylist)
+            {
+                addNewPlaylist.setForeground(new Color(255, 255, 255));
+                addNewPlaylist.setIcon(Icons.rescaleIcon(Icons.ADD_ICON, 30, 30));
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            if (e.getSource() == home)
+            {
+                if (!home.getFocused()) {
+                    home.setForeground(new Color(180, 180, 180));
+                    home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 23, 23));
+                }
+            }
+            if (e.getSource() == browse)
+            {
+                if (!browse.getFocused()) {
+                    browse.setForeground(new Color(180, 180, 180));
+                    browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 23, 23));
+                }
+            }
+            if (e.getSource() == radio)
+            {
+                if (!radio.getFocused()) {
+                    radio.setForeground(new Color(180, 180, 180));
+                    radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 23, 23));
+                }
+            }
+            if (e.getSource() == addNewPlaylist)
+            {
+                addNewPlaylist.setForeground(new Color(180, 180, 180));
+                addNewPlaylist.setIcon(Icons.rescaleIcon(Icons.ADD_ICON, 28, 28));
+            }
+        }
     }
 }

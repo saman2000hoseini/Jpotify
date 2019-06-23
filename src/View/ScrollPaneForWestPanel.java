@@ -2,6 +2,8 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class ScrollPaneForWestPanel extends JScrollPane {
     private JLabel yourLibrary = new JLabel("   YOUR LIBRARY");
@@ -30,6 +32,12 @@ public class ScrollPaneForWestPanel extends JScrollPane {
         artists.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
         playlists.setForeground(new Color(145, 145, 145));
         playlists.setFont(new Font("Proxima Nova Alt Lt", Font.BOLD, 13));
+        ListenerForMouse listenerForMouse = new ListenerForMouse();
+        madeForYou.addMouseListener(listenerForMouse);
+        recentlyPlayed.addMouseListener(listenerForMouse);
+        songs.addMouseListener(listenerForMouse);
+        albums.addMouseListener(listenerForMouse);
+        artists.addMouseListener(listenerForMouse);
         this.setBackground(new Color(18, 18, 18));
         this.setForeground(new Color(18, 18, 18));
         this.setBorder(BorderFactory.createEmptyBorder());
@@ -62,5 +70,87 @@ public class ScrollPaneForWestPanel extends JScrollPane {
                 .addGap(30, 30, 30)
                 .addComponent(playlists, 13, 13, 13));
         this.viewport.add(viewportPanel);
+    }
+
+    private class ListenerForMouse implements MouseListener {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.getSource() == madeForYou) {
+                madeForYou.setForeground(new Color(145, 145, 145));
+            }
+            if (e.getSource() == recentlyPlayed) {
+                recentlyPlayed.setForeground(new Color(145, 145, 145));
+            }
+            if (e.getSource() == songs) {
+                songs.setForeground(new Color(145, 145, 145));
+            }
+            if (e.getSource() == albums) {
+                albums.setForeground(new Color(145, 145, 145));
+            }
+            if (e.getSource() == artists) {
+                artists.setForeground(new Color(145, 145, 145));
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (e.getSource() == madeForYou) {
+                madeForYou.setForeground(new Color(255, 255, 255));
+            }
+            if (e.getSource() == recentlyPlayed) {
+                recentlyPlayed.setForeground(new Color(255, 255, 255));
+            }
+            if (e.getSource() == songs) {
+                songs.setForeground(new Color(255, 255, 255));
+            }
+            if (e.getSource() == albums) {
+                albums.setForeground(new Color(255, 255, 255));
+            }
+            if (e.getSource() == artists) {
+                artists.setForeground(new Color(255, 255, 255));
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            if (e.getSource() == madeForYou) {
+                madeForYou.setForeground(new Color(255, 255, 255));
+            }
+            if (e.getSource() == recentlyPlayed) {
+                recentlyPlayed.setForeground(new Color(255, 255, 255));
+            }
+            if (e.getSource() == songs) {
+                songs.setForeground(new Color(255, 255, 255));
+            }
+            if (e.getSource() == albums) {
+                albums.setForeground(new Color(255, 255, 255));
+            }
+            if (e.getSource() == artists) {
+                artists.setForeground(new Color(255, 255, 255));
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            if (e.getSource() == madeForYou) {
+                madeForYou.setForeground(new Color(205, 205, 205));
+            }
+            if (e.getSource() == recentlyPlayed) {
+                recentlyPlayed.setForeground(new Color(205, 205, 205));
+            }
+            if (e.getSource() == songs) {
+                songs.setForeground(new Color(205, 205, 205));
+            }
+            if (e.getSource() == albums) {
+                albums.setForeground(new Color(205, 205, 205));
+            }
+            if (e.getSource() == artists) {
+                artists.setForeground(new Color(205, 205, 205));
+            }
+        }
     }
 }
