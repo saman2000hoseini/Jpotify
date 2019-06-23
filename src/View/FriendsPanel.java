@@ -6,9 +6,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class FriendsPanel extends JPanel {
-    private TransparentButton close = new TransparentButton("✕");
-    private TransparentButton restoreDown = new TransparentButton("◻");
-    private TransparentButton minimize = new TransparentButton("⚊");
+    private TransparentButton close = new TransparentButton("✕", false);
+    private TransparentButton restoreDown = new TransparentButton("◻", false);
+    private TransparentButton minimize = new TransparentButton("⚊", false);
 
     FriendsPanel() {
         super();

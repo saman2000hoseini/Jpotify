@@ -13,9 +13,9 @@ public class CentrePanel extends JPanel {
     private JLabel userPic = new JLabel(Icons.rescaleIcon(Icons.USER4_ICON, 25, 25));
     private JLabel userName = new JLabel("Roham");
     private JLabel userMenu = new JLabel("⌵");
-    private TransparentButton close = new TransparentButton("✕");
-    private TransparentButton restoreDown = new TransparentButton("◻");
-    private TransparentButton minimize = new TransparentButton("⚊");
+    private TransparentButton close = new TransparentButton("✕", false);
+    private TransparentButton restoreDown = new TransparentButton("◻", false);
+    private TransparentButton minimize = new TransparentButton("⚊", false);
 
     CentrePanel(int width, int height) {
         super();
