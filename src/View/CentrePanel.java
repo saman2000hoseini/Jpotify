@@ -116,7 +116,12 @@ public class CentrePanel extends JPanel {
                 System.exit(0);
             }
             if (e.getSource() == restoreDown) {
-
+                Dimension dimPant = Toolkit.getDefaultToolkit().getScreenSize();
+                ((JFrame)(getParent().getParent().getParent().getParent().getParent())).setBounds(0,0,(int)dimPant.getWidth(), (int)dimPant.getHeight() - 40);
+                ((MainFrame)(getParent().getParent().getParent().getParent().getParent())).setFullScreenMode(true);
+            }
+            if (e.getSource() == minimize) {
+                ((JFrame)(getParent().getParent().getParent().getParent().getParent())).setState(Frame.ICONIFIED);
             }
         }
 

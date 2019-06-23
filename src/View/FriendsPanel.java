@@ -51,7 +51,18 @@ public class FriendsPanel extends JPanel {
                 System.exit(0);
             }
             if (e.getSource() == restoreDown) {
-
+                if (((JFrame) (getParent().getParent().getParent().getParent().getParent())).getWidth() == Toolkit.getDefaultToolkit().getScreenSize().getWidth()
+                        && ((JFrame) (getParent().getParent().getParent().getParent().getParent())).getHeight() == Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 40) {
+                    ((MainFrame) (getParent().getParent().getParent().getParent().getParent())).setFullScreenMode(false);
+                    ((JFrame) (getParent().getParent().getParent().getParent().getParent())).setSize(950, 600);
+                } else {
+                    Dimension dimPant = Toolkit.getDefaultToolkit().getScreenSize();
+                    ((JFrame) (getParent().getParent().getParent().getParent().getParent())).setBounds(0, 0, (int) dimPant.getWidth(), (int) dimPant.getHeight() - 40);
+                    ((MainFrame) (getParent().getParent().getParent().getParent().getParent())).setFullScreenMode(true);
+                }
+            }
+            if (e.getSource() == minimize) {
+                ((JFrame) (getParent().getParent().getParent().getParent().getParent())).setState(Frame.ICONIFIED);
             }
         }
 

@@ -12,22 +12,26 @@ public class MainFrame extends JFrame {
     private final int X = 0;
     private final int Y = 0;
     private MainPanel mainPanel;
+    private BackgroundComponentDragger backgroundComponentDragger;
+    private Boolean fullScreenMode;
 
     public MainFrame() {
         super();
-        mainPanel = new MainPanel(1920, 1040);
+        mainPanel = new MainPanel(950, 600);
         this.setTitle(WINDOW_TITLE);
         FrameComponent frame = new FrameComponent(new Insets(5, 5, 5, 5));
         this.setIconImage(Toolkit.getDefaultToolkit().getImage("src/View/Icons/JPotify.png"));
         this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setLayout(null);
+        this.fullScreenMode = false;
+        backgroundComponentDragger = new BackgroundComponentDragger(this);
         ComponentBorderDragger controller = new ComponentBorderDragger(this,
                 new Insets(5, 5, 5, 5), new Dimension(10, 10));
         frame.addMouseMotionListener(controller);
-        mainPanel.addMouseMotionListener(new BackgroundComponentDragger(this));
+        mainPanel.addMouseMotionListener(backgroundComponentDragger);
         Dimension dimPant = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setBounds(0, 0, dimPant.width, dimPant.height-40);
+        this.setBounds(0, 0, 950, 600);
         this.setUndecorated(true);
         this.add(frame);
         this.add(mainPanel);
@@ -44,11 +48,19 @@ public class MainFrame extends JFrame {
                 frame.getParent().remove(mainPanel);
                 mainPanel.removeAll();
                 mainPanel = new MainPanel(sizeIn.width, sizeIn.height);
-                mainPanel.addMouseMotionListener(new BackgroundComponentDragger(frame.getParent()));
-                frame.getParent().add(mainPanel);
+                mainPanel.addMouseMotionListener(backgroundComponentDragger);
+                (frame.getParent()).add(mainPanel);
                 frame.revalidate();
             }
         });
         this.setVisible(true);
+    }
+
+    public void setFullScreenMode(Boolean fullScreenMode) {
+        this.fullScreenMode = fullScreenMode;
+    }
+
+    public Boolean getFullScreenMode() {
+        return fullScreenMode;
     }
 }

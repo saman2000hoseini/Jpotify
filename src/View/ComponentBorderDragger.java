@@ -45,74 +45,80 @@ public class ComponentBorderDragger implements MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (direction == 0) {
-            return;
-        }
+        if (!((MainFrame)controlledComponent).getFullScreenMode()) {
+            if (direction == 0) {
+                return;
+            }
 
-        Point newPoint = e.getPoint();
-        int x, y, width, height, newBasePointX, newBasePointY;
-        x = controlledComponent.getX();
-        y = controlledComponent.getY();
-        width = controlledComponent.getWidth();
-        height = controlledComponent.getHeight();
-        newBasePointX = newPoint.x;
-        newBasePointY = newPoint.y;
+            Point newPoint = e.getPoint();
+            int x, y, width, height, newBasePointX, newBasePointY;
+            x = controlledComponent.getX();
+            y = controlledComponent.getY();
+            width = controlledComponent.getWidth();
+            height = controlledComponent.getHeight();
+            newBasePointX = newPoint.x;
+            newBasePointY = newPoint.y;
 
-        if ((direction & EAST) == EAST) {
-            int newWidth;
-            newWidth = Math.max(minSize.width, width + newPoint.x
-                    - basePoint.x);
-            width = newWidth;
-        }
-        if ((direction & SOUTH) == SOUTH) {
-            int novoAlto;
-            novoAlto = Math.max(minSize.height, height + newPoint.y
-                    - basePoint.y);
-            height = novoAlto;
-        }
-        if ((direction & WEST) == WEST) {
-            int newWidth, newX;
-            newWidth = Math.max(minSize.width, width - newPoint.x
-                    + basePoint.x);
-            newX = Math.min(x + width - minSize.width, x + newPoint.x
-                    - basePoint.x);
+            if ((direction & EAST) == EAST) {
+                int newWidth;
+                newWidth = Math.max(minSize.width, width + newPoint.x
+                        - basePoint.x);
+                width = newWidth;
+            }
+            if ((direction & SOUTH) == SOUTH) {
+                int novoAlto;
+                novoAlto = Math.max(minSize.height, height + newPoint.y
+                        - basePoint.y);
+                height = novoAlto;
+            }
+            if ((direction & WEST) == WEST) {
+                int newWidth, newX;
+                newWidth = Math.max(minSize.width, width - newPoint.x
+                        + basePoint.x);
+                newX = Math.min(x + width - minSize.width, x + newPoint.x
+                        - basePoint.x);
 
-            newBasePointX -= newX - x;
-            x = newX;
-            width = newWidth;
+                newBasePointX -= newX - x;
+                x = newX;
+                width = newWidth;
+            }
+            if ((direction & NORTH) == NORTH) {
+                int newHeigth, newY;
+                newHeigth = Math.max(minSize.height, height - newPoint.y
+                        + basePoint.y);
+                newY = Math.min(y + height - minSize.height, y + newPoint.y
+                        - basePoint.y);
+                newBasePointY -= newY - y;
+                y = newY;
+                height = newHeigth;
+            }
+            controlledComponent.setBounds(x, y, width, height);
+            basePoint = new Point(newBasePointX, newBasePointY);
         }
-        if ((direction & NORTH) == NORTH) {
-            int newHeigth, newY;
-            newHeigth = Math.max(minSize.height, height - newPoint.y
-                    + basePoint.y);
-            newY = Math.min(y + height - minSize.height, y + newPoint.y
-                    - basePoint.y);
-            newBasePointY -= newY - y;
-            y = newY;
-            height = newHeigth;
-        }
-        controlledComponent.setBounds(x, y, width, height);
-        basePoint = new Point(newBasePointX, newBasePointY);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        Component originator = e.getComponent();
-        if (direction == 0) {
-            sourceCursor = originator.getCursor();
+        if (!((MainFrame)controlledComponent).getFullScreenMode()){
+            Component originator = e.getComponent();
+            if (direction == 0) {
+                sourceCursor = originator.getCursor();
+            }
+            calculateDirection(e.getPoint(), e.getComponent().getSize());
+            setCursor(e.getComponent());
+            basePoint = e.getPoint();
         }
-        calculateDirection(e.getPoint(), e.getComponent().getSize());
-        setCursor(e.getComponent());
-        basePoint = e.getPoint();
     }
 
     private void setCursor(Component component) {
-        if (direction == 0) {
-            component.setCursor(sourceCursor);
-        } else {
-            int cursorType = cursors.get(direction);
-            Cursor cursor = Cursor.getPredefinedCursor(cursorType);
-            component.setCursor(cursor);
+        if (!((MainFrame)controlledComponent).getFullScreenMode()) {
+            if (direction == 0) {
+                component.setCursor(sourceCursor);
+            } else {
+                int cursorType = cursors.get(direction);
+                Cursor cursor = Cursor.getPredefinedCursor(cursorType);
+                component.setCursor(cursor);
+            }
         }
     }
 
