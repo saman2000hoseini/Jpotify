@@ -50,9 +50,7 @@ public class TransparentButton extends JButton {
         if (focused && westPanel) {
             gd.setColor(new Color(20, 169, 91, 255));
             gd.fillRect(0, 0, 3, getWidth());
-        } else if (westPanel) {
-            gd.setColor(new Color(18, 18, 18));
-            gd.fillRect(0, 0, 3, getWidth());
         }
+        gd.dispose();
     }
 }

@@ -53,7 +53,7 @@ public class ViewPortPanel extends JPanel {
                 .addComponent(artists, 0, 20, Short.MAX_VALUE)
                 .addComponent(playlists, 0, 20, Short.MAX_VALUE));
         layout.setVerticalGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                //.addGap(15, 15, 15)
                 .addComponent(yourLibrary, 13, 13, 13)
                 .addGap(15, 15, 15)
                 .addComponent(madeForYou, 20, 20, 20)

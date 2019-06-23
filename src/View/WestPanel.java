@@ -57,10 +57,10 @@ public class WestPanel extends JPanel {
                 .addGroup(layout.createSequentialGroup()
                         .addGap(2, 2, 2)
                         .addGroup(layout.createParallelGroup()
-                            .addComponent(menuForWestPanel, 35, 35, 35)
-                            .addComponent(home, 215, 215, 215)
-                            .addComponent(browse, 215, 215, 215)
-                            .addComponent(radio, 215, 215, 215))
+                                .addComponent(menuForWestPanel, 35, 35, 35)
+                                .addComponent(home, 215, 215, 215)
+                                .addComponent(browse, 215, 215, 215)
+                                .addComponent(radio, 215, 215, 215))
                 )
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(scrollPaneForWestPanel, 215, 215, 215))
@@ -75,7 +75,7 @@ public class WestPanel extends JPanel {
                 .addComponent(browse, 25, 25, 25)
                 .addGap(20, 20, 20)
                 .addComponent(radio, 25, 25, 25)
-                .addGap(20, 20, 20)
+                .addGap(30, 30, 30)
                 .addComponent(scrollPaneForWestPanel, 0, 470, 470)
                 .addComponent(newPlaylistSeparator, 1, 1, 1)
                 .addGap(10, 10, 10)
@@ -83,8 +83,7 @@ public class WestPanel extends JPanel {
                 .addContainerGap(15, 15));
     }
 
-    public void loseFocus()
-    {
+    public void loseFocus() {
         home.setForeground(new Color(180, 180, 180));
         home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 23, 23));
         browse.setForeground(new Color(180, 180, 180));
@@ -104,7 +103,7 @@ public class WestPanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
             if (e.getSource() == home) {
                 home.setForeground(new Color(255, 255, 255));
-                home.setIcon(Icons.rescaleIcon(Icons.HOME_FOCUSED_ICON, 25, 25));
+                home.setIcon(Icons.rescaleIcon(Icons.HOME_FOCUSED_ICON, 23, 23));
                 browse.setForeground(new Color(180, 180, 180));
                 browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 23, 23));
                 radio.setForeground(new Color(180, 180, 180));
@@ -118,7 +117,7 @@ public class WestPanel extends JPanel {
             }
             if (e.getSource() == browse) {
                 browse.setForeground(new Color(255, 255, 255));
-                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_FOCUSED_ICON, 25, 25));
+                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_FOCUSED_ICON, 23, 23));
                 home.setForeground(new Color(180, 180, 180));
                 home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 23, 23));
                 radio.setForeground(new Color(180, 180, 180));
@@ -132,7 +131,7 @@ public class WestPanel extends JPanel {
             }
             if (e.getSource() == radio) {
                 radio.setForeground(new Color(255, 255, 255));
-                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 25, 25));
+                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_FOCUSED_ICON, 23, 23));
                 browse.setForeground(new Color(180, 180, 180));
                 browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 23, 23));
                 home.setForeground(new Color(180, 180, 180));
@@ -153,15 +152,15 @@ public class WestPanel extends JPanel {
         public void mousePressed(MouseEvent e) {
             if (e.getSource() == home) {
                 home.setForeground(new Color(145, 145, 145));
-                home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 25, 25));
+                home.setIcon(Icons.rescaleIcon(Icons.HOME_FOCUSED_ICON, 25, 25));
             }
             if (e.getSource() == browse) {
                 browse.setForeground(new Color(145, 145, 145));
-                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 25, 25));
+                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_FOCUSED_ICON, 25, 25));
             }
             if (e.getSource() == radio) {
                 radio.setForeground(new Color(145, 145, 145));
-                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 25, 25));
+                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_FOCUSED_ICON, 25, 25));
             }
             if (e.getSource() == addNewPlaylist) {
                 addNewPlaylist.setForeground(new Color(145, 145, 145));
@@ -173,15 +172,15 @@ public class WestPanel extends JPanel {
         public void mouseReleased(MouseEvent e) {
             if (e.getSource() == home) {
                 home.setForeground(new Color(255, 255, 255));
-                home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 25, 25));
+                home.setIcon(Icons.rescaleIcon(Icons.HOME_FOCUSED_ICON, 25, 25));
             }
             if (e.getSource() == browse) {
                 browse.setForeground(new Color(255, 255, 255));
-                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 25, 25));
+                browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_FOCUSED_ICON, 25, 25));
             }
             if (e.getSource() == radio) {
                 radio.setForeground(new Color(255, 255, 255));
-                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 25, 25));
+                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_FOCUSED_ICON, 25, 25));
             }
             if (e.getSource() == addNewPlaylist) {
                 addNewPlaylist.setForeground(new Color(255, 255, 255));
@@ -210,8 +209,13 @@ public class WestPanel extends JPanel {
                 }
             }
             if (e.getSource() == radio) {
-                radio.setForeground(new Color(255, 255, 255));
-                radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 25, 25));
+                if (!radio.getFocused()) {
+                    radio.setForeground(new Color(255, 255, 255));
+                    radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 25, 25));
+                } else {
+                    radio.setForeground(new Color(255, 255, 255));
+                    radio.setIcon(Icons.rescaleIcon(Icons.RADIO_FOCUSED_ICON, 25, 25));
+                }
             }
             if (e.getSource() == addNewPlaylist) {
                 addNewPlaylist.setForeground(new Color(255, 255, 255));
@@ -225,18 +229,27 @@ public class WestPanel extends JPanel {
                 if (!home.getFocused()) {
                     home.setForeground(new Color(180, 180, 180));
                     home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 23, 23));
+                } else {
+                    home.setForeground(new Color(180, 180, 180));
+                    home.setIcon(Icons.rescaleIcon(Icons.HOME_FOCUSED_ICON, 23, 23));
                 }
             }
             if (e.getSource() == browse) {
                 if (!browse.getFocused()) {
                     browse.setForeground(new Color(180, 180, 180));
                     browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 23, 23));
+                } else {
+                    browse.setForeground(new Color(180, 180, 180));
+                    browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_FOCUSED_ICON, 23, 23));
                 }
             }
             if (e.getSource() == radio) {
                 if (!radio.getFocused()) {
                     radio.setForeground(new Color(180, 180, 180));
                     radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 23, 23));
+                } else {
+                    radio.setForeground(new Color(180, 180, 180));
+                    radio.setIcon(Icons.rescaleIcon(Icons.RADIO_FOCUSED_ICON, 23, 23));
                 }
             }
             if (e.getSource() == addNewPlaylist) {

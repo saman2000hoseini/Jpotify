@@ -91,5 +91,6 @@ public class SearchTextField extends JTextField {
         super.paintComponent(g);
         Graphics2D gd = (Graphics2D) g.create();
         gd.drawImage(searchIcon.getImage(), 0, 4, 15, 15, null);
+        gd.dispose();
     }
 }

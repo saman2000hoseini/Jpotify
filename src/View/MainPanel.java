@@ -45,7 +45,7 @@ public class MainPanel extends JPanel {
                     .addGroup(layout.createParallelGroup()
                             .addComponent(westPanel, 500, 952, Short.MAX_VALUE)
                             .addComponent(centrePanel, 500, 952, Short.MAX_VALUE))
-                    .addComponent(playPanel, 88, 88, Short.MAX_VALUE));
+                    .addComponent(playPanel, 72, 88, Short.MAX_VALUE));
         }
     }
 }

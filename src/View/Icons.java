@@ -14,6 +14,7 @@ public class Icons {
     static ImageIcon LEFT_ARROW_ICON = new ImageIcon("src/View/Icons/left_arrow.png");
     static ImageIcon MENU_ICON = new ImageIcon("src/View/Icons/menu.png");
     static ImageIcon RADIO_ICON = new ImageIcon("src/View/Icons/radio.png");
+    static ImageIcon RADIO_FOCUSED_ICON = new ImageIcon("src/View/Icons/radio_focused.png");
     static ImageIcon RIGHT_ARROW_ICON = new ImageIcon("src/View/Icons/right_arrow.png");
     static ImageIcon UP_ARROW_ICON = new ImageIcon("src/View/Icons/up_arrow.png");
     static ImageIcon USER_ICON = new ImageIcon("src/View/Icons/user.png");
