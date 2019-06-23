@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Music;
 import Network.Client.MainClient;
 import Network.Server.MainServer;
 import View.MainFrame;
@@ -7,9 +8,12 @@ import org.farng.mp3.TagException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 
 public class Main
 {
+    private static Vector<Music> musics;
+    private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     public static void main(String[] args) throws IOException, TagException
     {
         makeDir("./Lyrics/");
@@ -26,7 +30,8 @@ public class Main
         {
             e.printStackTrace();
         }
-        MainClient main = new MainClient();
+        fileAndFolderBrowsing.loadFiles(musics);
+        MainClient main = new MainClient(musics);
         MainFrame m = new MainFrame();
     }
 
