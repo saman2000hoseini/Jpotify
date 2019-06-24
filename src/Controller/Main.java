@@ -17,8 +17,7 @@ public class Main
     private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     public static void main(String[] args) throws IOException, TagException
     {
-
-
+        createFolders();
         LoadingLibrary lb = new LoadingLibrary();
         int port = 6500;
         try
