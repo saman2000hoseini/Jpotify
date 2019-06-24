@@ -10,6 +10,7 @@ public class MenuForWestPanel extends JMenuBar {
     private JMenu help = new JMenu("help");
     private JMenu playback = new JMenu("Playback");
     private JMenu menu = new JMenu("");
+    private JMenuItem newSong = new JMenuItem("New Song");
     private JMenuItem newPlayList = new JMenuItem("New Playlist");
     private JMenuItem newPlayListFolder = new JMenuItem("New Playlist Folder");
     private JMenuItem exit = new JMenuItem("Exit");
@@ -29,17 +30,28 @@ public class MenuForWestPanel extends JMenuBar {
     MenuForWestPanel() {
         super();
         this.file.setMnemonic(KeyEvent.VK_F);
+        this.newSong.setMnemonic(KeyEvent.VK_S);
+        this.newPlayList.setMnemonic(KeyEvent.VK_P);
+        this.exit.setMnemonic(KeyEvent.VK_E);
+        this.file.add(newSong);
         this.file.add(newPlayList);
         this.file.add(newPlayListFolder);
         this.file.addSeparator();
         this.file.add(exit);
         this.edit.setMnemonic(KeyEvent.VK_E);
+        this.search.setMnemonic(KeyEvent.VK_S);
         this.edit.add(search);
         this.help.setMnemonic(KeyEvent.VK_H);
+        this.jpotifyHelp.setMnemonic(KeyEvent.VK_J);
+        this.aboutJPotify.setMnemonic(KeyEvent.VK_A);
         this.help.add(jpotifyHelp);
         this.help.addSeparator();
         this.help.add(aboutJPotify);
         this.playback.setMnemonic(KeyEvent.VK_P);
+        this.play.setMnemonic(KeyEvent.VK_P);
+        this.next.setMnemonic(KeyEvent.VK_N);
+        this.shuffle.setMnemonic(KeyEvent.VK_S);
+        this.repeat.setMnemonic(KeyEvent.VK_R);
         this.playback.add(play);
         this.playback.addSeparator();
         this.playback.add(next);

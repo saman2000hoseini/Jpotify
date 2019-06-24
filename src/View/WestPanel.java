@@ -114,6 +114,7 @@ public class WestPanel extends JPanel {
                 home.repaint();
                 browse.repaint();
                 radio.repaint();
+                viewPortPanel.loseFocus();
             }
             if (e.getSource() == browse) {
                 browse.setForeground(new Color(255, 255, 255));
@@ -128,6 +129,7 @@ public class WestPanel extends JPanel {
                 home.repaint();
                 browse.repaint();
                 radio.repaint();
+                viewPortPanel.loseFocus();
             }
             if (e.getSource() == radio) {
                 radio.setForeground(new Color(255, 255, 255));
@@ -142,10 +144,10 @@ public class WestPanel extends JPanel {
                 home.repaint();
                 browse.repaint();
                 radio.repaint();
+                viewPortPanel.loseFocus();
             }
             if (e.getSource() == addNewPlaylist) {
             }
-            viewPortPanel.loseFocus();
         }
 
         @Override
@@ -230,7 +232,7 @@ public class WestPanel extends JPanel {
                     home.setForeground(new Color(180, 180, 180));
                     home.setIcon(Icons.rescaleIcon(Icons.HOME_ICON, 23, 23));
                 } else {
-                    home.setForeground(new Color(180, 180, 180));
+                    home.setForeground(new Color(255, 255, 255));
                     home.setIcon(Icons.rescaleIcon(Icons.HOME_FOCUSED_ICON, 23, 23));
                 }
             }
@@ -239,7 +241,7 @@ public class WestPanel extends JPanel {
                     browse.setForeground(new Color(180, 180, 180));
                     browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_ICON, 23, 23));
                 } else {
-                    browse.setForeground(new Color(180, 180, 180));
+                    browse.setForeground(new Color(255, 255, 255));
                     browse.setIcon(Icons.rescaleIcon(Icons.BROWSE_FOCUSED_ICON, 23, 23));
                 }
             }
@@ -248,7 +250,7 @@ public class WestPanel extends JPanel {
                     radio.setForeground(new Color(180, 180, 180));
                     radio.setIcon(Icons.rescaleIcon(Icons.RADIO_ICON, 23, 23));
                 } else {
-                    radio.setForeground(new Color(180, 180, 180));
+                    radio.setForeground(new Color(255, 255, 255));
                     radio.setIcon(Icons.rescaleIcon(Icons.RADIO_FOCUSED_ICON, 23, 23));
                 }
             }

@@ -75,6 +75,11 @@ public class ViewPortPanel extends JPanel {
         songs.setFocused(false);
         albums.setFocused(false);
         artists.setFocused(false);
+        madeForYou.setForeground(new Color(180, 180, 180));
+        recentlyPlayed.setForeground(new Color(180, 180, 180));
+        songs.setForeground(new Color(180, 180, 180));
+        albums.setForeground(new Color(180, 180, 180));
+        artists.setForeground(new Color(180, 180, 180));
         madeForYou.repaint();
         recentlyPlayed.repaint();
         songs.repaint();

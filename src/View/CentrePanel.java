@@ -156,6 +156,9 @@ public class CentrePanel extends JPanel {
             close.setVerticalAlignment(SwingConstants.CENTER);
             restoreDown.setVerticalAlignment(SwingConstants.CENTER);
             minimize.setVerticalAlignment(SwingConstants.CENTER);
+            close.setForeground(new Color(255, 255, 255));
+            restoreDown.setForeground(new Color(255, 255, 255));
+            minimize.setForeground(new Color(255, 255, 255));
             layout.setHorizontalGroup(layout.createSequentialGroup()
                     .addContainerGap(20, 20)
                     .addComponent(previous, 20, 20, 20)

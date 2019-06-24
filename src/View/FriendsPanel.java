@@ -26,6 +26,9 @@ public class FriendsPanel extends JPanel {
         close.setSize(45, 30);
         restoreDown.setSize(45, 30);
         minimize.setSize(45, 30);
+        close.setForeground(new Color(255, 255, 255));
+        restoreDown.setForeground(new Color(255, 255, 255));
+        minimize.setForeground(new Color(255, 255, 255));
         close.setHorizontalAlignment(SwingConstants.CENTER);
         restoreDown.setHorizontalAlignment(SwingConstants.CENTER);
         minimize.setHorizontalAlignment(SwingConstants.CENTER);

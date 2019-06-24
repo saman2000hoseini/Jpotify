@@ -8,7 +8,6 @@ public class TransparentButton extends JButton {
     private boolean westPanel;
     TransparentButton(String text, ImageIcon imageIcon, boolean westPanel){
         super(text, imageIcon);
-        setForeground(new Color(175, 175, 175));
         this.setFocusPainted(false);
         this.setBorderPainted(false);
         this.focused = false;
@@ -18,7 +17,6 @@ public class TransparentButton extends JButton {
     }
     TransparentButton(String text, boolean westPanel){
         super(text);
-        setForeground(new Color(175, 175, 175));
         this.setBorderPainted(false);
         this.setFocusPainted(false);
         this.focused = false;
