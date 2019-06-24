@@ -9,9 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
-public class customizedFileChooser extends JFileChooser
+public class CustomizedFileChooser extends JFileChooser
 {
-    public customizedFileChooser()
+    public CustomizedFileChooser()
     {
         this.setDialogTitle("Choose a directory or mp3 file to add");
         this.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);

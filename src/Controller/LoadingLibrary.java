@@ -6,8 +6,10 @@ import getlyrics.RavGetLyrics;*/
 import java.io.*;
 
 import java.nio.channels.FileChannel;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import Model.ID3v1;
 import Model.Music;
@@ -24,10 +26,10 @@ import org.jsoup.select.Elements;
 
 public class LoadingLibrary
 {
-    public ArrayList<Music> loadFiles(String path) throws IOException, ClassNotFoundException, TagException
+    public Vector<Music> loadFilesFromFolders(String path) throws IOException, ClassNotFoundException, TagException
     {
         ArrayList<String> audios = new ArrayList<>();
-        ArrayList<Music> musics = new ArrayList<>();
+        Vector<Music> musics = new Vector<>();
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
         for (int i = 0; i < listOfFiles.length; i++)
@@ -37,7 +39,7 @@ public class LoadingLibrary
                 String[] audio = listOfFiles[i].getAbsolutePath().split("\\.");
                 if (audio.length != 0 && audio[audio.length - 1].equals("mp3"))
                 {
-                    System.out.println(listOfFiles[i].getAbsolutePath());
+//                    System.out.println(listOfFiles[i].getAbsolutePath());
                     audios.add(listOfFiles[i].getAbsolutePath());
                 }
             }
@@ -45,7 +47,10 @@ public class LoadingLibrary
         for (String directory : audios)
         {
             Music music = this.processFile(directory);
-            musics.add(music);
+            if (music.getAddDate() == null)
+                music.setAddDate(LocalDateTime.now());
+            if (!musics.contains(music))
+                musics.add(music);
         }
         return musics;
     }
@@ -272,7 +277,8 @@ public class LoadingLibrary
 
     public Music processFile(String directory) throws IOException, TagException
     {
-        MP3File mp3File = new MP3File(directory);
+        File file = new File(directory);
+        MP3File mp3File = new MP3File(file);
         String title, artist, album, year, genre;
         if (mp3File.getID3v2Tag() != null)
         {
@@ -290,7 +296,7 @@ public class LoadingLibrary
             year = mp3File.getID3v1Tag().getYear();
             genre = new ID3v1().getGENRES(mp3File.getID3v1Tag().getGenre());
         }
-        Music music = new Music(directory, artist, title, year, null, null, genre,album);
+        Music music = new Music(directory, artist, title, year, LocalDateTime.now(), null, genre, album);
         return music;
     }
 }

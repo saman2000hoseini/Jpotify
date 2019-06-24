@@ -13,7 +13,7 @@ import java.util.Vector;
 
 public class Main
 {
-    private static Vector<Music> musics;
+    private static Vector<Music> musics = new Vector<>();
     private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     public static void main(String[] args) throws IOException, TagException
     {
@@ -32,7 +32,7 @@ public class Main
         }
         fileAndFolderBrowsing.loadFiles(musics);
         MainClient main = new MainClient(musics,new User("test",null));
-        MainFrame m = new MainFrame();
+        MainFrame m = new MainFrame(musics);
     }
     private static void createFolders()
     {

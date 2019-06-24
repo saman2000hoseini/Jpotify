@@ -17,7 +17,7 @@ public class MainClient
     private Socket client;
     private Vector<String> friends = new Vector<>();
     private Vector<Socket> connections = new Vector<>();
-    static Vector<Music> musics;
+    static Vector<Music> musics = new Vector<>();
     private Sharing sharing;
     private int port;
     static User user;

@@ -2,11 +2,13 @@ package View;
 
 import Controller.ActionMaps;
 import Controller.InputMaps;
+import Model.Music;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
+import java.util.Vector;
 
 public class MainFrame extends JFrame
 {
@@ -18,10 +20,11 @@ public class MainFrame extends JFrame
     private MainPanel mainPanel;
     private BackgroundComponentDragger backgroundComponentDragger;
     private Boolean fullScreenMode;
-
-    public MainFrame()
+    static Vector<Music> musics;
+    public MainFrame(Vector<Music> musics)
     {
         super();
+        this.musics=musics;
         mainPanel = new MainPanel(950, 600);
         this.setTitle(WINDOW_TITLE);
         FrameComponent frame = new FrameComponent(new Insets(5, 5, 5, 5));

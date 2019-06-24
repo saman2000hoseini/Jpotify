@@ -12,33 +12,44 @@ import java.util.Vector;
 public class FileAndFolderBrowsing
 {
     private LoadingLibrary loadingLibrary = new LoadingLibrary();
-    private static final String directory = "./Library/songs.dat";
+    private static final String directory = "./Library/songs.bin";
+    private static final String pathsDirectory = "./Library/Paths.bin";
+    private ObjectInputStream objectInputStream;
+    private FileInputStream fileInputStream;
 
     public void addFileFolder(String path, Vector<Music> songs) throws IOException, ClassNotFoundException, TagException
     {
+        ArrayList<String> paths = new ArrayList<>();
         if (!(new File(path)).isFile())
         {
-            songs.addAll(loadingLibrary.loadFiles(path));
+            Vector<Music> tempMusics = loadingLibrary.loadFilesFromFolders(path);
+            for (Music temp : tempMusics)
+                if (!songs.contains(temp))
+                    songs.add(temp);
+            paths.add(path);
         }
         else
         {
-            songs.add(loadingLibrary.processFile(path));
+            Music temp = loadingLibrary.processFile(path);
+            if (!songs.contains(temp))
+                songs.add(temp);
         }
         for (Music music : songs)
         {
-            music.setAddDate(LocalDateTime.now());
+            if (music.getAddDate() == null)
+                music.setAddDate(LocalDateTime.now());
         }
-        FileInputStream fileInputStream = null;
-        ArrayList<String> paths = new ArrayList<>();
-        ObjectInputStream objectInputStream = null;
         try
         {
-            fileInputStream = new FileInputStream(directory);
-            objectInputStream = new ObjectInputStream(fileInputStream);
-            while (true)
+            if (new File(pathsDirectory).exists())
             {
-                String tempPath = (String) objectInputStream.readObject();
-                paths.add(tempPath);
+                fileInputStream = new FileInputStream(pathsDirectory);
+                objectInputStream = new ObjectInputStream(fileInputStream);
+                while (true)
+                {
+                    String tempPath = (String) objectInputStream.readObject();
+                    paths.add(tempPath);
+                }
             }
         }
         catch (FileNotFoundException e)
@@ -47,7 +58,8 @@ public class FileAndFolderBrowsing
         }
         catch (EOFException e)
         {
-
+            objectInputStream.close();
+            fileInputStream.close();
         }
         catch (IOException e)
         {
@@ -57,11 +69,12 @@ public class FileAndFolderBrowsing
         {
             e.printStackTrace();
         }
-        paths.add(path);
         try
         {
-            objectInputStream.close();
-            fileInputStream.close();
+            if (objectInputStream != null)
+                objectInputStream.close();
+            if (fileInputStream != null)
+                fileInputStream.close();
         }
         catch (IOException e)
         {
@@ -71,7 +84,7 @@ public class FileAndFolderBrowsing
         ObjectOutputStream objectOutputStream;
         try
         {
-            fileOutputStream = new FileOutputStream(directory);
+            fileOutputStream = new FileOutputStream(pathsDirectory);
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
             for (String pth : paths)
             {
@@ -88,18 +101,16 @@ public class FileAndFolderBrowsing
         {
             e.printStackTrace();
         }
-    }
-
-    public void loadFiles(Vector<Music> songs)
-    {
         try
         {
-            FileInputStream fileInputStream = new FileInputStream(directory);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            while (true)
+            fileOutputStream = new FileOutputStream(directory);
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            for (Music music : songs)
             {
-                songs.add((Music) objectInputStream.readObject());
+                objectOutputStream.writeObject(music);
             }
+            objectOutputStream.close();
+            fileOutputStream.close();
         }
         catch (FileNotFoundException e)
         {
@@ -109,13 +120,71 @@ public class FileAndFolderBrowsing
         {
             e.printStackTrace();
         }
+    }
+
+    public void loadFiles(Vector<Music> songs) throws IOException
+    {
+        try
+        {
+            if (new File(directory).exists())
+            {
+                fileInputStream = new FileInputStream(directory);
+                objectInputStream = new ObjectInputStream(fileInputStream);
+                while (true)
+                {
+                    songs.add((Music) objectInputStream.readObject());
+                }
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (EOFException e)
+        {
+            objectInputStream.close();
+            fileInputStream.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
         catch (ClassNotFoundException e)
         {
             e.printStackTrace();
         }
+        try
+        {
+            if (new File(pathsDirectory).exists())
+            {
+                fileInputStream = new FileInputStream(pathsDirectory);
+                objectInputStream = new ObjectInputStream(fileInputStream);
+                while (true)
+                {
+                    String path = (String) objectInputStream.readObject();
+                    Vector<Music> tempMusics = loadingLibrary.loadFilesFromFolders(path);
+                    for (Music music : tempMusics)
+                        if (!songs.contains(music))
+                            songs.add(music);
+                }
+            }
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (EOFException e)
+        {
+
+        }
+        catch (TagException e)
+        {
+            e.printStackTrace();
+        }
+//        System.out.println(songs.size());
     }
 
-    public Vector<Library> loadLibraries()
+    public Vector<Library> loadLibraries() throws IOException
     {
         Vector<Library> libraries = new Vector<>();
         Library library = null;
@@ -128,10 +197,10 @@ public class FileAndFolderBrowsing
                 if (file.getName() != "songs.dat")
                     try
                     {
-                        library = new Library(file.getName().replace(".dat",""));
+                        library = new Library(file.getName().replace(".dat", ""));
                         songs = new ArrayList<>();
-                        FileInputStream fileInputStream = new FileInputStream(file);
-                        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                        fileInputStream = new FileInputStream(file);
+                        objectInputStream = new ObjectInputStream(fileInputStream);
                         while (true)
                         {
                             songs.add((Music) objectInputStream.readObject());
@@ -143,11 +212,13 @@ public class FileAndFolderBrowsing
                     }
                     catch (EOFException e)
                     {
-                        if (library!=null&& songs!=null)
+                        if (library != null && songs != null)
                         {
                             library.addMusics(songs);
                             libraries.add(library);
                         }
+                        objectInputStream.close();
+                        fileInputStream.close();
                     }
                     catch (IOException e)
                     {

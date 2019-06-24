@@ -1,4 +1,6 @@
 package View;
+import Model.CustomizedFileChooser;
+import org.farng.mp3.TagException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
 public class MenuForWestPanel extends JMenuBar
 {
@@ -80,7 +83,9 @@ public class MenuForWestPanel extends JMenuBar
         this.menu.setIcon(Icons.rescaleIcon(Icons.MENU_ICON, 35, 35));
         this.menu.setSize(35, 50);
         this.add(menu);
-        exit.addMouseListener(new ListenerForMouse());
+        ListenerForMouse listenerForMouse = new ListenerForMouse();
+        exit.addMouseListener(listenerForMouse);
+        newSong.addMouseListener(listenerForMouse);
     }
 
     private class ListenerForMouse implements MouseListener
@@ -88,18 +93,46 @@ public class MenuForWestPanel extends JMenuBar
         @Override
         public void mouseClicked(MouseEvent e)
         {
-            if (e.getSource() == exit)
-            {
-                System.exit(0);
-            }
+            menuActions(e);
         }
 
         @Override
         public void mousePressed(MouseEvent e)
         {
+            menuActions(e);
+        }
+
+        private void menuActions(MouseEvent e)
+        {
+            System.out.println("here");
             if (e.getSource() == exit)
             {
                 System.exit(0);
+            }
+            else if (e.getSource() == newSong)
+            {
+                CustomizedFileChooser customizedFileChooser = new CustomizedFileChooser();
+                int returnVal = customizedFileChooser.showOpenDialog(null);
+                if (returnVal== JFileChooser.APPROVE_OPTION)
+                {
+                    try
+                    {
+                        customizedFileChooser.writeFiles(MainFrame.musics);
+                        System.out.println(MainFrame.musics);
+                    }
+                    catch (TagException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                    catch (IOException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                    catch (ClassNotFoundException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                }
             }
         }
 

@@ -1,8 +1,9 @@
 package Model;
 
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class User
+public class User implements Serializable
 {
     private String userName;
     private String ip;
