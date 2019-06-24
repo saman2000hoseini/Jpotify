@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Music;
+import Model.User;
 import Network.Client.MainClient;
 import Network.Server.MainServer;
 import View.MainFrame;
@@ -16,8 +17,7 @@ public class Main
     private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     public static void main(String[] args) throws IOException, TagException
     {
-        makeDir("./Lyrics/");
-        makeDir("./Library/");
+
 
         LoadingLibrary lb = new LoadingLibrary();
         int port = 6500;
@@ -31,10 +31,15 @@ public class Main
             e.printStackTrace();
         }
         fileAndFolderBrowsing.loadFiles(musics);
-        MainClient main = new MainClient(musics);
+        MainClient main = new MainClient(musics,new User("test",null));
         MainFrame m = new MainFrame();
     }
-
+    private static void createFolders()
+    {
+        makeDir("./Lyrics/");
+        makeDir("./Library/");
+        makeDir("./SharedMusics/");
+    }
     private static void makeDir(String path)
     {
         File file = new File(path);

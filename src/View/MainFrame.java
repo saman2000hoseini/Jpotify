@@ -1,11 +1,15 @@
 package View;
 
+import Controller.ActionMaps;
+import Controller.InputMaps;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
+import java.util.HashMap;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame
+{
     private final String WINDOW_TITLE = "JPotify";
     private final int WIDTH = 1920;
     private final int HEIGHT = 1030;
@@ -15,7 +19,8 @@ public class MainFrame extends JFrame {
     private BackgroundComponentDragger backgroundComponentDragger;
     private Boolean fullScreenMode;
 
-    public MainFrame() {
+    public MainFrame()
+    {
         super();
         mainPanel = new MainPanel(950, 600);
         this.setTitle(WINDOW_TITLE);
@@ -36,9 +41,11 @@ public class MainFrame extends JFrame {
         this.add(frame);
         this.add(mainPanel);
         this.setMinimumSize(new Dimension(950, 600));
-        this.addComponentListener(new ComponentAdapter() {
+        this.addComponentListener(new ComponentAdapter()
+        {
             @Override
-            public void componentResized(ComponentEvent e) {
+            public void componentResized(ComponentEvent e)
+            {
                 Dimension sizeIn = ((JFrame) e.getComponent()).getContentPane().getSize();
                 if (sizeIn.getWidth() < 950)
                     sizeIn.width = 950;
@@ -53,14 +60,60 @@ public class MainFrame extends JFrame {
                 frame.revalidate();
             }
         });
+        KeyStroke controlA = KeyStroke.getKeyStroke("control shift Q");
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(controlA, "EXIT"); //$NON-NLS-1$
+        getRootPane().getActionMap().put("EXIT", new AbstractAction(){ //$NON-NLS-1$
+            public void actionPerformed(ActionEvent e)
+            {
+                System.exit(0);
+            }
+        });
+
         this.setVisible(true);
     }
 
-    public void setFullScreenMode(Boolean fullScreenMode) {
+    public void setFullScreenMode(Boolean fullScreenMode)
+    {
         this.fullScreenMode = fullScreenMode;
     }
 
-    public Boolean getFullScreenMode() {
+    public Boolean getFullScreenMode()
+    {
         return fullScreenMode;
     }
+
+//    private class CreateMaps
+//    {
+//        private ActionMaps actionMaps = new ActionMaps();
+//        private InputMaps inputMaps ;
+//
+//        public CreateMaps(JComponent comp)
+//        {
+//            inputMaps = new InputMaps(comp);
+//            HashMap<KeyStroke,String> strokes = new HashMap<>();
+//            KeyStroke exit = KeyStroke.getKeyStroke("control shift Q");
+//            strokes.put(exit,"Exit");
+//            HashMap<String,AbstractAction> actions = new HashMap<>();
+//            AbstractAction abstractAction = new AbstractAction()
+//            {
+//                @Override
+//                public void actionPerformed(ActionEvent e)
+//                {
+//                    System.exit(0);
+//                }
+//            };
+//            actions.put("Exit",abstractAction);
+//        }
+//
+//        public ActionMaps getActionMaps()
+//        {
+//            return actionMaps;
+//        }
+//
+//        public InputMaps getInputMaps()
+//        {
+//            return inputMaps;
+//        }
+//    }
 }
+

@@ -1,17 +1,13 @@
 package Network.Client;
 
 import Model.Music;
-import Model.PlayingMusic;
-import Network.Server.MainServer;
-import View.Main;
+import Model.User;
 //import com.sun.deploy.util.SessionState;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Vector;
 
 public class MainClient
@@ -24,9 +20,10 @@ public class MainClient
     static Vector<Music> musics;
     private Sharing sharing;
     private int port;
-
-    public MainClient(Vector<Music> musics) throws IOException
+    static User user;
+    public MainClient(Vector<Music> musics,User user) throws IOException
     {
+        this.user = user;
         this.musics=musics;
         port = 6500;
         client = new Socket("localhost", port);

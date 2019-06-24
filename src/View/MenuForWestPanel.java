@@ -3,8 +3,12 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class MenuForWestPanel extends JMenuBar {
+public class MenuForWestPanel extends JMenuBar
+{
     private JMenu file = new JMenu("File");
     private JMenu edit = new JMenu("Edit");
     private JMenu help = new JMenu("help");
@@ -27,7 +31,8 @@ public class MenuForWestPanel extends JMenuBar {
     private JMenuItem jpotifyHelp = new JMenuItem("JPotify Help");
     private JMenuItem aboutJPotify = new JMenuItem("About JPotify");
 
-    MenuForWestPanel() {
+    MenuForWestPanel()
+    {
         super();
         this.file.setMnemonic(KeyEvent.VK_F);
         this.newSong.setMnemonic(KeyEvent.VK_S);
@@ -75,5 +80,45 @@ public class MenuForWestPanel extends JMenuBar {
         this.menu.setIcon(Icons.rescaleIcon(Icons.MENU_ICON, 35, 35));
         this.menu.setSize(35, 50);
         this.add(menu);
+        exit.addMouseListener(new ListenerForMouse());
+    }
+
+    private class ListenerForMouse implements MouseListener
+    {
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+            if (e.getSource() == exit)
+            {
+                System.exit(0);
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+            if (e.getSource() == exit)
+            {
+                System.exit(0);
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e)
+        {
+
+        }
     }
 }
