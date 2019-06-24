@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
         super();
         GroupLayout layout = new GroupLayout(this);
         this.setSize(width, height);
-        playPanel = new PlayPanel(getWidth());
+        playPanel = new PlayPanel(getWidth(),MainFrame.musics);
         centrePanel = new CentrePanel(width, height);
         this.setBackground(new Color(24, 24, 24));
         this.setLayout(layout);

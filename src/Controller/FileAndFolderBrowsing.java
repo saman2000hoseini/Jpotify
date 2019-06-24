@@ -16,6 +16,30 @@ public class FileAndFolderBrowsing
     private static final String pathsDirectory = "./Library/Paths.bin";
     private ObjectInputStream objectInputStream;
     private FileInputStream fileInputStream;
+    private  FileOutputStream fileOutputStream;
+    private ObjectOutputStream objectOutputStream;
+    public void saveMusics(Vector<Music> songs)
+    {
+        try
+        {
+            fileOutputStream = new FileOutputStream(directory);
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            for (Music music : songs)
+            {
+                objectOutputStream.writeObject(music);
+            }
+            objectOutputStream.close();
+            fileOutputStream.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     public void addFileFolder(String path, Vector<Music> songs) throws IOException, ClassNotFoundException, TagException
     {
@@ -80,8 +104,7 @@ public class FileAndFolderBrowsing
         {
             e.printStackTrace();
         }
-        FileOutputStream fileOutputStream;
-        ObjectOutputStream objectOutputStream;
+
         try
         {
             fileOutputStream = new FileOutputStream(pathsDirectory);
@@ -101,25 +124,7 @@ public class FileAndFolderBrowsing
         {
             e.printStackTrace();
         }
-        try
-        {
-            fileOutputStream = new FileOutputStream(directory);
-            objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            for (Music music : songs)
-            {
-                objectOutputStream.writeObject(music);
-            }
-            objectOutputStream.close();
-            fileOutputStream.close();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        saveMusics(songs);
     }
 
     public void loadFiles(Vector<Music> songs) throws IOException

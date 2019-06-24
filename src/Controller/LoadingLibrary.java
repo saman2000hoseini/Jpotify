@@ -5,6 +5,7 @@ import getlyrics.RavGetLyrics;*/
 
 import java.io.*;
 
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Vector;
 
 import Model.ID3v1;
 import Model.Music;
+import com.sun.jdi.IntegerValue;
 import org.farng.mp3.MP3File;
 import org.farng.mp3.TagException;
 import org.jsoup.Connection;
@@ -280,6 +282,39 @@ public class LoadingLibrary
         File file = new File(directory);
         MP3File mp3File = new MP3File(file);
         String title, artist, album, year, genre;
+        /* extra point
+        BufferedInputStream bufferedReader = new BufferedInputStream(new FileInputStream(file));
+        int len = (int) (file.length()-128);
+        byte[] bytes = new byte[len];
+        bufferedReader.read(bytes);
+        bytes = new byte[3];
+        bufferedReader.read(bytes);
+        bytes = new byte[30];
+        bufferedReader.read(bytes);
+        title = new String(bytes);
+        bytes = new byte[30];
+        bufferedReader.read(bytes);
+        artist = new String(bytes);
+        bytes = new byte[30];
+        bufferedReader.read(bytes);
+        album = new String(bytes);
+        bytes = new byte[4];
+        bufferedReader.read(bytes);
+        year = new String(bytes);
+        bytes = new byte[30];
+        bufferedReader.read(bytes);
+        String comment = new String(bytes);
+        byte[] zeroByte = new byte[1];
+        bufferedReader.read(zeroByte);
+        album = new String(bytes);
+        byte[] track = new byte[1];
+        bufferedReader.read(track);
+        bytes = new byte[1];
+        bufferedReader.read(bytes);
+        genre = new String(bytes);
+        System.out.println(genre);
+        bufferedReader.close();
+         */
         if (mp3File.getID3v2Tag() != null)
         {
             title = mp3File.getID3v2Tag().getSongTitle();
@@ -287,6 +322,7 @@ public class LoadingLibrary
             album = mp3File.getID3v2Tag().getAlbumTitle();
             year = mp3File.getID3v2Tag().getYearReleased();
             genre = mp3File.getID3v2Tag().getSongGenre();
+//            System.out.println(genre);
         }
         else
         {
