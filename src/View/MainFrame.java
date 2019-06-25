@@ -55,12 +55,9 @@ public class MainFrame extends JFrame
                 if (sizeIn.getHeight() < 600)
                     sizeIn.height = 600;
                 frame.setSize(sizeIn);
-                frame.getParent().remove(mainPanel);
-                mainPanel.removeAll();
-                mainPanel = new MainPanel(sizeIn.width, sizeIn.height);
-                mainPanel.addMouseMotionListener(backgroundComponentDragger);
-                (frame.getParent()).add(mainPanel);
-                frame.revalidate();
+                mainPanel.setSize(sizeIn);
+                mainPanel.update();
+                mainPanel.repaint();
             }
         });
         KeyStroke controlA = KeyStroke.getKeyStroke("control shift Q");

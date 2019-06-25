@@ -14,6 +14,7 @@ public class WestPanel extends JPanel {
     private ViewPortPanel viewPortPanel;
     private ModernScrollPane scrollPaneForWestPanel;
     private JSeparator newPlaylistSeparator;
+    private GroupLayout layout;
 
     WestPanel() {
         super();
@@ -50,9 +51,13 @@ public class WestPanel extends JPanel {
         menuForWestPanel = new MenuForWestPanel();
         viewPortPanel = new ViewPortPanel();
         scrollPaneForWestPanel = new ModernScrollPane(viewPortPanel);
-        GroupLayout layout = new GroupLayout(this);
+        layout = new GroupLayout(this);
         this.setLayout(layout);
         setBackground(new Color(18, 18, 18));
+    }
+
+    public void update()
+    {
         layout.setHorizontalGroup(layout.createParallelGroup()
                 .addGroup(layout.createSequentialGroup()
                         .addGap(2, 2, 2)

@@ -8,11 +8,12 @@ import java.awt.event.MouseListener;
 public class CentrePanel extends JPanel {
     private CustomTextField search = new CustomTextField(175, 24, Icons.rescaleIcon(Icons.SEARCH2_ICON, 15, 15)
             , Icons.rescaleIcon(Icons.CLOSE2_ICON, 10, 10));
+    private ListenerForMouse listenerForMouse;
+    private int frameWidth, frameHeight;
     private JLabel previous = new JLabel("‹");
     private JLabel next = new JLabel("›");
     private JLabel userPic = new JLabel(Icons.rescaleIcon(Icons.USER4_ICON, 25, 25));
-    private JLabel userMenu = new JLabel("⌵")
-    {
+    private JLabel userMenu = new JLabel("⌵") {
         @Override
         public JToolTip createToolTip() {
             JToolTip tip = super.createToolTip();
@@ -25,7 +26,7 @@ public class CentrePanel extends JPanel {
 
         @Override
         public Point getToolTipLocation(MouseEvent event) {
-            return new Point(-1 * super.getWidth() / 2 -3, super.getHeight() + 10);
+            return new Point(-1 * super.getWidth() / 2 - 3, super.getHeight() + 10);
         }
     };
     private TransparentButton close = new TransparentButton("✕", false);
@@ -49,7 +50,7 @@ public class CentrePanel extends JPanel {
             if (focused) {
                 gd.setColor(color);
                 StringMetrics s = new StringMetrics(gd);
-                gd.drawLine(0, (int)s.getHeight(this.getText()) + 5, (int)s.getWidth(this.getText()), (int)s.getHeight(this.getText()) + 5);
+                gd.drawLine(0, (int) s.getHeight(this.getText()) + 5, (int) s.getWidth(this.getText()), (int) s.getHeight(this.getText()) + 5);
             }
             gd.dispose();
         }
@@ -71,7 +72,7 @@ public class CentrePanel extends JPanel {
         }
     }
 
-    private CustomLabelForCentrePanel userName = new CustomLabelForCentrePanel("Roham"){
+    private CustomLabelForCentrePanel userName = new CustomLabelForCentrePanel("Roham") {
         @Override
         public JToolTip createToolTip() {
             JToolTip tip = super.createToolTip();
@@ -90,8 +91,9 @@ public class CentrePanel extends JPanel {
 
     CentrePanel(int width, int height) {
         super();
-        ListenerForMouse listenerForMouse = new ListenerForMouse();
-        setBackground(new Color(24, 24, 24));
+        frameHeight = height;
+        frameWidth = width;
+        listenerForMouse = new ListenerForMouse();
         search.setBackground(new Color(24, 24, 24));
         search.textField.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
         userPic.setAlignmentY(CENTER_ALIGNMENT);
@@ -100,6 +102,24 @@ public class CentrePanel extends JPanel {
         userName.setAlignmentY(BOTTOM_ALIGNMENT);
         userMenu.setFont(new Font("Sefir", Font.PLAIN, 24));
         userMenu.addMouseListener(listenerForMouse);
+        close.addMouseListener(listenerForMouse);
+        restoreDown.addMouseListener(listenerForMouse);
+        minimize.addMouseListener(listenerForMouse);
+        close.setBackground(new Color(24, 24, 24));
+        restoreDown.setBackground(new Color(24, 24, 24));
+        minimize.setBackground(new Color(24, 24, 24));
+        close.setSize(45, 30);
+        restoreDown.setSize(45, 30);
+        minimize.setSize(45, 30);
+        close.setHorizontalAlignment(SwingConstants.CENTER);
+        restoreDown.setHorizontalAlignment(SwingConstants.CENTER);
+        minimize.setHorizontalAlignment(SwingConstants.CENTER);
+        close.setVerticalAlignment(SwingConstants.CENTER);
+        restoreDown.setVerticalAlignment(SwingConstants.CENTER);
+        minimize.setVerticalAlignment(SwingConstants.CENTER);
+        close.setForeground(new Color(255, 255, 255));
+        restoreDown.setForeground(new Color(255, 255, 255));
+        minimize.setForeground(new Color(255, 255, 255));
         userMenu.setToolTipText("Menu");
         userName.setToolTipText("Profile");
         previous.setFont(new Font("Proxima Nova Rg", Font.PLAIN, 45));
@@ -108,10 +128,31 @@ public class CentrePanel extends JPanel {
         userMenu.setForeground(new Color(180, 180, 180));
         previous.setForeground(new Color(155, 155, 155));
         next.setForeground(new Color(155, 155, 155));
+        setBackground(new Color(24, 24, 24));
         setVisible(true);
+    }
+
+    public int getFrameWidth() {
+        return frameWidth;
+    }
+
+    public void setFrameWidth(int frameWidth) {
+        this.frameWidth = frameWidth;
+    }
+
+    public int getFrameHeight() {
+        return frameHeight;
+    }
+
+    public void setFrameHeight(int frameHeight) {
+        this.frameHeight = frameHeight;
+    }
+
+    public void update() {
+        this.getLayout().removeLayoutComponent(this);
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
-        if (width >= 1070) {
+        if (frameWidth >= 1070) {
             layout.setHorizontalGroup(layout.createSequentialGroup()
                     .addContainerGap(20, 20)
                     .addComponent(previous, 20, 20, 20)
@@ -131,34 +172,16 @@ public class CentrePanel extends JPanel {
                     .addGroup(layout.createSequentialGroup()
                             .addGap(13, 13, 13)
                             .addGroup(layout.createParallelGroup()
-                                .addComponent(previous, 20, 20, 20)
-                                .addComponent(next, 20, 20, 20)
-                                .addComponent(search, 24, 24, 24)))
+                                    .addComponent(previous, 20, 20, 20)
+                                    .addComponent(next, 20, 20, 20)
+                                    .addComponent(search, 24, 24, 24)))
                     .addGroup(layout.createSequentialGroup()
                             .addGap(10, 10, 10)
                             .addGroup(layout.createParallelGroup()
-                                .addComponent(userPic, 25, 25, 25)
-                                .addComponent(userName, 25, 25, 25)
-                                .addComponent(userMenu, 20, 20, 20))));
+                                    .addComponent(userPic, 25, 25, 25)
+                                    .addComponent(userName, 25, 25, 25)
+                                    .addComponent(userMenu, 20, 20, 20))));
         } else {
-            close.setBackground(new Color(24, 24, 24));
-            restoreDown.setBackground(new Color(24, 24, 24));
-            minimize.setBackground(new Color(24, 24, 24));
-            close.addMouseListener(listenerForMouse);
-            restoreDown.addMouseListener(listenerForMouse);
-            minimize.addMouseListener(listenerForMouse);
-            close.setSize(45, 30);
-            restoreDown.setSize(45, 30);
-            minimize.setSize(45, 30);
-            close.setHorizontalAlignment(SwingConstants.CENTER);
-            restoreDown.setHorizontalAlignment(SwingConstants.CENTER);
-            minimize.setHorizontalAlignment(SwingConstants.CENTER);
-            close.setVerticalAlignment(SwingConstants.CENTER);
-            restoreDown.setVerticalAlignment(SwingConstants.CENTER);
-            minimize.setVerticalAlignment(SwingConstants.CENTER);
-            close.setForeground(new Color(255, 255, 255));
-            restoreDown.setForeground(new Color(255, 255, 255));
-            minimize.setForeground(new Color(255, 255, 255));
             layout.setHorizontalGroup(layout.createSequentialGroup()
                     .addContainerGap(20, 20)
                     .addComponent(previous, 20, 20, 20)
@@ -220,21 +243,19 @@ public class CentrePanel extends JPanel {
                 userName.setColor(new Color(155, 155, 155));
                 userName.repaint();
             }
-            if (e.getSource() == userMenu)
-            {
+            if (e.getSource() == userMenu) {
                 userMenu.setForeground(new Color(105, 105, 105));
             }
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-                if (e.getSource() == userName) {
-                    userName.setForeground(new Color(255, 255, 255));
-                    userName.setColor(new Color(255, 255, 255));
-                    userName.repaint();
-                }
-            if (e.getSource() == userMenu)
-            {
+            if (e.getSource() == userName) {
+                userName.setForeground(new Color(255, 255, 255));
+                userName.setColor(new Color(255, 255, 255));
+                userName.repaint();
+            }
+            if (e.getSource() == userMenu) {
                 userMenu.setForeground(new Color(255, 255, 255));
             }
         }
@@ -254,8 +275,7 @@ public class CentrePanel extends JPanel {
                 userName.setFocused(true);
                 userName.repaint();
             }
-            if (e.getSource() == userMenu)
-            {
+            if (e.getSource() == userMenu) {
                 userMenu.setForeground(new Color(255, 255, 255));
             }
         }
@@ -275,8 +295,7 @@ public class CentrePanel extends JPanel {
                 userName.setFocused(false);
                 userName.repaint();
             }
-            if (e.getSource() == userMenu)
-            {
+            if (e.getSource() == userMenu) {
                 userMenu.setForeground(new Color(180, 180, 180));
             }
         }

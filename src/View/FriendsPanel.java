@@ -9,14 +9,18 @@ public class FriendsPanel extends JPanel {
     private TransparentButton close = new TransparentButton("✕", false);
     private TransparentButton restoreDown = new TransparentButton("◻", false);
     private TransparentButton minimize = new TransparentButton("⚊", false);
+    private ListenerForMouse listenerForMouse = new ListenerForMouse();
 
     FriendsPanel() {
         super();
-        this.setSize(255, 952);
-        GroupLayout layout = new GroupLayout(this);
-        this.setLayout(layout);
-        ListenerForMouse listenerForMouse = new ListenerForMouse();
+        //this.setSize(255, 952);
+        listenerForMouse = new ListenerForMouse();
         setBackground(new Color(18, 18, 18));
+    }
+
+    public void update()
+    {
+        this.getLayout().removeLayoutComponent(this);
         close.setBackground(new Color(24, 24, 24));
         restoreDown.setBackground(new Color(24, 24, 24));
         minimize.setBackground(new Color(24, 24, 24));
@@ -35,6 +39,9 @@ public class FriendsPanel extends JPanel {
         close.setVerticalAlignment(SwingConstants.CENTER);
         restoreDown.setVerticalAlignment(SwingConstants.CENTER);
         minimize.setVerticalAlignment(SwingConstants.CENTER);
+        setVisible(true);
+        GroupLayout layout = new GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addComponent(minimize, 45, 45, 45)
@@ -44,7 +51,6 @@ public class FriendsPanel extends JPanel {
                 .addComponent(minimize, 30, 30, 30)
                 .addComponent(restoreDown, 30, 30, 30)
                 .addComponent(close, 30, 30, 30));
-        setVisible(true);
     }
 
     private class ListenerForMouse implements MouseListener {

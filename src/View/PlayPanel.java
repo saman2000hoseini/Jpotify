@@ -7,7 +7,6 @@ import Model.Sort;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -186,7 +185,6 @@ public class PlayPanel extends JPanel
         setBackground(new Color(40, 40, 40));
         this.setSize(width, 88);
         ListenerForMouse listenerForMouse = new ListenerForMouse();
-        GroupLayout layout = new GroupLayout(this);
         skip_backward.setFont(new Font(skip_backward.getFont().getName(), Font.PLAIN, 20));
         skip_forward.setFont(new Font(skip_forward.getFont().getName(), Font.PLAIN, 20));
         shuffle.setFont(new Font(skip_backward.getFont().getName(), Font.PLAIN, 15));
@@ -213,6 +211,13 @@ public class PlayPanel extends JPanel
         shuffleState = false;
         repeatState = 0;
         playState = 0;
+        setVisible(true);
+    }
+
+    public  void update()
+    {
+        this.getLayout().removeLayoutComponent(this);
+        GroupLayout layout = new GroupLayout(this);
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addContainerGap((getWidth() / 2) - 115, (getWidth() / 2) - 115)
                 .addComponent(shuffle, 25, 25, 25)
@@ -235,7 +240,6 @@ public class PlayPanel extends JPanel
                                 .addComponent(repeat, 25, 25, 25))))
                 .addContainerGap(30, 30));
         this.setLayout(layout);
-        setVisible(true);
     }
 
     public boolean isShuffleState()

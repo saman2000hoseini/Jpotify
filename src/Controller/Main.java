@@ -7,6 +7,7 @@ import Network.Server.MainServer;
 import View.MainFrame;
 import org.farng.mp3.TagException;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
