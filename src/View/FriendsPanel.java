@@ -15,6 +15,9 @@ public class FriendsPanel extends JPanel {
         super();
         //this.setSize(255, 952);
         listenerForMouse = new ListenerForMouse();
+        close.addMouseListener(listenerForMouse);
+        restoreDown.addMouseListener(listenerForMouse);
+        minimize.addMouseListener(listenerForMouse);
         setBackground(new Color(18, 18, 18));
     }
 
@@ -24,9 +27,6 @@ public class FriendsPanel extends JPanel {
         close.setBackground(new Color(24, 24, 24));
         restoreDown.setBackground(new Color(24, 24, 24));
         minimize.setBackground(new Color(24, 24, 24));
-        close.addMouseListener(listenerForMouse);
-        restoreDown.addMouseListener(listenerForMouse);
-        minimize.addMouseListener(listenerForMouse);
         close.setSize(45, 30);
         restoreDown.setSize(45, 30);
         minimize.setSize(45, 30);

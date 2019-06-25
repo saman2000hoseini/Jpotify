@@ -15,6 +15,7 @@ public class MainFrame extends JFrame
     private final int X = 0;
     private final int Y = 0;
     private MainPanel mainPanel;
+    private FrameComponent frame;
     private BackgroundComponentDragger backgroundComponentDragger;
     private Boolean fullScreenMode;
     static Vector<Music> musics;
@@ -24,7 +25,7 @@ public class MainFrame extends JFrame
         this.musics=musics;
         mainPanel = new MainPanel(950, 600);
         this.setTitle(WINDOW_TITLE);
-        FrameComponent frame = new FrameComponent(new Insets(5, 5, 5, 5));
+        frame = new FrameComponent(new Insets(5, 5, 5, 5));
         this.setIconImage(Toolkit.getDefaultToolkit().getImage("src/View/Icons/JPotify.png"));
         this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -52,6 +53,7 @@ public class MainFrame extends JFrame
                 if (sizeIn.getHeight() < 600)
                     sizeIn.height = 600;
                 frame.setSize(sizeIn);
+                frame.revalidate();
                 mainPanel.setSize(sizeIn);
                 mainPanel.update();
                 mainPanel.repaint();
@@ -79,7 +81,15 @@ public class MainFrame extends JFrame
         return fullScreenMode;
     }
 
-//    private class CreateMaps
+    public FrameComponent getFrame() {
+        return frame;
+    }
+
+    public void setFrame(FrameComponent frame) {
+        this.frame = frame;
+    }
+
+    //    private class CreateMaps
 //    {
 //        private ActionMaps actionMaps = new ActionMaps();
 //        private InputMaps inputMaps ;

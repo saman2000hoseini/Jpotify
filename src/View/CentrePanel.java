@@ -153,6 +153,12 @@ public class CentrePanel extends JPanel {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         if (frameWidth >= 1070) {
+            if (minimize != null)
+                remove(minimize);
+            if (close != null)
+                remove(close);
+            if (restoreDown != null)
+                remove(restoreDown);
             layout.setHorizontalGroup(layout.createSequentialGroup()
                     .addContainerGap(20, 20)
                     .addComponent(previous, 20, 20, 20)
@@ -229,7 +235,10 @@ public class CentrePanel extends JPanel {
             if (e.getSource() == restoreDown) {
                 Dimension dimPant = Toolkit.getDefaultToolkit().getScreenSize();
                 ((JFrame) (getParent().getParent().getParent().getParent().getParent())).setBounds(0, 0, (int) dimPant.getWidth(), (int) dimPant.getHeight() - 40);
+                ((JFrame) (getParent().getParent().getParent().getParent().getParent())).setSize((int) dimPant.getWidth(), (int) dimPant.getHeight() - 40);
                 ((MainFrame) (getParent().getParent().getParent().getParent().getParent())).setFullScreenMode(true);
+                restoreDown.setBackground(new Color(24, 24, 24));
+
             }
             if (e.getSource() == minimize) {
                 ((JFrame) (getParent().getParent().getParent().getParent().getParent())).setState(Frame.ICONIFIED);
