@@ -20,6 +20,7 @@ public class MainPanel extends JPanel {
         prevHeight = height;
         prevWidth = width;
         setSize(width, height);
+        playPanel = new PlayPanel(getWidth(), MainFrame.musics);
         this.setBackground(new Color(24, 24, 24));
     }
 
@@ -30,7 +31,6 @@ public class MainPanel extends JPanel {
             prevHeight = getHeight();
             if (firstApearence)
             {
-                playPanel = new PlayPanel(getWidth(), MainFrame.musics);
                 playPanel.update();
                 westPanel.update();
             }
