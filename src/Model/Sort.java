@@ -4,14 +4,14 @@ import java.util.*;
 
 public class Sort
 {
-    private ArrayList<Music> musics;
+    private Vector<Music> musics;
 
-    public Sort(ArrayList<Music> musics)
+    public Sort(Vector<Music> musics)
     {
         this.musics = musics;
     }
 
-    public ArrayList<Music> alphabeticalAscending()
+    public Vector<Music> alphabeticalAscending()
     {
 
         for (int i = 0; i < musics.size(); i++)
@@ -28,7 +28,7 @@ public class Sort
         }
         return musics;
     }
-    public ArrayList<Music> alphabeticalDescending()
+    public Vector<Music> alphabeticalDescending()
     {
 
         for (int i = 0; i < musics.size(); i++)
@@ -45,7 +45,7 @@ public class Sort
         }
         return musics;
     }
-    public ArrayList<Music> alphabeticalAlbumAscending()
+    public Vector<Music> alphabeticalAlbumAscending()
     {
         for (int i = 0; i < musics.size(); i++)
         {
@@ -61,7 +61,7 @@ public class Sort
         }
         return musics;
     }
-    public ArrayList<Music> alphabeticalAlbumDescending()
+    public Vector<Music> alphabeticalAlbumDescending()
     {
         for (int i = 0; i < musics.size(); i++)
         {
@@ -77,7 +77,7 @@ public class Sort
         }
         return musics;
     }
-    public ArrayList<Music> alphabeticalArtistAscending()
+    public Vector<Music> alphabeticalArtistAscending()
     {
         for (int i = 0; i < musics.size(); i++)
         {
@@ -93,7 +93,7 @@ public class Sort
         }
         return musics;
     }
-    public ArrayList<Music> alphabeticalArtistDescending()
+    public Vector<Music> alphabeticalArtistDescending()
     {
         for (int i = 0; i < musics.size(); i++)
         {
@@ -110,25 +110,32 @@ public class Sort
         return musics;
     }
 
-    public HashMap<Integer, Integer> shuffle()
+    public Vector<Music> shuffle()
     {
-        int count = musics.size();
-        HashMap<Integer, Integer> indexes = new HashMap<>();
-        Random random = new Random();
-        Integer index = 0;
-        while (index < count)
-        {
-            int rnd = random.nextInt(count);
-            if (indexes.get(rnd)==null)
-            {
-                indexes.put(rnd,index);
-                index++;
-            }
-        }
-        return indexes;
+//        int count = musics.size();
+//        HashMap<Integer, Integer> indexes = new HashMap<>();
+//        Random random = new Random();
+//        Integer index = 0;
+//        while (index < count)
+//        {
+//            int rnd = random.nextInt(count);
+//            if (indexes.get(rnd)==null)
+//            {
+//                indexes.put(rnd,index);
+//                index++;
+//            }
+//        }
+//        for (Integer i = 0; i < musics.size(); i++)
+//        {
+            Collections.shuffle(musics);
+//            Music temp = musics.get(i);
+//            musics.set(i, musics.get(indexes.get(i)));
+//            musics.set(indexes.get(i), temp);
+//        }
+        return musics;
     }
 
-    public ArrayList<Music> addDateAscending()
+    public Vector<Music> addDateAscending()
     {
         for (int i = 0; i < musics.size(); i++)
         {
@@ -144,7 +151,7 @@ public class Sort
         }
         return musics;
     }
-    public ArrayList<Music> addDateDescending()
+    public Vector<Music> addDateDescending()
     {
         for (int i = 0; i < musics.size(); i++)
         {
@@ -160,7 +167,7 @@ public class Sort
         }
         return musics;
     }
-    public ArrayList<Music> recentlyPlayedDescending()
+    public Vector<Music> recentlyPlayedDescending()
     {
         for (int i = 0; i < musics.size(); i++)
         {
@@ -176,7 +183,7 @@ public class Sort
         }
         return musics;
     }
-    public ArrayList<Music> recentlyPlayedAscending()
+    public Vector<Music> recentlyPlayedAscending()
     {
         for (int i = 0; i < musics.size(); i++)
         {

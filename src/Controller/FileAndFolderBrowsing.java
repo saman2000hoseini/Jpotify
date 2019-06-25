@@ -26,6 +26,8 @@ public class FileAndFolderBrowsing
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
             for (Music music : songs)
             {
+                if (music.getLastPlayed()==null)
+                    music.setLastPlayed(LocalDateTime.MIN);
                 objectOutputStream.writeObject(music);
             }
             objectOutputStream.close();

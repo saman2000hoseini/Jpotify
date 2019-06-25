@@ -3,6 +3,7 @@ package View;
 import Controller.AudioPlayer;
 import Controller.FileAndFolderBrowsing;
 import Model.Music;
+import Model.Sort;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -19,16 +20,61 @@ import java.util.Vector;
 
 public class PlayPanel extends JPanel
 {
-    Thread player;
     private AudioPlayer audioPlayer;
+    private static Thread player;
     private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private static int index = 0;
     private Vector<Music> playlist;
+    private static Sort sort;
+    private static int sortState = 8, lastSort = 8;
+
+    private void sortPlaylist()
+    {
+        index = 0;
+        sort = new Sort(this.playlist);
+        switch (sortState)
+        {
+            case 0:
+                sort.alphabeticalAscending();
+                break;
+            case 1:
+                sort.alphabeticalDescending();
+                break;
+            case 2:
+                sort.alphabeticalAlbumAscending();
+                break;
+            case 3:
+                sort.alphabeticalAlbumDescending();
+                break;
+            case 4:
+                sort.alphabeticalArtistAscending();
+                break;
+            case 5:
+                sort.alphabeticalArtistDescending();
+                break;
+            case 6:
+                sort.addDateAscending();
+                break;
+            case 7:
+                sort.addDateDescending();
+                break;
+            case 8:
+                sort.recentlyPlayedAscending();
+                break;
+            case 9:
+                sort.recentlyPlayedDescending();
+                break;
+            case 10:
+                sort.shuffle();
+                break;
+        }
+    }
 
     public void setPlaylist(Vector<Music> playlist)
     {
         index = 0;
         this.playlist = playlist;
+        sortPlaylist();
     }
 
     JLabel shuffle = new JLabel("\uD83D\uDD00")
@@ -136,6 +182,7 @@ public class PlayPanel extends JPanel
     {
         super();
         this.playlist = playlist;
+        sortPlaylist();
         setBackground(new Color(40, 40, 40));
         this.setSize(width, 88);
         ListenerForMouse listenerForMouse = new ListenerForMouse();
@@ -232,11 +279,16 @@ public class PlayPanel extends JPanel
                 {
                     shuffle.setForeground(new Color(1, 180, 53));
                     shuffleState = true;
+                    lastSort = sortState;
+                    sortState = 10;
+                    sortPlaylist();
                 }
                 else
                 {
                     shuffle.setForeground(new Color(255, 255, 255));
                     shuffleState = false;
+                    sortState = lastSort;
+                    sortPlaylist();
                 }
 
             }
@@ -245,8 +297,9 @@ public class PlayPanel extends JPanel
                 skip_backward.setForeground(new Color(255, 255, 255));
                 try
                 {
-                    player.stop();
-                    player.interrupt();
+                    audioPlayer.Stop();
+//                    player.stop();
+//                    player.interrupt();
                 }
                 catch (Exception ex)
                 {
@@ -254,7 +307,7 @@ public class PlayPanel extends JPanel
                 }
                 finally
                 {
-                    if (playState!=2)
+                    if (playState != 2)
                         play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                 }
                 index--;
@@ -271,14 +324,14 @@ public class PlayPanel extends JPanel
                     if (playState == 0)
                         startPlayingMusic();
                     else
-                        player.resume();
+                        audioPlayer.resume();
                     playState = 2;
                 }
                 else
                 {
                     play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                     playState = 1;
-                    player.suspend();
+                    audioPlayer.pause();
                 }
 
             }
@@ -287,8 +340,9 @@ public class PlayPanel extends JPanel
                 skip_forward.setForeground(new Color(255, 255, 255));
                 try
                 {
-                    player.stop();
-                    player.interrupt();
+                    audioPlayer.Stop();
+//                    player.stop();
+//                    player.interrupt();
                 }
                 catch (Exception ex)
                 {
@@ -296,7 +350,7 @@ public class PlayPanel extends JPanel
                 }
                 finally
                 {
-                    if (playState!=2)
+                    if (playState != 2)
                         play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                 }
                 index++;
@@ -332,22 +386,15 @@ public class PlayPanel extends JPanel
         {
             try
             {
-                Mp3File mp3File = new Mp3File(playlist.get(index).getFileLocation());
-                audioPlayer = new AudioPlayer(playlist.get(index).getFileLocation(), mp3File.getFrameCount());
+//                Mp3File mp3File = new Mp3File();
+                audioPlayer = new AudioPlayer();
+//                player=new Thread(audioPlayer);
                 MainFrame.musics.get(index).setLastPlayed(LocalDateTime.now());
                 fileAndFolderBrowsing.saveMusics(playlist);
-                player = new Thread(audioPlayer);
-                player.start();
+                System.out.println("here");
+                audioPlayer.Play(playlist.get(index).getFileLocation());
             }
-            catch (IOException ex)
-            {
-                ex.printStackTrace();
-            }
-            catch (UnsupportedTagException ex)
-            {
-                ex.printStackTrace();
-            }
-            catch (InvalidDataException ex)
+            catch (Exception ex)
             {
                 ex.printStackTrace();
             }
