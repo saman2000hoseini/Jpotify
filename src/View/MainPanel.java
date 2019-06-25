@@ -84,4 +84,9 @@ public class MainPanel extends JPanel {
             firstApearence = false;
         }
     }
+
+    public PlayPanel getPlayPanel()
+    {
+        return playPanel;
+    }
 }

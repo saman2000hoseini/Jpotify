@@ -2,6 +2,7 @@ package View;
 
 import Controller.AudioPlayer;
 import Controller.FileAndFolderBrowsing;
+import Listeners.PlayPanelListener;
 import Model.Music;
 import Model.Sort;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -19,62 +20,10 @@ import java.util.Vector;
 
 public class PlayPanel extends JPanel
 {
-    private AudioPlayer audioPlayer;
-    private static Thread player;
-    private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
-    private static int index = 0;
-    private Vector<Music> playlist;
-    private static Sort sort;
-    private static int sortState = 8, lastSort = 8;
-
-    private void sortPlaylist()
-    {
-        index = 0;
-        sort = new Sort(this.playlist);
-        switch (sortState)
-        {
-            case 0:
-                sort.alphabeticalAscending();
-                break;
-            case 1:
-                sort.alphabeticalDescending();
-                break;
-            case 2:
-                sort.alphabeticalAlbumAscending();
-                break;
-            case 3:
-                sort.alphabeticalAlbumDescending();
-                break;
-            case 4:
-                sort.alphabeticalArtistAscending();
-                break;
-            case 5:
-                sort.alphabeticalArtistDescending();
-                break;
-            case 6:
-                sort.addDateAscending();
-                break;
-            case 7:
-                sort.addDateDescending();
-                break;
-            case 8:
-                sort.recentlyPlayedAscending();
-                break;
-            case 9:
-                sort.recentlyPlayedDescending();
-                break;
-            case 10:
-                sort.shuffle();
-                break;
-        }
-    }
-
-    public void setPlaylist(Vector<Music> playlist)
-    {
-        index = 0;
-        this.playlist = playlist;
-        sortPlaylist();
-    }
+    private boolean shuffleState = false;
+    private int repeatState = 0;
+    private int playState =0;
+    private PlayPanelListener playPanelListener = null;
 
     JLabel shuffle = new JLabel("\uD83D\uDD00")
     {
@@ -172,16 +121,14 @@ public class PlayPanel extends JPanel
         }
     };
 
-    private boolean shuffleState;
-    private int repeatState;
-    private int playState;
+    public void setPlayPanelListener(PlayPanelListener playPanelListener)
+    {
+        this.playPanelListener = playPanelListener;
+    }
 
-
-    PlayPanel(int width, Vector<Music> playlist)
+    public PlayPanel(int width, Vector<Music> playlist)
     {
         super();
-        this.playlist = playlist;
-        sortPlaylist();
         setBackground(new Color(40, 40, 40));
         this.setSize(width, 88);
         ListenerForMouse listenerForMouse = new ListenerForMouse();
@@ -242,66 +189,33 @@ public class PlayPanel extends JPanel
         this.setLayout(layout);
     }
 
-    public boolean isShuffleState()
-    {
-        return shuffleState;
-    }
-
-    public int getRepeatState()
-    {
-        return repeatState;
-    }
-
-    public void setShuffleState(boolean shuffleState)
-    {
-        this.shuffleState = shuffleState;
-    }
-
-    public void setRepeatState(int repeatState)
-    {
-        this.repeatState = repeatState;
-    }
-
-    public int getPlayState()
-    {
-        return playState;
-    }
-
-    public void setPlayState(int playState)
-    {
-        this.playState = playState;
-    }
-
     private class ListenerForMouse implements MouseListener
     {
+
         @Override
         public void mouseClicked(MouseEvent e)
         {
             if (e.getSource() == shuffle)
             {
+                playPanelListener.state(shuffleState,repeatState,playState,0);
                 if (!shuffleState)
                 {
                     shuffle.setForeground(new Color(1, 180, 53));
                     shuffleState = true;
-                    lastSort = sortState;
-                    sortState = 10;
-                    sortPlaylist();
                 }
                 else
                 {
                     shuffle.setForeground(new Color(255, 255, 255));
                     shuffleState = false;
-                    sortState = lastSort;
-                    sortPlaylist();
                 }
 
             }
             if (e.getSource() == skip_backward)
             {
+                playPanelListener.state(shuffleState,repeatState,playState,1);
                 skip_backward.setForeground(new Color(255, 255, 255));
                 try
                 {
-                    audioPlayer.Stop();
 //                    player.stop();
 //                    player.interrupt();
                 }
@@ -314,37 +228,29 @@ public class PlayPanel extends JPanel
                     if (playState != 2)
                         play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                 }
-                index--;
-                if (index < 0)
-                    index = playlist.size() - 1;
-                startPlayingMusic();
                 playState = 2;
             }
             if (e.getSource() == play)
             {
+                playPanelListener.state(shuffleState,repeatState,playState,2);
                 if (playState != 2)
                 {
                     play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
-                    if (playState == 0)
-                        startPlayingMusic();
-                    else
-                        audioPlayer.resume();
                     playState = 2;
                 }
                 else
                 {
                     play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                     playState = 1;
-                    audioPlayer.pause();
                 }
 
             }
             if (e.getSource() == skip_forward)
             {
+                playPanelListener.state(shuffleState,repeatState,playState,3);
                 skip_forward.setForeground(new Color(255, 255, 255));
                 try
                 {
-                    audioPlayer.Stop();
 //                    player.stop();
 //                    player.interrupt();
                 }
@@ -357,14 +263,11 @@ public class PlayPanel extends JPanel
                     if (playState != 2)
                         play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                 }
-                index++;
-                if (index > playlist.size() - 1)
-                    index = 0;
-                startPlayingMusic();
                 playState = 2;
             }
             if (e.getSource() == repeat)
             {
+                playPanelListener.state(shuffleState,repeatState,playState,4);
                 if (repeatState == 0)
                 {
                     repeat.setText("\uD83D\uDD01");
@@ -386,23 +289,7 @@ public class PlayPanel extends JPanel
             }
         }
 
-        private void startPlayingMusic()
-        {
-            try
-            {
-//                Mp3File mp3File = new Mp3File();
-                audioPlayer = new AudioPlayer();
-//                player=new Thread(audioPlayer);
-                MainFrame.musics.get(index).setLastPlayed(LocalDateTime.now());
-                fileAndFolderBrowsing.saveMusics(playlist);
-                System.out.println("here");
-                audioPlayer.Play(playlist.get(index).getFileLocation());
-            }
-            catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
-        }
+
 
         @Override
         public void mousePressed(MouseEvent e)

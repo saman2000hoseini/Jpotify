@@ -1,13 +1,10 @@
 package View;
 
-import Controller.ActionMaps;
-import Controller.InputMaps;
 import Model.Music;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.HashMap;
 import java.util.Vector;
 
 public class MainFrame extends JFrame
@@ -115,5 +112,10 @@ public class MainFrame extends JFrame
 //            return inputMaps;
 //        }
 //    }
+
+    public MainPanel getMainPanel()
+    {
+        return mainPanel;
+    }
 }
 
