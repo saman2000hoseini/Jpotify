@@ -89,4 +89,9 @@ public class MainPanel extends JPanel {
     {
         return playPanel;
     }
+
+    public WestPanel getWestPanel()
+    {
+        return westPanel;
+    }
 }

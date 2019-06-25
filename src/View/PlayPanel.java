@@ -25,6 +25,11 @@ public class PlayPanel extends JPanel
     private int playState =0;
     private PlayPanelListener playPanelListener = null;
 
+    public PlayPanelListener getPlayPanelListener()
+    {
+        return playPanelListener;
+    }
+
     JLabel shuffle = new JLabel("\uD83D\uDD00")
     {
         @Override

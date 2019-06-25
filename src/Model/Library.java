@@ -2,10 +2,11 @@ package Model;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Library
 {
-    private ArrayList<Music> musics = new ArrayList<>();
+    private Vector<Music> musics = new Vector<>();
     private String name ;
 
     public Library(String name)
@@ -13,7 +14,7 @@ public class Library
         this.name = name;
     }
 
-    public void addMusics(ArrayList<Music> musics)
+    public void addMusics(Vector<Music> musics)
     {
         this.musics.addAll(musics);
     }
@@ -22,7 +23,7 @@ public class Library
     {
         try
         {
-            FileOutputStream fileOutputStream = new FileOutputStream("./Library/"+name.toLowerCase().trim()+".dat");
+            FileOutputStream fileOutputStream = new FileOutputStream("./Library/"+name.toLowerCase().trim()+".bin");
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             for (Music music:musics)
             {
@@ -55,5 +56,18 @@ public class Library
 
         }
         savePlaylist();
+    }
+
+    public void suicide()
+    {
+        try
+        {
+            File file = new File("./Library/"+this.name+".bin");
+            if (!name.equals("Favourites") && !name.equals("Shared Playlist"))
+                file.delete();
+        }catch (Exception e)
+        {
+
+        }
     }
 }

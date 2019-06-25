@@ -3,6 +3,7 @@ package Controller;
 import Model.Library;
 import Model.Music;
 import org.farng.mp3.TagException;
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,8 +16,9 @@ public class FileAndFolderBrowsing
     private static final String pathsDirectory = "./Library/Paths.bin";
     private ObjectInputStream objectInputStream;
     private FileInputStream fileInputStream;
-    private  FileOutputStream fileOutputStream;
+    private FileOutputStream fileOutputStream;
     private ObjectOutputStream objectOutputStream;
+
     public void saveMusics(Vector<Music> songs)
     {
         try
@@ -25,7 +27,7 @@ public class FileAndFolderBrowsing
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
             for (Music music : songs)
             {
-                if (music.getLastPlayed()==null)
+                if (music.getLastPlayed() == null)
                     music.setLastPlayed(LocalDateTime.MIN);
                 objectOutputStream.writeObject(music);
             }
@@ -138,7 +140,9 @@ public class FileAndFolderBrowsing
                 objectInputStream = new ObjectInputStream(fileInputStream);
                 while (true)
                 {
-                    songs.add((Music) objectInputStream.readObject());
+                    Music temp = (Music) objectInputStream.readObject();
+                    if (new File(temp.getFileLocation()).exists())
+                        songs.add(temp);
                 }
             }
         }
@@ -194,17 +198,18 @@ public class FileAndFolderBrowsing
     {
         Vector<Library> libraries = new Vector<>();
         Library library = null;
-        ArrayList<Music> songs = null;
+        Vector<Music> songs = null;
         File folder = new File("./Library/");
         File[] listOfFiles = folder.listFiles();
+//        System.out.println(listOfFiles.length);
         if (listOfFiles.length > 0)
             for (File file : listOfFiles)
             {
-                if (file.getName() != "songs.dat")
+                if (!file.getName().equals("songs.bin") && !file.getName().equals("Paths.bin"))
                     try
                     {
-                        library = new Library(file.getName().replace(".dat", ""));
-                        songs = new ArrayList<>();
+                        library = new Library(file.getName().replace(".bin", "").substring(0,1).toUpperCase()+file.getName().replace(".bin", "").substring(1));
+                        songs = new Vector<>();
                         fileInputStream = new FileInputStream(file);
                         objectInputStream = new ObjectInputStream(fileInputStream);
                         while (true)
