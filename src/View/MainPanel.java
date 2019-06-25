@@ -10,7 +10,7 @@ public class MainPanel extends JPanel {
     private WestPanel westPanel = new WestPanel();
     private CentrePanel centrePanel;
     private FriendsPanel friendsPanel;
-    private PlayPanel playPanel;
+    private static PlayPanel playPanel;
 
     MainPanel(int width, int height) {
         super();
@@ -47,5 +47,15 @@ public class MainPanel extends JPanel {
                             .addComponent(centrePanel, 500, 952, Short.MAX_VALUE))
                     .addComponent(playPanel, 72, 88, Short.MAX_VALUE));
         }
+    }
+
+    public PlayPanel getPlayPanel()
+    {
+        return playPanel;
+    }
+
+    public static void setPlayPanel(PlayPanel playPanel)
+    {
+        MainPanel.playPanel = playPanel;
     }
 }

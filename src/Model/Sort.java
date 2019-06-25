@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Sort
 {
-    private Vector<Music> musics;
+    private static Vector<Music> musics;
 
     public Sort(Vector<Music> musics)
     {

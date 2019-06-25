@@ -13,6 +13,18 @@ import javazoom.jl.player.Player;
 
 public class AudioPlayer
 {
+    private AudioPlayer()
+    {
+
+    }
+    private static AudioPlayer audioPlayer = null;
+
+    public static AudioPlayer getAudioPlayer()
+    {
+        if (audioPlayer==null)
+            audioPlayer = new AudioPlayer();
+        return audioPlayer;
+    }
 
     FileInputStream FIS;
     BufferedInputStream BIS;
@@ -94,6 +106,7 @@ public class AudioPlayer
         try
         {
             FIS = new FileInputStream(path);
+            System.out.println(path);
             BIS = new BufferedInputStream(FIS);
             player = new Player(BIS);
             FilePath = path + "";
@@ -117,6 +130,7 @@ public class AudioPlayer
                 try
                 {
                     player.play();
+                    System.out.println("here");
                 }
                 catch (JavaLayerException e)
                 {

@@ -1,8 +1,11 @@
 package View;
 
 import Controller.ActionMaps;
+import Controller.AudioPlayer;
+import Controller.FileAndFolderBrowsing;
 import Controller.InputMaps;
 import Model.Music;
+import Model.Sort;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,12 +15,21 @@ import java.util.Vector;
 
 public class MainFrame extends JFrame
 {
+    static AudioPlayer audioPlayer;
+    static boolean shuffleState;
+    static int repeatState;
+    static int playState;
+    static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
+    static int index = 0;
+    static Vector<Music> playlist;
+    static Sort sort;
+    static int sortState = 8, lastSort = 8;
     private final String WINDOW_TITLE = "JPotify";
     private final int WIDTH = 1920;
     private final int HEIGHT = 1030;
     private final int X = 0;
     private final int Y = 0;
-    private MainPanel mainPanel;
+    private static MainPanel mainPanel;
     private BackgroundComponentDragger backgroundComponentDragger;
     private Boolean fullScreenMode;
     static Vector<Music> musics;

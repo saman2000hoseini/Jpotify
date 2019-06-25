@@ -18,66 +18,61 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Vector;
 
+import static View.MainFrame.*;
+
 public class PlayPanel extends JPanel
 {
-    private AudioPlayer audioPlayer;
-    private static Thread player;
-    private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
-    private static int index = 0;
-    private Vector<Music> playlist;
-    private static Sort sort;
-    private static int sortState = 8, lastSort = 8;
 
-    private void sortPlaylist()
+    protected static void sortPlaylist()
     {
-        index = 0;
-        sort = new Sort(this.playlist);
-        switch (sortState)
+        MainFrame.index = 0;
+        MainFrame.sort = new Sort(MainFrame.playlist);
+        switch (MainFrame.sortState)
         {
             case 0:
-                sort.alphabeticalAscending();
+                MainFrame.sort.alphabeticalAscending();
                 break;
             case 1:
-                sort.alphabeticalDescending();
+                MainFrame.sort.alphabeticalDescending();
                 break;
             case 2:
-                sort.alphabeticalAlbumAscending();
+                MainFrame.sort.alphabeticalAlbumAscending();
                 break;
             case 3:
-                sort.alphabeticalAlbumDescending();
+                MainFrame.sort.alphabeticalAlbumDescending();
                 break;
             case 4:
-                sort.alphabeticalArtistAscending();
+                MainFrame.sort.alphabeticalArtistAscending();
                 break;
             case 5:
-                sort.alphabeticalArtistDescending();
+                MainFrame.sort.alphabeticalArtistDescending();
                 break;
             case 6:
-                sort.addDateAscending();
+                MainFrame.sort.addDateAscending();
                 break;
             case 7:
-                sort.addDateDescending();
+                MainFrame.sort.addDateDescending();
                 break;
             case 8:
-                sort.recentlyPlayedAscending();
+                MainFrame.sort.recentlyPlayedAscending();
                 break;
             case 9:
-                sort.recentlyPlayedDescending();
+                MainFrame.sort.recentlyPlayedDescending();
                 break;
             case 10:
-                sort.shuffle();
+                MainFrame.sort.shuffle();
                 break;
         }
     }
 
     public void setPlaylist(Vector<Music> playlist)
     {
-        index = 0;
-        this.playlist = playlist;
+        MainFrame.index = 0;
+        MainFrame.playlist = playlist;
         sortPlaylist();
     }
 
-    JLabel shuffle = new JLabel("\uD83D\uDD00")
+    static JLabel shuffle = new JLabel("\uD83D\uDD00")
     {
         @Override
         public JToolTip createToolTip()
@@ -96,7 +91,7 @@ public class PlayPanel extends JPanel
             return new Point(-1 * super.getWidth() + 3, super.getHeight());
         }
     };
-    JLabel skip_backward = new JLabel("⏮")
+    static JLabel skip_backward = new JLabel("⏮")
     {
         @Override
         public JToolTip createToolTip()
@@ -115,7 +110,7 @@ public class PlayPanel extends JPanel
             return new Point(-1 * super.getWidth(), super.getHeight());
         }
     };
-    JLabel play = new JLabel(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35))
+    static JLabel play = new JLabel(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35))
     {
         @Override
         public JToolTip createToolTip()
@@ -134,7 +129,7 @@ public class PlayPanel extends JPanel
             return new Point(0, super.getHeight());
         }
     };
-    JLabel skip_forward = new JLabel("⏭")
+    static JLabel skip_forward = new JLabel("⏭")
     {
         @Override
         public JToolTip createToolTip()
@@ -153,7 +148,7 @@ public class PlayPanel extends JPanel
             return new Point(-10, super.getHeight());
         }
     };
-    JLabel repeat = new JLabel("\uD83D\uDD01")
+    static JLabel repeat = new JLabel("\uD83D\uDD01")
     {
         @Override
         public JToolTip createToolTip()
@@ -173,19 +168,15 @@ public class PlayPanel extends JPanel
         }
     };
 
-    private boolean shuffleState;
-    private int repeatState;
-    private int playState;
 
 
     PlayPanel(int width, Vector<Music> playlist)
     {
         super();
-        this.playlist = playlist;
+        MainFrame.playlist = playlist;
         sortPlaylist();
         setBackground(new Color(40, 40, 40));
         this.setSize(width, 88);
-        ListenerForMouse listenerForMouse = new ListenerForMouse();
         GroupLayout layout = new GroupLayout(this);
         skip_backward.setFont(new Font(skip_backward.getFont().getName(), Font.PLAIN, 20));
         skip_forward.setFont(new Font(skip_forward.getFont().getName(), Font.PLAIN, 20));
@@ -200,6 +191,8 @@ public class PlayPanel extends JPanel
         skip_forward.setAlignmentY(CENTER_ALIGNMENT);
         repeat.setAlignmentY(BOTTOM_ALIGNMENT);
         shuffle.setAlignmentY(BOTTOM_ALIGNMENT);
+        ListenerForMouse listenerForMouse = ListenerForMouse.getInstance();
+        System.out.println(listenerForMouse.hashCode());
         skip_forward.addMouseListener(listenerForMouse);
         skip_backward.addMouseListener(listenerForMouse);
         play.addMouseListener(listenerForMouse);
@@ -237,308 +230,289 @@ public class PlayPanel extends JPanel
         this.setLayout(layout);
         setVisible(true);
     }
-
-    public boolean isShuffleState()
+}
+class ListenerForMouse implements MouseListener
+{
+    protected ListenerForMouse()
     {
-        return shuffleState;
+
     }
-
-    public int getRepeatState()
+    @Override
+    public void mouseClicked(MouseEvent e)
     {
-        return repeatState;
-    }
-
-    public void setShuffleState(boolean shuffleState)
-    {
-        this.shuffleState = shuffleState;
-    }
-
-    public void setRepeatState(int repeatState)
-    {
-        this.repeatState = repeatState;
-    }
-
-    public int getPlayState()
-    {
-        return playState;
-    }
-
-    public void setPlayState(int playState)
-    {
-        this.playState = playState;
-    }
-
-    private class ListenerForMouse implements MouseListener
-    {
-        @Override
-        public void mouseClicked(MouseEvent e)
+        if (e.getSource() == PlayPanel.shuffle)
         {
-            if (e.getSource() == shuffle)
+            if (!shuffleState)
             {
-                if (!shuffleState)
-                {
-                    shuffle.setForeground(new Color(1, 180, 53));
-                    shuffleState = true;
-                    lastSort = sortState;
-                    sortState = 10;
-                    sortPlaylist();
-                }
-                else
-                {
-                    shuffle.setForeground(new Color(255, 255, 255));
-                    shuffleState = false;
-                    sortState = lastSort;
-                    sortPlaylist();
-                }
+                PlayPanel.shuffle.setForeground(new Color(1, 180, 53));
+                shuffleState = true;
+                MainFrame.lastSort = MainFrame.sortState;
+                MainFrame.sortState = 10;
+                PlayPanel.sortPlaylist();
+            }
+            else
+            {
+                PlayPanel.shuffle.setForeground(new Color(255, 255, 255));
+                shuffleState = false;
+                MainFrame.sortState = MainFrame.lastSort;
+                PlayPanel.sortPlaylist();
+            }
 
-            }
-            if (e.getSource() == skip_backward)
-            {
-                skip_backward.setForeground(new Color(255, 255, 255));
-                try
-                {
-                    audioPlayer.Stop();
-//                    player.stop();
-//                    player.interrupt();
-                }
-                catch (Exception ex)
-                {
-
-                }
-                finally
-                {
-                    if (playState != 2)
-                        play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
-                }
-                index--;
-                if (index < 0)
-                    index = playlist.size() - 1;
-                startPlayingMusic();
-                playState = 2;
-            }
-            if (e.getSource() == play)
-            {
-                if (playState != 2)
-                {
-                    play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
-                    if (playState == 0)
-                        startPlayingMusic();
-                    else
-                        audioPlayer.resume();
-                    playState = 2;
-                }
-                else
-                {
-                    play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
-                    playState = 1;
-                    audioPlayer.pause();
-                }
-
-            }
-            if (e.getSource() == skip_forward)
-            {
-                skip_forward.setForeground(new Color(255, 255, 255));
-                try
-                {
-                    audioPlayer.Stop();
-//                    player.stop();
-//                    player.interrupt();
-                }
-                catch (Exception ex)
-                {
-
-                }
-                finally
-                {
-                    if (playState != 2)
-                        play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
-                }
-                index++;
-                if (index > playlist.size() - 1)
-                    index = 0;
-                startPlayingMusic();
-                playState = 2;
-            }
-            if (e.getSource() == repeat)
-            {
-                if (repeatState == 0)
-                {
-                    repeat.setText("\uD83D\uDD01");
-                    repeat.setForeground(new Color(1, 180, 53));
-                    repeatState = 1;
-                }
-                else if (repeatState == 1)
-                {
-                    repeat.setText("\uD83D\uDD02");
-                    repeatState = 2;
-                    repeat.setForeground(new Color(1, 180, 49));
-                }
-                else if (repeatState == 2)
-                {
-                    repeat.setText("\uD83D\uDD01");
-                    repeatState = 0;
-                    repeat.setForeground(new Color(255, 255, 255));
-                }
-            }
         }
-
-        private void startPlayingMusic()
+        if (e.getSource() == PlayPanel.skip_backward)
         {
+            PlayPanel.skip_backward.setForeground(new Color(255, 255, 255));
             try
             {
-//                Mp3File mp3File = new Mp3File();
-                audioPlayer = new AudioPlayer();
-//                player=new Thread(audioPlayer);
-                MainFrame.musics.get(index).setLastPlayed(LocalDateTime.now());
-                fileAndFolderBrowsing.saveMusics(playlist);
-                System.out.println("here");
-                audioPlayer.Play(playlist.get(index).getFileLocation());
+                MainFrame.audioPlayer.Stop();
+//                    player.stop();
+//                    player.interrupt();
             }
             catch (Exception ex)
             {
-                ex.printStackTrace();
-            }
-        }
 
-        @Override
-        public void mousePressed(MouseEvent e)
-        {
-            mouseActions(e);
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e)
-        {
-            mouseActions(e);
-        }
-
-        private void mouseActions(MouseEvent e)
-        {
-            refreshIcons(e);
-            if (e.getSource() == repeat)
-            {
-                if (e.getSource() == repeat)
-                {
-                    if (repeatState == 0)
-                    {
-                        repeat.setText("\uD83D\uDD01");
-                        repeat.setForeground(new Color(155, 155, 155));
-                    }
-                    if (repeatState == 1)
-                    {
-                        repeat.setText("\uD83D\uDD01");
-                        repeat.setForeground(new Color(1, 155, 49));
-                    }
-                    if (repeatState == 2)
-                    {
-                        repeat.setText("\uD83D\uDD02");
-                        repeat.setForeground(new Color(1, 155, 49));
-                    }
-                }
             }
-        }
-
-        private void refreshIcons(MouseEvent e)
-        {
-            if (e.getSource() == shuffle)
-            {
-                if (!shuffleState)
-                {
-                    shuffle.setForeground(new Color(155, 155, 155));
-                }
-                else
-                {
-                    shuffle.setForeground(new Color(1, 155, 49));
-                }
-            }
-            if (e.getSource() == skip_backward)
-            {
-                skip_backward.setForeground(new Color(155, 155, 155));
-            }
-            if (e.getSource() == play)
+            finally
             {
                 if (playState != 2)
-                    play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
-                else
-                    play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
+                    PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
             }
-            if (e.getSource() == skip_forward)
-            {
-                skip_forward.setForeground(new Color(155, 155, 155));
-            }
+            MainFrame.index--;
+            if (MainFrame.index < 0)
+                MainFrame.index = MainFrame.playlist.size() - 1;
+            startPlayingMusic();
+            playState = 2;
         }
-
-        @Override
-        public void mouseEntered(MouseEvent e)
+        if (e.getSource() == PlayPanel.play)
         {
-            if (e.getSource() == shuffle)
+            if (playState != 2)
             {
-                if (!shuffleState)
-                {
-                    shuffle.setForeground(new Color(255, 255, 255));
-                }
+                PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
+                if (playState == 0)
+                    startPlayingMusic();
                 else
-                {
-                    shuffle.setForeground(new Color(1, 180, 50));
-                }
+                    MainFrame.audioPlayer.resume();
+                playState = 2;
             }
-            if (e.getSource() == skip_backward)
+            else
             {
-                skip_backward.setForeground(new Color(255, 255, 255));
+                PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
+                playState = 1;
+                MainFrame.audioPlayer.pause();
             }
-            if (e.getSource() == play)
+
+        }
+        if (e.getSource() == PlayPanel.skip_forward)
+        {
+            PlayPanel.skip_forward.setForeground(new Color(255, 255, 255));
+            try
+            {
+                MainFrame.audioPlayer.Stop();
+//                    player.stop();
+//                    player.interrupt();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
             {
                 if (playState != 2)
-                    play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 37, 37));
-                else
-                    play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 37, 37));
+                    PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
             }
-            if (e.getSource() == skip_forward)
+            MainFrame.index++;
+            if (MainFrame.index > MainFrame.playlist.size() - 1)
+                MainFrame.index = 0;
+            startPlayingMusic();
+            playState = 2;
+        }
+        if (e.getSource() == PlayPanel.repeat)
+        {
+            if (repeatState == 0)
             {
-                skip_forward.setForeground(new Color(255, 255, 255));
+                PlayPanel.repeat.setText("\uD83D\uDD01");
+                PlayPanel.repeat.setForeground(new Color(1, 180, 53));
+                repeatState = 1;
             }
-            if (e.getSource() == repeat)
+            else if (repeatState == 1)
+            {
+                PlayPanel.repeat.setText("\uD83D\uDD02");
+                repeatState = 2;
+                PlayPanel.repeat.setForeground(new Color(1, 180, 49));
+            }
+            else if (repeatState == 2)
+            {
+                PlayPanel.repeat.setText("\uD83D\uDD01");
+                repeatState = 0;
+                PlayPanel.repeat.setForeground(new Color(255, 255, 255));
+            }
+        }
+    }
+
+    private void startPlayingMusic()
+    {
+        try
+        {
+//                Mp3File mp3File = new Mp3File();
+            MainFrame.audioPlayer = AudioPlayer.getAudioPlayer();
+//                player=new Thread(audioPlayer);
+            MainFrame.musics.get(MainFrame.index).setLastPlayed(LocalDateTime.now());
+            MainFrame.fileAndFolderBrowsing.saveMusics(MainFrame.playlist);
+            System.out.println("here");
+            MainFrame.audioPlayer.Play(MainFrame.playlist.get(MainFrame.index).getFileLocation());
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e)
+    {
+        mouseActions(e);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e)
+    {
+        mouseActions(e);
+    }
+
+    private void mouseActions(MouseEvent e)
+    {
+        refreshIcons(e);
+        if (e.getSource() == PlayPanel.repeat)
+        {
+            if (e.getSource() == PlayPanel.repeat)
             {
                 if (repeatState == 0)
                 {
-                    repeat.setText("\uD83D\uDD01");
-                    repeat.setForeground(new Color(255, 255, 255));
+                    PlayPanel.repeat.setText("\uD83D\uDD01");
+                    PlayPanel.repeat.setForeground(new Color(155, 155, 155));
                 }
                 if (repeatState == 1)
                 {
-                    repeat.setText("\uD83D\uDD01");
-                    repeat.setForeground(new Color(1, 180, 55));
+                    PlayPanel.repeat.setText("\uD83D\uDD01");
+                    PlayPanel.repeat.setForeground(new Color(1, 155, 49));
                 }
                 if (repeatState == 2)
                 {
-                    repeat.setText("\uD83D\uDD02");
-                    repeat.setForeground(new Color(1, 180, 56));
+                    PlayPanel.repeat.setText("\uD83D\uDD02");
+                    PlayPanel.repeat.setForeground(new Color(1, 155, 49));
                 }
             }
         }
+    }
 
-        @Override
-        public void mouseExited(MouseEvent e)
+    private void refreshIcons(MouseEvent e)
+    {
+        if (e.getSource() == PlayPanel.shuffle)
         {
-            refreshIcons(e);
-            if (e.getSource() == repeat)
+            if (!shuffleState)
             {
-                if (repeatState == 0)
-                {
-                    repeat.setText("\uD83D\uDD01");
-                    repeat.setForeground(new Color(155, 155, 155));
-                }
-                if (repeatState == 1)
-                {
-                    repeat.setText("\uD83D\uDD01");
-                    repeat.setForeground(new Color(1, 155, 49));
-                }
-                if (repeatState == 2)
-                {
-                    repeat.setText("\uD83D\uDD02");
-                    repeat.setForeground(new Color(1, 155, 49));
-                }
+                PlayPanel.shuffle.setForeground(new Color(155, 155, 155));
+            }
+            else
+            {
+                PlayPanel.shuffle.setForeground(new Color(1, 155, 49));
             }
         }
+        if (e.getSource() == PlayPanel.skip_backward)
+        {
+            PlayPanel.skip_backward.setForeground(new Color(155, 155, 155));
+        }
+        if (e.getSource() == PlayPanel.play)
+        {
+            if (playState != 2)
+                PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
+            else
+                PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
+        }
+        if (e.getSource() == PlayPanel.skip_forward)
+        {
+            PlayPanel.skip_forward.setForeground(new Color(155, 155, 155));
+        }
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e)
+    {
+        if (e.getSource() == PlayPanel.shuffle)
+        {
+            if (!shuffleState)
+            {
+                PlayPanel.shuffle.setForeground(new Color(255, 255, 255));
+            }
+            else
+            {
+                PlayPanel.shuffle.setForeground(new Color(1, 180, 50));
+            }
+        }
+        if (e.getSource() == PlayPanel.skip_backward)
+        {
+            PlayPanel.skip_backward.setForeground(new Color(255, 255, 255));
+        }
+        if (e.getSource() == PlayPanel.play)
+        {
+            if (playState != 2)
+                PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 37, 37));
+            else
+                PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 37, 37));
+        }
+        if (e.getSource() == PlayPanel.skip_forward)
+        {
+            PlayPanel.skip_forward.setForeground(new Color(255, 255, 255));
+        }
+        if (e.getSource() == PlayPanel.repeat)
+        {
+            if (repeatState == 0)
+            {
+                PlayPanel.repeat.setText("\uD83D\uDD01");
+                PlayPanel.repeat.setForeground(new Color(255, 255, 255));
+            }
+            if (repeatState == 1)
+            {
+                PlayPanel.repeat.setText("\uD83D\uDD01");
+                PlayPanel.repeat.setForeground(new Color(1, 180, 55));
+            }
+            if (repeatState == 2)
+            {
+                PlayPanel.repeat.setText("\uD83D\uDD02");
+                PlayPanel.repeat.setForeground(new Color(1, 180, 56));
+            }
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e)
+    {
+        refreshIcons(e);
+        if (e.getSource() == PlayPanel.repeat)
+        {
+            if (repeatState == 0)
+            {
+                PlayPanel.repeat.setText("\uD83D\uDD01");
+                PlayPanel.repeat.setForeground(new Color(155, 155, 155));
+            }
+            if (repeatState == 1)
+            {
+                PlayPanel.repeat.setText("\uD83D\uDD01");
+                PlayPanel.repeat.setForeground(new Color(1, 155, 49));
+            }
+            if (repeatState == 2)
+            {
+                PlayPanel.repeat.setText("\uD83D\uDD02");
+                PlayPanel.repeat.setForeground(new Color(1, 155, 49));
+            }
+        }
+    }
+    private static ListenerForMouse listenerForMouse = null;
+    protected static ListenerForMouse getInstance()
+    {
+        if (listenerForMouse == null)
+            listenerForMouse = new ListenerForMouse();
+
+        return listenerForMouse;
     }
 }
