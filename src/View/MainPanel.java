@@ -48,4 +48,9 @@ public class MainPanel extends JPanel {
                     .addComponent(playPanel, 72, 88, Short.MAX_VALUE));
         }
     }
+
+    public PlayPanel getPlayPanel()
+    {
+        return playPanel;
+    }
 }
