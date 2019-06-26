@@ -39,6 +39,7 @@ public class SongsTablePanel extends JPanel implements SongsTableListener
     @Override
     public void addSongs(String[][] data)
     {
+        this.data = data;
         DefaultTableModel defaultTableModel = (DefaultTableModel) songsTable.getModel();
         if (songsTable.getRowCount() > 0) {
             for (int i = songsTable.getRowCount() - 1; i > -1; i--) {

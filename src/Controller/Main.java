@@ -43,15 +43,8 @@ public class Main
         fileAndFolderBrowsing.loadFiles(musics);
         libraries = fileAndFolderBrowsing.loadLibraries();
         albums = new Albums(musics);
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                mainFrame = new MainFrame(musics);
-                setLinkers();
-            }
-        });
+        mainFrame = new MainFrame(musics);
+        setLinkers();
         MainClient main = new MainClient(musics, new User("test", null));
         albums.loadAlbums();
         songsTableListener.addSongs(loadingLibrary.generateTable(musics));
