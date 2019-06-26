@@ -1,7 +1,9 @@
 package Controller;
 
 import Listeners.TopLeftMenuListener;
+import Model.Albums;
 import Model.CustomizedFileChooser;
+import Model.Library;
 import Model.Music;
 import View.MainFrame;
 import org.farng.mp3.TagException;
@@ -13,9 +15,10 @@ import java.util.Vector;
 public class TopLeftMenuActions implements TopLeftMenuListener
 {
     private Vector<Music> musics;
-
-    public TopLeftMenuActions(Vector<Music> musics)
+    private Albums albums;
+    public TopLeftMenuActions(Vector<Music> musics,Albums albums)
     {
+        this.albums=albums;
         this.musics = musics;
     }
 
@@ -35,7 +38,10 @@ public class TopLeftMenuActions implements TopLeftMenuListener
                 try
                 {
                     customizedFileChooser.writeFiles(musics);
-                    System.out.println(musics);
+                    albums.loadAlbums();
+                    System.out.println(musics.size());
+                    for(Library library:albums.getAlbums())
+                        System.out.println(library.getName()+" "+library.getMusics().size());
                 }
                 catch (TagException ex)
                 {

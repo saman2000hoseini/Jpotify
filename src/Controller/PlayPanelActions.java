@@ -3,21 +3,22 @@ package Controller;
 import Listeners.PlayPanelListener;
 import Model.Music;
 import Model.Sort;
+import com.mpatric.mp3agic.Mp3File;
+import javazoom.jl.player.AudioDevice;
 
 import java.time.LocalDateTime;
 import java.util.Vector;
 
 public class PlayPanelActions implements PlayPanelListener
 {
-    private AudioPlayer audioPlayer;
+    private static AudioPlayer audioPlayer;
     private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private static int index = 0;
     private Vector<Music> playlist;
     private static Sort sort;
     private static int sortState = 8, lastSort = 8;
-    private boolean shuffleState;
-    private int repeatState;
-    private int playState;
+//    private AudioDevice audioDevice = System.out. ;
+    private static Thread player;
 
     public PlayPanelActions(Vector<Music> playlist)
     {
@@ -28,9 +29,6 @@ public class PlayPanelActions implements PlayPanelListener
     @Override
     public void state(boolean shuffleState, int repeatState, int playState, int plPaSk)
     {
-        this.shuffleState = shuffleState;
-        this.repeatState = repeatState;
-        this.playState = playState;
         switch (plPaSk)
         {
             case 0:
@@ -47,23 +45,23 @@ public class PlayPanelActions implements PlayPanelListener
                 }
                 break;
             case 1:
-                    try
-                    {
-                        audioPlayer.Stop();
-                    }
-                    catch (Exception ex)
-                    {
+                try
+                {
+                    audioPlayer.stop();
+                }
+                catch (Exception ex)
+                {
 
-                    }
-                    index--;
-                    if (index < 0)
-                        index = playlist.size() - 1;
-                    startPlayingMusic();
-                    playState = 2;
+                }
+                index--;
+                if (index < 0)
+                    index = playlist.size() - 1;
+                startPlayingMusic();
                 break;
             case 2:
                 if (playState != 2)
                 {
+                    System.out.println(playState);
                     if (playState == 0)
                         startPlayingMusic();
                     else
@@ -71,13 +69,13 @@ public class PlayPanelActions implements PlayPanelListener
                 }
                 else
                 {
-                    audioPlayer.pause();
+                    audioPlayer.pauseMusic();
                 }
                 break;
             case 3:
                 try
                 {
-                    audioPlayer.Stop();
+                    audioPlayer.stop();
                 }
                 catch (Exception ex)
                 {
@@ -87,7 +85,6 @@ public class PlayPanelActions implements PlayPanelListener
                 if (index > playlist.size() - 1)
                     index = 0;
                 startPlayingMusic();
-                playState = 2;
                 break;
             case 4:
                 if (repeatState == 0)
@@ -110,13 +107,11 @@ public class PlayPanelActions implements PlayPanelListener
     {
         try
         {
-//                Mp3File mp3File = new Mp3File();
-            audioPlayer = new AudioPlayer();
-//                player=new Thread(audioPlayer);
+            Mp3File mp3File = new Mp3File(playlist.get(index).getFileLocation());
+            audioPlayer = new AudioPlayer(playlist.get(index).getFileLocation(), mp3File.getFrameCount());
+            player = new Thread(audioPlayer);
             playlist.get(index).setLastPlayed(LocalDateTime.now());
-            fileAndFolderBrowsing.saveMusics(playlist);
-            System.out.println("here");
-            audioPlayer.Play(playlist.get(index).getFileLocation());
+            audioPlayer.playMusic(player);
         }
         catch (Exception ex)
         {

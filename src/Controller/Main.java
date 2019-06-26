@@ -1,6 +1,7 @@
 package Controller;
 
 import Listeners.PlayPanelListener;
+import Model.Albums;
 import Model.Library;
 import Model.Music;
 import Model.User;
@@ -20,6 +21,7 @@ public class Main
     private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private static MainFrame mainFrame;
     private static Vector<Library> libraries;
+    private static Albums albums;
 
     public static void main(String[] args) throws IOException
     {
@@ -37,10 +39,20 @@ public class Main
         }
         fileAndFolderBrowsing.loadFiles(musics);
         libraries = fileAndFolderBrowsing.loadLibraries();
-        System.out.println(libraries);
-        mainFrame = new MainFrame(musics);
-        setLinkers();
+        albums = new Albums(musics);
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mainFrame = new MainFrame(musics);
+                setLinkers();
+            }
+        });
         MainClient main = new MainClient(musics, new User("test", null));
+        albums.loadAlbums();
+        for (Library library : albums.getAlbums())
+            System.out.println(library.getName() + " " + library.getMusics().size());
     }
 
     private static void createDirs() throws IOException
@@ -66,7 +78,7 @@ public class Main
     {
         PlayPanelActions playPanelActions = new PlayPanelActions(musics);
         mainFrame.getMainPanel().getPlayPanel().setPlayPanelListener(playPanelActions);
-        TopLeftMenuActions topLeftMenuActions = new TopLeftMenuActions(musics);
+        TopLeftMenuActions topLeftMenuActions = new TopLeftMenuActions(musics, albums);
         mainFrame.getMainPanel().getWestPanel().getMenuForWestPanel().setTopLeftMenuListener(topLeftMenuActions);
     }
 }

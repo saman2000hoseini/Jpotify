@@ -228,8 +228,15 @@ public class FileAndFolderBrowsing
                             library.addMusics(songs);
                             libraries.add(library);
                         }
-                        objectInputStream.close();
-                        fileInputStream.close();
+                        try
+                        {
+                            objectInputStream.close();
+                            fileInputStream.close();
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
                     }
                     catch (IOException e)
                     {

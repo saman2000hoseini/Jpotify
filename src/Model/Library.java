@@ -14,6 +14,11 @@ public class Library
         this.name = name;
     }
 
+    public void addMusic(Music music)
+    {
+        this.musics.add(music);
+    }
+
     public void addMusics(Vector<Music> musics)
     {
         this.musics.addAll(musics);
@@ -63,11 +68,35 @@ public class Library
         try
         {
             File file = new File("./Library/"+this.name+".bin");
-            if (!name.equals("Favourites") && !name.equals("Shared Playlist"))
+            if (!name.equals("Favourites") && !name.equals("Shared playlist"))
                 file.delete();
         }catch (Exception e)
         {
 
         }
+    }
+    public void rename(String newName)
+    {
+        suicide();
+        name=newName;
+        savePlaylist();
+    }
+
+    public Vector<Music> getMusics()
+    {
+        return musics;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof Library && ((Library) obj).getName().equals(this.getName()))
+            return true;
+        return false;
     }
 }
