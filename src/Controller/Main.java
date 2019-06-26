@@ -1,6 +1,7 @@
 package Controller;
 
 import Listeners.PlayPanelListener;
+import Listeners.SongsTableListener;
 import Model.Albums;
 import Model.Library;
 import Model.Music;
@@ -9,6 +10,8 @@ import Network.Client.MainClient;
 import Network.Server.MainServer;
 import View.MainFrame;
 import View.PlayPanel;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
 import java.io.File;
@@ -22,11 +25,11 @@ public class Main
     private static MainFrame mainFrame;
     private static Vector<Library> libraries;
     private static Albums albums;
-
-    public static void main(String[] args) throws IOException
+    private static SongsTableListener songsTableListener = null ;
+    private static LoadingLibrary loadingLibrary = new LoadingLibrary();
+    public static void main(String[] args) throws IOException, InvalidDataException, UnsupportedTagException
     {
         createDirs();
-        LoadingLibrary lb = new LoadingLibrary();
         int port = 6500;
         try
         {
@@ -51,6 +54,7 @@ public class Main
         });
         MainClient main = new MainClient(musics, new User("test", null));
         albums.loadAlbums();
+        songsTableListener.addSongs(loadingLibrary.generateTable(musics));
         for (Library library : albums.getAlbums())
             System.out.println(library.getName() + " " + library.getMusics().size());
     }
@@ -80,5 +84,7 @@ public class Main
         mainFrame.getMainPanel().getPlayPanel().setPlayPanelListener(playPanelActions);
         TopLeftMenuActions topLeftMenuActions = new TopLeftMenuActions(musics, albums);
         mainFrame.getMainPanel().getWestPanel().getMenuForWestPanel().setTopLeftMenuListener(topLeftMenuActions);
+        songsTableListener=mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel();
+        topLeftMenuActions.setSongsTableListener(mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel());
     }
 }

@@ -14,6 +14,9 @@ import java.util.Vector;
 
 import Model.ID3v1;
 import Model.Music;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import com.sun.jdi.IntegerValue;
 import org.farng.mp3.MP3File;
 import org.farng.mp3.TagException;
@@ -334,6 +337,26 @@ public class LoadingLibrary
         }
         Music music = new Music(directory, artist, title, year, LocalDateTime.now(), null, genre, album);
         return music;
+    }
+
+    public String[][] generateTable(Vector<Music> musics) throws InvalidDataException, IOException, UnsupportedTagException
+    {
+        String[][] data = new String[musics.size()][8];
+        int counter = 0;
+        for (Music music : musics)
+        {
+            Mp3File mp3File = new Mp3File(music.getFileLocation());
+            data[counter][0] = "▶";
+            data[counter][1] = "✓";
+            data[counter][2] = music.getName();
+            data[counter][3] = music.getArtist();
+            data[counter][4] = music.getAlbum();
+            data[counter][5] = String.valueOf(music.getAddDate());
+            data[counter][6] = "● ● ●";
+            data[counter][7] = (mp3File.getLengthInSeconds() / 60) + ":" + (mp3File.getLengthInSeconds() - mp3File.getLengthInSeconds() / 60 * 60);
+            counter++;
+        }
+        return data;
     }
 }
 

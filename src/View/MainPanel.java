@@ -94,4 +94,9 @@ public class MainPanel extends JPanel {
     {
         return westPanel;
     }
+
+    public CentrePanel getCentrePanel()
+    {
+        return centrePanel;
+    }
 }

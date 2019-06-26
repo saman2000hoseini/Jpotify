@@ -1,11 +1,14 @@
 package Controller;
 
+import Listeners.SongsTableListener;
 import Listeners.TopLeftMenuListener;
 import Model.Albums;
 import Model.CustomizedFileChooser;
 import Model.Library;
 import Model.Music;
 import View.MainFrame;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import org.farng.mp3.TagException;
 
 import javax.swing.*;
@@ -16,6 +19,8 @@ public class TopLeftMenuActions implements TopLeftMenuListener
 {
     private Vector<Music> musics;
     private Albums albums;
+    private SongsTableListener songsTableListener = null;
+    private LoadingLibrary loadingLibrary = new LoadingLibrary();
     public TopLeftMenuActions(Vector<Music> musics,Albums albums)
     {
         this.albums=albums;
@@ -39,9 +44,7 @@ public class TopLeftMenuActions implements TopLeftMenuListener
                 {
                     customizedFileChooser.writeFiles(musics);
                     albums.loadAlbums();
-                    System.out.println(musics.size());
-                    for(Library library:albums.getAlbums())
-                        System.out.println(library.getName()+" "+library.getMusics().size());
+                    songsTableListener.addSongs(loadingLibrary.generateTable(musics));
                 }
                 catch (TagException ex)
                 {
@@ -55,7 +58,20 @@ public class TopLeftMenuActions implements TopLeftMenuListener
                 {
                     ex.printStackTrace();
                 }
+                catch (InvalidDataException e)
+                {
+                    e.printStackTrace();
+                }
+                catch (UnsupportedTagException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+
+    public void setSongsTableListener(SongsTableListener songsTableListener)
+    {
+        this.songsTableListener = songsTableListener;
     }
 }

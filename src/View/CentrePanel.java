@@ -322,4 +322,9 @@ public class CentrePanel extends JPanel {
             }
         }
     }
+
+    public SongsMainPanel getSongsMainPanel()
+    {
+        return songsMainPanel;
+    }
 }

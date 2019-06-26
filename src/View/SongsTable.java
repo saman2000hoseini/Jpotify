@@ -18,8 +18,8 @@ public class SongsTable extends JTable {
     private int selectedHeaderColumnIndex = -1;
     private TableRowSorter<TableModel> sorter;
 
-    public SongsTable(Object[][] data, Object[] columns) {
-        super(data, columns);
+    public SongsTable(DefaultTableModel defaultTableModel) {
+        super(defaultTableModel);
         setBorder(null);
         setBackground(new Color(24, 24, 24));
         RollOverListener lst = new RollOverListener(this);

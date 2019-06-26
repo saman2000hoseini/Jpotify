@@ -26,4 +26,9 @@ public class SongsMainPanel extends JPanel {
                 .addComponent(songsTablePanel, 596, 596, 596));
         this.setLayout(layout);
     }
+
+    public SongsTablePanel getSongsTablePanel()
+    {
+        return songsTablePanel;
+    }
 }
