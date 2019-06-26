@@ -5,9 +5,9 @@ import java.awt.*;
 
 public class CustomTextField extends JPanel {
     JTextField textField;
-    ImageIcon searchIcon;
-    ImageIcon closeIcon;
-    JLabel close;
+    private ImageIcon searchIcon;
+    private ImageIcon closeIcon;
+    private JLabel close;
 
     CustomTextField(int width, int height, ImageIcon searchIcon, ImageIcon closeIcon) {
         super();

@@ -28,79 +28,21 @@ public class ModernScrollPane extends JScrollPane {
     }
 
     public ModernScrollPane(Component view, int vsbPolicy, int hsbPolicy) {
-
         setBorder(null);
 
         // Set ScrollBar UI
         JScrollBar verticalScrollBar = getVerticalScrollBar();
         verticalScrollBar.setOpaque(false);
         verticalScrollBar.setUI(new ModernScrollBarUI(this));
+        getVerticalScrollBar().setBorder(null);
 
         JScrollBar horizontalScrollBar = getHorizontalScrollBar();
         horizontalScrollBar.setOpaque(false);
         horizontalScrollBar.setUI(new ModernScrollBarUI(this));
-
-        setLayout(new ScrollPaneLayout() {
-            private static final long serialVersionUID = 5740408979909014146L;
-
-            @Override
-            public void layoutContainer(Container parent) {
-                Rectangle availR = ((JScrollPane) parent).getBounds();
-                availR.x = availR.y = 0;
-
-                // viewport
-                Insets insets = parent.getInsets();
-                availR.x = insets.left;
-                availR.y = insets.top;
-                availR.width -= insets.left + insets.right;
-                availR.height -= insets.top + insets.bottom;
-                if (viewport != null) {
-                    viewport.setBounds(availR);
-                }
-
-                boolean vsbNeeded = isVerticalScrollBarfNecessary();
-                boolean hsbNeeded = isHorizontalScrollBarNecessary();
-
-                // vertical scroll bar
-                Rectangle vsbR = new Rectangle();
-                vsbR.width = SB_SIZE;
-                vsbR.height = availR.height - (hsbNeeded ? vsbR.width : 0);
-                vsbR.x = availR.x + availR.width - vsbR.width;
-                vsbR.y = availR.y;
-                if (vsb != null) {
-                    vsb.setBounds(vsbR);
-                }
-
-                // horizontal scroll bar
-                Rectangle hsbR = new Rectangle();
-                hsbR.height = SB_SIZE;
-                hsbR.width = availR.width - (vsbNeeded ? hsbR.height : 0);
-                hsbR.x = availR.x;
-                hsbR.y = availR.y + availR.height - hsbR.height;
-                if (hsb != null) {
-                    hsb.setBounds(hsbR);
-                }
-            }
-        });
-
-        // Layering
-        setComponentZOrder(getVerticalScrollBar(), 0);
-        setComponentZOrder(getHorizontalScrollBar(), 1);
-        setComponentZOrder(getViewport(), 2);
-
+        getHorizontalScrollBar().setBorder(null);
         viewport.setView(view);
-    }
-
-    private boolean isVerticalScrollBarfNecessary() {
-        Rectangle viewRect = viewport.getViewRect();
-        Dimension viewSize = viewport.getViewSize();
-        return viewSize.getHeight() > viewRect.getHeight();
-    }
-
-    private boolean isHorizontalScrollBarNecessary() {
-        Rectangle viewRect = viewport.getViewRect();
-        Dimension viewSize = viewport.getViewSize();
-        return viewSize.getWidth() > viewRect.getWidth();
+        setBackground(new Color(24, 24, 24));
+        viewport.setBackground(new Color(24, 24, 24));
     }
 
     /**
@@ -126,6 +68,20 @@ public class ModernScrollPane extends JScrollPane {
 
         @Override
         protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+            int orientation = scrollbar.getOrientation();
+            int x = trackBounds.x;
+            int y = trackBounds.y;
+
+            int width = orientation == JScrollBar.VERTICAL ? THUMB_SIZE : trackBounds.width;
+            width = Math.max(width, THUMB_SIZE);
+
+            int height = orientation == JScrollBar.VERTICAL ? trackBounds.height : THUMB_SIZE;
+            height = Math.max(height, THUMB_SIZE);
+
+            Graphics2D graphics2D = (Graphics2D) g.create();
+            graphics2D.setColor(new Color(24, 24, 24));
+            graphics2D.fillRect(x, y, width, height);
+            graphics2D.dispose();
         }
 
         @Override
@@ -164,7 +120,7 @@ public class ModernScrollPane extends JScrollPane {
                 super();
                 setBackground(new Color(18, 18, 18));
                 setForeground(new Color(158, 158, 158));
-                setOpaque(false);
+                setOpaque(true);
                 setFocusable(false);
                 setBorder(BorderFactory.createEmptyBorder());
                 setBorderPainted(false);

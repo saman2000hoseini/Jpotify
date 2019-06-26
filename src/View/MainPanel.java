@@ -55,7 +55,7 @@ public class MainPanel extends JPanel {
                                 .addComponent(westPanel, 500, 952, Short.MAX_VALUE)
                                 .addComponent(centrePanel, 500, 952, Short.MAX_VALUE)
                                 .addComponent(friendsPanel, 500, 952, Short.MAX_VALUE))
-                        .addComponent(playPanel, 88, 88, Short.MAX_VALUE));
+                        .addComponent(playPanel, 72, 88, Short.MAX_VALUE));
             } else {
                 if (friendsPanel != null)
                     remove(friendsPanel);
