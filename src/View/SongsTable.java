@@ -1,5 +1,6 @@
 package View;
 
+import Listeners.PlayListChanged;
 import Listeners.SongsTableButtons;
 
 import java.awt.*;
@@ -21,6 +22,7 @@ public class SongsTable extends JTable {
     private TableRowSorter<TableModel> sorter;
     private SongsTableButtons songsTableButtons = null;
     private DefaultTableModel defaultTableModel;
+    private PlayListChanged playListChanged = null;
     public SongsTable(DefaultTableModel defaultTableModel) {
         super(defaultTableModel);
         this.defaultTableModel = defaultTableModel;
