@@ -196,13 +196,18 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons
             index = playlist.indexOf(temp)-1;
             state(shuffleState,repeatState,playState,3);
         }
-        else
+        else if(col == 1)
         {
             Music temp = new Music(null, artist, name, null, null, null, null, null);
             temp = playlist.get(playlist.indexOf(temp));
             File file = new File(temp.getFileLocation());
             file.delete();
             playlist.remove(temp);
+            if (playState==2)
+            {
+                index--;
+                state(shuffleState, repeatState, playState, 3);
+            }
         }
     }
 }
