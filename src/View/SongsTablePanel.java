@@ -13,11 +13,12 @@ public class SongsTablePanel extends JPanel implements SongsTableListener
     private SongsTable songsTable;
     private ModernScrollPane modernScrollPane;
     private Object data[][]=null;
+    static DefaultTableModel defaultTableModel;
     SongsTablePanel()
     {
         super();
         String columns[] = {"","","TITLE", "ARTIST", "ALBUM", "\uD83D\uDCC6", "","\uD83D\uDD52"};
-        DefaultTableModel defaultTableModel = new DefaultTableModel(data,columns);
+        defaultTableModel = new DefaultTableModel(data,columns);
         songsTable = new SongsTable(defaultTableModel);
         songsTable.setBorder(null);
         modernScrollPane = new ModernScrollPane(songsTable);

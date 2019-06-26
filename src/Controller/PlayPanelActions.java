@@ -1,6 +1,7 @@
 package Controller;
 
 import Listeners.PlayPanelListener;
+import Listeners.SongsPanelListener;
 import Listeners.SongsTableButtons;
 import Model.Music;
 import Model.Sort;
@@ -11,7 +12,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Vector;
 
-public class PlayPanelActions implements PlayPanelListener, SongsTableButtons
+public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, SongsPanelListener
 {
     private static AudioPlayer audioPlayer;
     private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
@@ -205,9 +206,30 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons
             playlist.remove(temp);
             if (playState==2)
             {
-                index--;
-                state(shuffleState, repeatState, playState, 3);
+                index=0;
+                playState=0;
+                audioPlayer.stop();
             }
+        }
+    }
+
+    @Override
+    public void playMusic(boolean isPaused, String name, String artist)
+    {
+        Music temp = new Music(null, artist, name, null, null, null, null, null);
+        temp = playlist.get(playlist.indexOf(temp));
+        if (isPaused)
+        {
+            state(shuffleState,repeatState,playState,2);
+        }
+        else if (playState==0)
+        {
+            index = playlist.indexOf(temp)-1;
+            state(shuffleState,repeatState,playState,3);
+        }
+        else
+        {
+            state(shuffleState,repeatState,playState,2);
         }
     }
 }

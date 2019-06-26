@@ -31,4 +31,9 @@ public class SongsMainPanel extends JPanel {
     {
         return songsTablePanel;
     }
+
+    public SongsPanel getSongsPanel()
+    {
+        return songsPanel;
+    }
 }

@@ -181,9 +181,11 @@ public class SongsTable extends JTable {
                 PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                 PlayPanel.playState = 2;
             }
-            else
+            else if(col==1)
             {
                 defaultTableModel.removeRow(row);
+                PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
+                PlayPanel.playState = 0;
             }
         }
 
