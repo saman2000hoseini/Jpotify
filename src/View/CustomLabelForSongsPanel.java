@@ -5,10 +5,12 @@ import java.awt.*;
 
 public class CustomLabelForSongsPanel extends JPanel {
     private JLabel label;
+    private Color color;
 
-    CustomLabelForSongsPanel(String text, int width, int height) {
+    CustomLabelForSongsPanel(String text, int width, int height, Color color) {
         super();
         this.setSize(width, height);
+        this.color = color;
         label = new JLabel(text);
         label.setSize(this.getWidth() - this.getHeight(), this.getHeight());
         label.setForeground(new Color(220, 220, 220));
@@ -28,10 +30,26 @@ public class CustomLabelForSongsPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D gd = (Graphics2D) g.create();
         StringMetrics s = new StringMetrics(gd);
-        gd.setColor(new Color(29, 178, 73, 255));
+        gd.setColor(color);
         gd.fillOval(0, 0, this.getHeight(), this.getHeight());
         gd.fillRect(this.getHeight() / 2, 0, this.getWidth() - this.getHeight(), this.getHeight());
         gd.fillOval(this.getWidth() - this.getHeight(), 0, this.getHeight(), this.getHeight());
         gd.dispose();
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setText(String text) {
+        label.setText(text);
+    }
+
+    public String getText() {
+        return label.getText();
     }
 }

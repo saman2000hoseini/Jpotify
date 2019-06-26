@@ -10,7 +10,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/Compressed/jar_files/jid3lib-0.5.4.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libraries/jid3lib-0.5.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,7 +19,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/Compressed/jar_files/jlayer-1.0.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libraries/jlayer-1.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,7 +28,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/Compressed/jar_files/jmf-2.1.1e.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libraries/jmf-2.1.1e.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -37,7 +37,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/Compressed/jar_files/mp3agic-0.9.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libraries/jsoup-1.6.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -46,7 +46,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/Compressed/jar_files/jsoup-1.6.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libraries/mp3agic-0.9.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

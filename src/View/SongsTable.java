@@ -166,6 +166,23 @@ public class SongsTable extends JTable {
             this.table = table;
         }
 
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            super.mouseClicked(e);
+            int row = rowAtPoint(e.getPoint());
+            int col = columnAtPoint(e.getPoint());
+            // Play the song
+            if (col == 0)
+            {
+
+            }
+            // Delete The song
+            if (col == 1)
+            {
+
+            }
+        }
+
         public void mouseExited(MouseEvent e) {
             rollOverRowIndex = -1;
             rollOverColumnIndex = -1;

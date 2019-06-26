@@ -44,6 +44,7 @@ public class Main
         libraries = fileAndFolderBrowsing.loadLibraries();
         albums = new Albums(musics);
         mainFrame = new MainFrame(musics);
+        mainFrame.getMainPanel().update();
         setLinkers();
         MainClient main = new MainClient(musics, new User("test", null));
         albums.loadAlbums();
