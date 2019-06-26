@@ -224,8 +224,8 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
         }
         else if (playState==0)
         {
-            index = playlist.indexOf(temp)-1;
-            state(shuffleState,repeatState,playState,3);
+            index = playlist.indexOf(temp);
+            state(shuffleState,repeatState,playState,2);
         }
         else
         {

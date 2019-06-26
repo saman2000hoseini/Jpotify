@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 public class SongsPanel extends JPanel
 {
     private JLabel songs = new JLabel("Songs");
-    private CustomLabelForSongsPanel customLabelForSongsPanel =
+    static CustomLabelForSongsPanel customLabelForSongsPanel =
             new CustomLabelForSongsPanel("PLAY", 108, 32, new Color(29, 178, 73, 255));
     private GroupLayout layout;
     private SongsPanelListener songsPanelListener = null;
@@ -52,7 +52,7 @@ public class SongsPanel extends JPanel
             if (customLabelForSongsPanel.getText().equals("PLAY"))
             {
                 customLabelForSongsPanel.setText("PAUSE");
-                PlayPanel.playState = 1;
+                PlayPanel.playState = 2;
                 PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                 songsPanelListener.playMusic(false, (String) SongsTablePanel.defaultTableModel.getValueAt(0,2), (String) SongsTablePanel.defaultTableModel.getValueAt(0,3));
                 //Pause the song
@@ -61,7 +61,7 @@ public class SongsPanel extends JPanel
             {
                 customLabelForSongsPanel.setText("PLAY");
                 PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
-                PlayPanel.playState = 2;
+                PlayPanel.playState = 1;
                 songsPanelListener.playMusic(true, (String) SongsTablePanel.defaultTableModel.getValueAt(0,2), (String) SongsTablePanel.defaultTableModel.getValueAt(0,3));
                 //Resume the song if any song is playing or play the first row
             }
@@ -86,6 +86,7 @@ public class SongsPanel extends JPanel
 
     public void setSongsPanelListener(SongsPanelListener songsPanelListener)
     {
+        System.out.println("here");
         this.songsPanelListener = songsPanelListener;
     }
 }

@@ -232,7 +232,11 @@ public class PlayPanel extends JPanel
                 finally
                 {
                     if (playState != 2)
+                    {
                         play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
+                        SongsPanel.customLabelForSongsPanel.setText("PAUSE");
+                    }
+
                 }
                 playState = 2;
             }
@@ -241,11 +245,13 @@ public class PlayPanel extends JPanel
                 playPanelListener.state(shuffleState,repeatState,playState,2);
                 if (playState != 2)
                 {
+                    SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                     play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                     playState = 2;
                 }
                 else
                 {
+                    SongsPanel.customLabelForSongsPanel.setText("PLAY");
                     play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                     playState = 1;
                 }
@@ -267,7 +273,10 @@ public class PlayPanel extends JPanel
                 finally
                 {
                     if (playState != 2)
+                    {
+                        SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                         play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
+                    }
                 }
                 playState = 2;
             }
