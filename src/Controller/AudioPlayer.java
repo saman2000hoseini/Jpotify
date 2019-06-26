@@ -1,131 +1,49 @@
 package Controller;
 
-import java.awt.event.MouseListener;
-import java.io.BufferedInputStream;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.advanced.AdvancedPlayer;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
-
-public class AudioPlayer
-{
-
-    FileInputStream FIS;
-    BufferedInputStream BIS;
-    public long SongTotalLength;
-    public long PauseLocation;
-    public String FilePath;
-
-    public Player player;
-
-    public void Stop()
-    {
-        if (player != null)
-        {
-
-            PauseLocation = SongTotalLength;
-            player.close();
-
-        }
+public class AudioPlayer implements Runnable {
+    private int value;
+    private int totalFrame;
+    private String path;
+    public AdvancedPlayer player;
+    Thread t;
+    public AudioPlayer(String path,int totalFrame) {
+        this.path = path;
+        this.totalFrame = totalFrame;
+        value = 0;
     }
 
-    public void pause()
-    {
-        if (player != null)
-        {
-            try
-            {
-                PauseLocation = FIS.available();
-                player.close();
-            }
-            catch (IOException e)
-            {
-
-            }
-        }
+    public void playMusic(Thread t){
+        this.t = t;
+        t.start();
     }
-
-    public void resume()
-    {
-        try
-        {
-            FIS = new FileInputStream(FilePath);
-            SongTotalLength = FIS.available();
-            FIS.skip(SongTotalLength - PauseLocation);
-            BIS = new BufferedInputStream(FIS);
-            player = new Player(BIS);
-
-        }
-        catch (FileNotFoundException | JavaLayerException e)
-        {
-        }
-        catch (IOException e)
-        {
-        }
-        new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    player.play();
-                    if (player.isComplete())
-                    {
-
-                    }
-                }
-                catch (JavaLayerException e)
-                {
-
-                }
-            }
-        }.start();
-
-
+    public  void pauseMusic(){
+        t.suspend();
     }
-
-    public void Play(String path)
-    {
-        try
-        {
+    public void resume(){
+        t.resume();
+    }
+    public void run() {
+        FileInputStream FIS ;
+        try {
             FIS = new FileInputStream(path);
-            BIS = new BufferedInputStream(FIS);
-            player = new Player(BIS);
-            FilePath = path + "";
-            SongTotalLength = FIS.available();
+            player = new AdvancedPlayer(FIS);
+            player.play(value,totalFrame);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (JavaLayerException e) {
+            e.printStackTrace();
         }
-        catch (JavaLayerException | FileNotFoundException ex)
-        {
-
-        }
-        catch (IOException e)
-        {
-            //because of	FIS>availabe
-        }
-
-        new Thread()
-        {
-            @Override
-            // rum method starts any thread
-            public void run()
-            {
-                try
-                {
-                    player.play();
-                }
-                catch (JavaLayerException e)
-                {
-
-                }
-            }
-        }.start();
 
 
     }
-
+    public void playLocation(int value){
+        this.value = value;
+    }
+    public void stop(){
+        t.stop();
+    }
 }

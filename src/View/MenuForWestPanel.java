@@ -1,14 +1,13 @@
 package View;
-import Model.CustomizedFileChooser;
-import org.farng.mp3.TagException;
+
+import Listeners.PlayPanelListener;
+import Listeners.TopLeftMenuListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 
 public class MenuForWestPanel extends JMenuBar
 {
@@ -33,7 +32,7 @@ public class MenuForWestPanel extends JMenuBar
     private JMenuItem volumeDown = new JMenuItem("Volume Down");
     private JMenuItem jpotifyHelp = new JMenuItem("JPotify Help");
     private JMenuItem aboutJPotify = new JMenuItem("About JPotify");
-
+    private TopLeftMenuListener topLeftMenuListener;
     MenuForWestPanel()
     {
         super();
@@ -88,6 +87,11 @@ public class MenuForWestPanel extends JMenuBar
         newSong.addMouseListener(listenerForMouse);
     }
 
+    public void setTopLeftMenuListener(TopLeftMenuListener topLeftMenuListener)
+    {
+        this.topLeftMenuListener = topLeftMenuListener;
+    }
+
     private class ListenerForMouse implements MouseListener
     {
         @Override
@@ -104,35 +108,13 @@ public class MenuForWestPanel extends JMenuBar
 
         private void menuActions(MouseEvent e)
         {
-            System.out.println("here");
             if (e.getSource() == exit)
             {
-                System.exit(0);
+                topLeftMenuListener.state(0);
             }
             else if (e.getSource() == newSong)
             {
-                CustomizedFileChooser customizedFileChooser = new CustomizedFileChooser();
-                int returnVal = customizedFileChooser.showOpenDialog(null);
-                if (returnVal== JFileChooser.APPROVE_OPTION)
-                {
-                    try
-                    {
-                        customizedFileChooser.writeFiles(MainFrame.musics);
-                        System.out.println(MainFrame.musics);
-                    }
-                    catch (TagException ex)
-                    {
-                        ex.printStackTrace();
-                    }
-                    catch (IOException ex)
-                    {
-                        ex.printStackTrace();
-                    }
-                    catch (ClassNotFoundException ex)
-                    {
-                        ex.printStackTrace();
-                    }
-                }
+                topLeftMenuListener.state(1);
             }
         }
 

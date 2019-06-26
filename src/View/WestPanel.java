@@ -265,4 +265,9 @@ public class WestPanel extends JPanel {
             }
         }
     }
+
+    public MenuForWestPanel getMenuForWestPanel()
+    {
+        return menuForWestPanel;
+    }
 }
