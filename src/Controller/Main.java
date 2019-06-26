@@ -80,5 +80,7 @@ public class Main
         mainFrame.getMainPanel().getWestPanel().getMenuForWestPanel().setTopLeftMenuListener(topLeftMenuActions);
         songsTableListener=mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel();
         topLeftMenuActions.setSongsTableListener(mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel());
+        mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().setSongsTableButtons(playPanelActions);
+
     }
 }

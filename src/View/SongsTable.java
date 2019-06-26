@@ -1,5 +1,7 @@
 package View;
 
+import Listeners.SongsTableButtons;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -17,9 +19,11 @@ public class SongsTable extends JTable {
     private int rollOverHeaderColumnIndex = -1;
     private int selectedHeaderColumnIndex = -1;
     private TableRowSorter<TableModel> sorter;
-
+    private SongsTableButtons songsTableButtons = null;
+    private DefaultTableModel defaultTableModel;
     public SongsTable(DefaultTableModel defaultTableModel) {
         super(defaultTableModel);
+        this.defaultTableModel = defaultTableModel;
         setBorder(null);
         setBackground(new Color(24, 24, 24));
         RollOverListener lst = new RollOverListener(this);
@@ -171,15 +175,15 @@ public class SongsTable extends JTable {
             super.mouseClicked(e);
             int row = rowAtPoint(e.getPoint());
             int col = columnAtPoint(e.getPoint());
-            // Play the song
-            if (col == 0)
+            songsTableButtons.doAction(col, (String) dataModel.getValueAt(row,2), (String) dataModel.getValueAt(row,3));
+            if (col==0)
             {
-
+                PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
+                PlayPanel.playState = 2;
             }
-            // Delete The song
-            if (col == 1)
+            else
             {
-
+                defaultTableModel.removeRow(row);
             }
         }
 
@@ -202,5 +206,10 @@ public class SongsTable extends JTable {
                 repaint();
             }
         }
+    }
+
+    public void setSongsTableButtons(SongsTableButtons songsTableButtons)
+    {
+        this.songsTableButtons = songsTableButtons;
     }
 }

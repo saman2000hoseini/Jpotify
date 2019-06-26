@@ -58,7 +58,7 @@ public class FileAndFolderBrowsing
         else
         {
             Music temp = loadingLibrary.processFile(path);
-            if (!songs.contains(temp))
+            if (!songs.contains(temp) && temp!=null)
                 songs.add(temp);
         }
         for (Music music : songs)

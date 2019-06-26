@@ -54,7 +54,7 @@ public class Music implements Serializable
         this.name = name;
         this.addDate = addDate;
         this.lastPlayed = lastPlayed;
-        this.year=year;
+        this.year = year;
     }
 
     public LocalDateTime getAddDate()
@@ -110,7 +110,7 @@ public class Music implements Serializable
     @Override
     public boolean equals(Object obj)
     {
-        if (obj instanceof Music && ((Music) obj).getName().equals(this.getName())&&((Music) obj).getArtist().equals(this.getArtist()))
+        if (obj instanceof Music && ((Music) obj).getName() != null && ((Music) obj).getArtist() != null && ((Music) this).getArtist() != null && ((Music) this).getName() != null && ((Music) obj).getName().equals(this.getName()) && ((Music) obj).getArtist().equals(this.getArtist()))
             return true;
         return false;
     }

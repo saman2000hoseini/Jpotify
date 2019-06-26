@@ -22,7 +22,7 @@ public class PlayPanel extends JPanel
 {
     private boolean shuffleState = false;
     private int repeatState = 0;
-    private int playState =0;
+    static int playState =0;
     private PlayPanelListener playPanelListener = null;
 
     public PlayPanelListener getPlayPanelListener()
@@ -30,7 +30,7 @@ public class PlayPanel extends JPanel
         return playPanelListener;
     }
 
-    JLabel shuffle = new JLabel("\uD83D\uDD00")
+    static JLabel shuffle = new JLabel("\uD83D\uDD00")
     {
         @Override
         public JToolTip createToolTip()
@@ -49,7 +49,7 @@ public class PlayPanel extends JPanel
             return new Point(-1 * super.getWidth() + 3, super.getHeight());
         }
     };
-    JLabel skip_backward = new JLabel("⏮")
+    static JLabel skip_backward = new JLabel("⏮")
     {
         @Override
         public JToolTip createToolTip()
@@ -68,7 +68,8 @@ public class PlayPanel extends JPanel
             return new Point(-1 * super.getWidth(), super.getHeight());
         }
     };
-    JLabel play = new JLabel(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35))
+
+    static JLabel play = new JLabel(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35))
     {
         @Override
         public JToolTip createToolTip()
@@ -87,7 +88,7 @@ public class PlayPanel extends JPanel
             return new Point(0, super.getHeight());
         }
     };
-    JLabel skip_forward = new JLabel("⏭")
+    static JLabel skip_forward = new JLabel("⏭")
     {
         @Override
         public JToolTip createToolTip()

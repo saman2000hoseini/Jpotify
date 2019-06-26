@@ -52,9 +52,9 @@ public class LoadingLibrary
         for (String directory : audios)
         {
             Music music = this.processFile(directory);
-            if (music.getAddDate() == null)
+            if (music!=null && music.getAddDate() == null)
                 music.setAddDate(LocalDateTime.now());
-            if (!musics.contains(music))
+            if (music!=null && !musics.contains(music))
                 musics.add(music);
         }
         return musics;
@@ -284,7 +284,7 @@ public class LoadingLibrary
     {
         File file = new File(directory);
         MP3File mp3File = new MP3File(file);
-        String title, artist, album, year, genre;
+        String title= null, artist= null, album = null, year= null, genre= null;
         /* extra point
         BufferedInputStream bufferedReader = new BufferedInputStream(new FileInputStream(file));
         int len = (int) (file.length()-128);
@@ -318,21 +318,46 @@ public class LoadingLibrary
         System.out.println(genre);
         bufferedReader.close();
          */
-        if (mp3File.getID3v2Tag() != null)
+        if (mp3File.getID3v2Tag().getSongTitle() != null && !mp3File.getID3v2Tag().getSongTitle().trim().equals(""))
         {
             title = mp3File.getID3v2Tag().getSongTitle();
-            artist = mp3File.getID3v2Tag().getLeadArtist();
-            album = mp3File.getID3v2Tag().getAlbumTitle();
-            year = mp3File.getID3v2Tag().getYearReleased();
-            genre = mp3File.getID3v2Tag().getSongGenre();
-//            System.out.println(genre);
         }
-        else
+        else if (mp3File.getID3v1Tag()!=null)
         {
             title = mp3File.getID3v1Tag().getTitle();
+        }
+        else return null;
+        if (mp3File.getID3v2Tag().getLeadArtist() != null && !mp3File.getID3v2Tag().getLeadArtist().trim().equals(""))
+        {
+            artist = mp3File.getID3v2Tag().getLeadArtist();
+        }
+        else if (mp3File.getID3v1Tag()!=null)
+        {
             artist = mp3File.getID3v1Tag().getArtist();
+        }
+        else return null;
+        if (mp3File.getID3v2Tag().getAlbumTitle() != null && !mp3File.getID3v2Tag().getAlbumTitle().trim().equals(""))
+        {
+            album = mp3File.getID3v2Tag().getAlbumTitle();
+        }
+        else if (mp3File.getID3v1Tag()!=null)
+        {
             album = mp3File.getID3v1Tag().getAlbum();
+        }
+        if (mp3File.getID3v2Tag().getSongTitle() != null && !mp3File.getID3v2Tag().getSongTitle().trim().equals(""))
+        {
+            year = mp3File.getID3v2Tag().getYearReleased();
+        }
+        else if (mp3File.getID3v1Tag()!=null)
+        {
             year = mp3File.getID3v1Tag().getYear();
+        }
+        if (mp3File.getID3v2Tag().getSongTitle() != null && !mp3File.getID3v2Tag().getSongTitle().trim().equals(""))
+        {
+            genre = mp3File.getID3v2Tag().getSongGenre();
+        }
+        else if (mp3File.getID3v1Tag()!=null)
+        {
             genre = new ID3v1().getGENRES(mp3File.getID3v1Tag().getGenre());
         }
         Music music = new Music(directory, artist, title, year, LocalDateTime.now(), null, genre, album);

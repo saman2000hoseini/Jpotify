@@ -1,15 +1,17 @@
 package Controller;
 
 import Listeners.PlayPanelListener;
+import Listeners.SongsTableButtons;
 import Model.Music;
 import Model.Sort;
 import com.mpatric.mp3agic.Mp3File;
 import javazoom.jl.player.AudioDevice;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Vector;
 
-public class PlayPanelActions implements PlayPanelListener
+public class PlayPanelActions implements PlayPanelListener, SongsTableButtons
 {
     private static AudioPlayer audioPlayer;
     private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
@@ -17,8 +19,11 @@ public class PlayPanelActions implements PlayPanelListener
     private Vector<Music> playlist;
     private static Sort sort;
     private static int sortState = 8, lastSort = 8;
-//    private AudioDevice audioDevice = System.out. ;
+    //    private AudioDevice audioDevice = System.out. ;
     private static Thread player;
+    private boolean shuffleState = false;
+    private int repeatState = 0;
+    private int playState = 0;
 
     public PlayPanelActions(Vector<Music> playlist)
     {
@@ -29,17 +34,22 @@ public class PlayPanelActions implements PlayPanelListener
     @Override
     public void state(boolean shuffleState, int repeatState, int playState, int plPaSk)
     {
+        this.repeatState = repeatState;
+        this.playState = playState;
+        this.shuffleState = shuffleState;
         switch (plPaSk)
         {
             case 0:
                 if (!shuffleState)
                 {
+                    this.shuffleState=true;
                     lastSort = sortState;
                     sortState = 10;
                     sortPlaylist();
                 }
                 else
                 {
+                    this.shuffleState = false;
                     sortState = lastSort;
                     sortPlaylist();
                 }
@@ -54,6 +64,7 @@ public class PlayPanelActions implements PlayPanelListener
 
                 }
                 index--;
+                this.playState = 2;
                 if (index < 0)
                     index = playlist.size() - 1;
                 startPlayingMusic();
@@ -63,12 +74,19 @@ public class PlayPanelActions implements PlayPanelListener
                 {
                     System.out.println(playState);
                     if (playState == 0)
+                    {
                         startPlayingMusic();
+                        this.playState = 2;
+                    }
                     else
+                    {
+                        this.playState = 2;
                         audioPlayer.resume();
+                    }
                 }
                 else
                 {
+                    this.playState = 1;
                     audioPlayer.pauseMusic();
                 }
                 break;
@@ -84,20 +102,21 @@ public class PlayPanelActions implements PlayPanelListener
                 index++;
                 if (index > playlist.size() - 1)
                     index = 0;
+                this.playState = 2;
                 startPlayingMusic();
                 break;
             case 4:
                 if (repeatState == 0)
                 {
-                    repeatState = 1;
+                    this.repeatState = 1;
                 }
                 else if (repeatState == 1)
                 {
-                    repeatState = 2;
+                    this.repeatState = 2;
                 }
                 else if (repeatState == 2)
                 {
-                    repeatState = 0;
+                    this.repeatState = 0;
                 }
                 break;
         }
@@ -166,5 +185,24 @@ public class PlayPanelActions implements PlayPanelListener
         index = 0;
         this.playlist = playlist;
         sortPlaylist();
+    }
+
+    @Override
+    public void doAction(int col, String name, String artist)
+    {
+        if (col == 0)
+        {
+            Music temp = new Music(null, artist, name, null, null, null, null, null);
+            index = playlist.indexOf(temp)-1;
+            state(shuffleState,repeatState,playState,3);
+        }
+        else
+        {
+            Music temp = new Music(null, artist, name, null, null, null, null, null);
+            temp = playlist.get(playlist.indexOf(temp));
+            File file = new File(temp.getFileLocation());
+            file.delete();
+            playlist.remove(temp);
+        }
     }
 }
