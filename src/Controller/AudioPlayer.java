@@ -46,4 +46,9 @@ public class AudioPlayer implements Runnable {
     public void stop(){
         t.stop();
     }
+
+    public String getPath()
+    {
+        return path;
+    }
 }

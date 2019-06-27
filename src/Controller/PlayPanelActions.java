@@ -43,7 +43,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
             case 0:
                 if (!shuffleState)
                 {
-                    this.shuffleState=true;
+                    this.shuffleState = true;
                     lastSort = sortState;
                     sortState = 10;
                     sortPlaylist();
@@ -194,20 +194,33 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
         if (col == 0)
         {
             Music temp = new Music(null, artist, name, null, null, null, null, null);
-            index = playlist.indexOf(temp)-1;
-            state(shuffleState,repeatState,playState,3);
+            index = playlist.indexOf(temp) - 1;
+            temp = playlist.get(index + 1);
+            if (playState == 2)
+            {
+                state(shuffleState, repeatState, playState, 2);
+                playState = 1;
+            }
+            else
+            {
+                if (audioPlayer!=null && audioPlayer.getPath() == temp.getFileLocation())
+                    state(shuffleState, repeatState, playState, 2);
+                else
+                    state(shuffleState, repeatState, playState, 3);
+                playState = 2;
+            }
         }
-        else if(col == 1)
+        else if (col == 1)
         {
             Music temp = new Music(null, artist, name, null, null, null, null, null);
             temp = playlist.get(playlist.indexOf(temp));
             File file = new File(temp.getFileLocation());
             file.delete();
             playlist.remove(temp);
-            if (playState==2)
+            if (playState == 2)
             {
-                index=0;
-                playState=0;
+                index = 0;
+                playState = 0;
                 audioPlayer.stop();
             }
         }
@@ -220,16 +233,16 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
         temp = playlist.get(playlist.indexOf(temp));
         if (isPaused)
         {
-            state(shuffleState,repeatState,playState,2);
+            state(shuffleState, repeatState, playState, 2);
         }
-        else if (playState==0)
+        else if (playState == 0)
         {
             index = playlist.indexOf(temp);
-            state(shuffleState,repeatState,playState,2);
+            state(shuffleState, repeatState, playState, 2);
         }
         else
         {
-            state(shuffleState,repeatState,playState,2);
+            state(shuffleState, repeatState, playState, 2);
         }
     }
 }

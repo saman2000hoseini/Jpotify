@@ -13,7 +13,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.*;
 
-public class SongsTable extends JTable {
+public class SongsTable extends JTable
+{
 
     private int rollOverRowIndex = -1;
     private int rollOverColumnIndex = -1;
@@ -25,7 +26,8 @@ public class SongsTable extends JTable {
     private DefaultTableModel defaultTableModel;
     private PlayListChanged playListChanged = null;
 
-    public SongsTable(DefaultTableModel defaultTableModel) {
+    public SongsTable(DefaultTableModel defaultTableModel)
+    {
         super(defaultTableModel);
         this.defaultTableModel = defaultTableModel;
         setBorder(null);
@@ -78,27 +80,37 @@ public class SongsTable extends JTable {
         setRowSorter(sorter);
     }
 
-    public void newFilter(String text) {
+    public void newFilter(String text)
+    {
         RowFilter<TableModel, Object> filter = null;
-        try {
+        try
+        {
             filter = RowFilter.regexFilter(text);
-        } catch (java.util.regex.PatternSyntaxException e) {
+        }
+        catch (java.util.regex.PatternSyntaxException e)
+        {
             return;
         }
         sorter.setRowFilter(filter);
     }
 
-    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+    public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
+    {
         Component c = super.prepareRenderer(renderer, row, column);
-        if (c instanceof SongsTableCellRenderer) {
-            if (row == rollOverRowIndex) {
-                if ((row == rollOverRowIndex && column == rollOverColumnIndex) && column < 5 || column == 6) {
+        if (c instanceof SongsTableCellRenderer)
+        {
+            if (row == rollOverRowIndex)
+            {
+                if ((row == rollOverRowIndex && column == rollOverColumnIndex) && column < 5 || column == 6)
+                {
                     ((SongsTableCellRenderer) c).setRolledOver(true);
                     if (column == 1)
                         ((SongsTableCellRenderer) c).setText("☓");
                     if (column == 0 && PlayPanel.playState == 2 && row == selectedRowIndex)
                         ((SongsTableCellRenderer) c).setText("\u23F8");
-                } else {
+                }
+                else
+                {
                     ((SongsTableCellRenderer) c).setRolledOver(false);
                     if (column == 0 && PlayPanel.playState == 2 && row == selectedRowIndex)
                         ((SongsTableCellRenderer) c).setText("\uD83D\uDD0A");
@@ -106,7 +118,9 @@ public class SongsTable extends JTable {
                 c.setBackground(new Color(40, 40, 40));
                 if (column == 6 || column == 1 || column == 0)
                     c.setForeground(Color.white);
-            } else {
+            }
+            else
+            {
                 ((SongsTableCellRenderer) c).setRolledOver(false);
                 if (column == 0 && PlayPanel.playState == 2 && row == selectedRowIndex)
                     ((SongsTableCellRenderer) c).setText("\uD83D\uDD0A");
@@ -116,17 +130,21 @@ public class SongsTable extends JTable {
     }
 
 
-    private class HeaderRollOverListener extends MouseInputAdapter {
+    private class HeaderRollOverListener extends MouseInputAdapter
+    {
         JTable table;
 
-        HeaderRollOverListener(JTable table) {
+        HeaderRollOverListener(JTable table)
+        {
             this.table = table;
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mouseClicked(MouseEvent e)
+        {
             int col = columnAtPoint(e.getPoint());
-            if (selectedHeaderColumnIndex != col) {
+            if (selectedHeaderColumnIndex != col)
+            {
                 selectedHeaderColumnIndex = col;
                 ((SongsTableCellRenderer)
                         (getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table
@@ -135,7 +153,9 @@ public class SongsTable extends JTable {
                         (getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table
                                 , getColumnName(col), false, true, -1, col))).setSortOrder(1);
                 getTableHeader().repaint();
-            } else {
+            }
+            else
+            {
                 selectedHeaderColumnIndex = col;
                 int sortOrder = ((SongsTableCellRenderer)
                         (getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table
@@ -152,7 +172,8 @@ public class SongsTable extends JTable {
             }
         }
 
-        public void mouseExited(MouseEvent e) {
+        public void mouseExited(MouseEvent e)
+        {
             if (rollOverColumnIndex != -1)
                 ((SongsTableCellRenderer) (getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table
                         , getColumnName(rollOverColumnIndex), false, true, -1, rollOverColumnIndex))).setRolledOverHeaderColumn(-1);
@@ -160,9 +181,11 @@ public class SongsTable extends JTable {
             rollOverHeaderColumnIndex = -1;
         }
 
-        public void mouseMoved(MouseEvent e) {
+        public void mouseMoved(MouseEvent e)
+        {
             int col = columnAtPoint(e.getPoint());
-            if (col != rollOverHeaderColumnIndex) {
+            if (col != rollOverHeaderColumnIndex)
+            {
                 rollOverHeaderColumnIndex = col;
                 if (col != -1)
                     ((SongsTableCellRenderer)
@@ -173,29 +196,45 @@ public class SongsTable extends JTable {
         }
     }
 
-    private class RollOverListener extends MouseInputAdapter {
+    private class RollOverListener extends MouseInputAdapter
+    {
         JTable table;
 
-        RollOverListener(JTable table) {
+        RollOverListener(JTable table)
+        {
             this.table = table;
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mouseClicked(MouseEvent e)
+        {
             super.mouseClicked(e);
             int row = rowAtPoint(e.getPoint());
             int col = columnAtPoint(e.getPoint());
             songsTableButtons.doAction(col, (String) dataModel.getValueAt(row, 2), (String) dataModel.getValueAt(row, 3));
-            if (col == 0) {
-                PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
-                PlayPanel.playState = 2;
-                SongsPanel.customLabelForSongsPanel.setText("PAUSE");
-                if (row != selectedRowIndex && row >= 0) {
+            if (col == 0)
+            {
+                if (PlayPanel.playState == 2)
+                {
+                    SongsPanel.customLabelForSongsPanel.setText("PLAY");
+                    PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
+                    PlayPanel.playState = 1;
+                }
+                else
+                {
+                    SongsPanel.customLabelForSongsPanel.setText("PAUSE");
+                    PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
+                    PlayPanel.playState = 2;
+                }
+                if (row != selectedRowIndex && row >= 0)
+                {
                     ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(table, defaultTableModel.getValueAt(row, 0), true
                             , true, row, 0)).setSelectedRow(row);
                     selectedRowIndex = row;
                 }
-            } else if (col == 1) {
+            }
+            else if (col == 1)
+            {
                 defaultTableModel.removeRow(row);
                 PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                 PlayPanel.playState = 0;
@@ -204,16 +243,19 @@ public class SongsTable extends JTable {
             repaint();
         }
 
-        public void mouseExited(MouseEvent e) {
+        public void mouseExited(MouseEvent e)
+        {
             rollOverRowIndex = -1;
             rollOverColumnIndex = -1;
             repaint();
         }
 
-        public void mouseMoved(MouseEvent e) {
+        public void mouseMoved(MouseEvent e)
+        {
             int row = rowAtPoint(e.getPoint());
             int col = columnAtPoint(e.getPoint());
-            if (row != rollOverRowIndex || col != rollOverColumnIndex) {
+            if (row != rollOverRowIndex || col != rollOverColumnIndex)
+            {
                 rollOverRowIndex = row;
                 rollOverColumnIndex = col;
                 if (rollOverColumnIndex != -1)
@@ -225,7 +267,8 @@ public class SongsTable extends JTable {
         }
     }
 
-    public void setSongsTableButtons(SongsTableButtons songsTableButtons) {
+    public void setSongsTableButtons(SongsTableButtons songsTableButtons)
+    {
         this.songsTableButtons = songsTableButtons;
     }
 }
