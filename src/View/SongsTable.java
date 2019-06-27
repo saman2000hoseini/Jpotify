@@ -90,7 +90,6 @@ public class SongsTable extends JTable {
 
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component c = super.prepareRenderer(renderer, row, column);
-        ((SongsTableCellRenderer) c).setSelectedRow(row);
         if (c instanceof SongsTableCellRenderer) {
             if (row == rollOverRowIndex) {
                 if ((row == rollOverRowIndex && column == rollOverColumnIndex) && column < 5 || column == 6) {
@@ -191,7 +190,11 @@ public class SongsTable extends JTable {
                 PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                 PlayPanel.playState = 2;
                 SongsPanel.customLabelForSongsPanel.setText("PAUSE");
-                selectedRowIndex = row;
+                if (row != selectedRowIndex && row >= 0) {
+                    ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(table, defaultTableModel.getValueAt(row, 0), true
+                            , true, row, 0)).setSelectedRow(row);
+                    selectedRowIndex = row;
+                }
             } else if (col == 1) {
                 defaultTableModel.removeRow(row);
                 PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));

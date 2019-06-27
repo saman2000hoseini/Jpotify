@@ -379,6 +379,8 @@ public class LoadingLibrary
             data[counter][5] = String.valueOf(music.getAddDate());
             data[counter][6] = "● ● ●";
             data[counter][7] = (mp3File.getLengthInSeconds() / 60) + ":" + (mp3File.getLengthInSeconds() - mp3File.getLengthInSeconds() / 60 * 60);
+            if (data[counter][7].length() == 3)
+                data[counter][7] += "0";
             counter++;
         }
         return data;

@@ -70,20 +70,51 @@ public class SongsTableCellRenderer extends JLabel
         setText((String) text);
         if (isSelected) {
             setBackground(new Color(60, 60, 60));
-            if (column < 5 && column > 1)
-                setForeground(Color.white);
-            else
-                setForeground(new Color(170, 170, 170));
+            if (row != selectedRow) {
+                if (column < 5 && column > 1)
+                    setForeground(Color.white);
+                else
+                    setForeground(new Color(170, 170, 170));
+            } else {
+                if (column == 6 || column <= 1)
+                    setForeground(new Color(170, 170, 170));
+                else
+                    setForeground(new Color(29, 178, 73, 255));
+            }
             if (isHeader)
                 setForeground(Color.white);
         } else {
             setBackground(new Color(24, 24, 24));
-            if (column != 6 && column != 0)
-                setForeground(Color.white);
-            else
-                setForeground(new Color(24, 24, 24));
-            if ((isHeader && column != 6) || column == 5 || column == 7 || column == 1)
+            if (column != 6 && column != 0) {
+                if (row != selectedRow)
+                    setForeground(Color.white);
+                else
+                    setForeground(new Color(29, 178, 73, 255));
+            }
+            else {
+                if (row != selectedRow)
+                    setForeground(new Color(24, 24, 24));
+                else {
+                    if (column == 0)
+                        setForeground(new Color(170, 170, 170));
+                    else if (column == 6)
+                        setForeground(new Color(24, 24, 24));
+                }
+            }
+            if ((isHeader && column != 6))
                 setForeground(new Color(170, 170, 170));
+            if (column == 5 || column == 7 || column == 1)
+            {
+                if (row != selectedRow)
+                    setForeground(new Color(170, 170, 170));
+                else
+                {
+                    if (column == 1)
+                        setForeground(new Color(170, 170, 170));
+                    else
+                        setForeground(new Color(29, 178, 73, 255));
+                }
+            }
         }
         if (isHeader && column == selectedHeaderColumn) {
             if (sortOrder == 0) {
@@ -120,9 +151,12 @@ public class SongsTableCellRenderer extends JLabel
         if (isRolledOver && column != 6 && column > 1 && isHeader == false) {
             gd.setColor(Color.white);
             StringMetrics s = new StringMetrics(gd);
-            int calculateX = (int) s.getWidth(this.getText());
-            gd.drawLine(0, (int) s.getHeight(this.getText()) + 10,
-                    (calculateX < getWidth()) ? calculateX : calculateX - getBorder().getBorderInsets(this).right, (int) s.getHeight(this.getText()) + 10);
+            int calculateX = 0;
+            if (this.getText() != null) {
+                calculateX = (int) s.getWidth(this.getText());
+                gd.drawLine(0, (int) s.getHeight(this.getText()) + 10,
+                        (calculateX < getWidth()) ? calculateX : calculateX - getBorder().getBorderInsets(this).right, (int) s.getHeight(this.getText()) + 10);
+            }
         } else if (column == 6 || column == 0) {
             setForeground(Color.WHITE);
         }
