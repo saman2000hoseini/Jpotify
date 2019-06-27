@@ -142,7 +142,13 @@ public class FileAndFolderBrowsing
                 {
                     Music temp = (Music) objectInputStream.readObject();
                     if (new File(temp.getFileLocation()).exists())
+                    {
+                        if (temp.getAddDate()==null)
+                            temp.setAddDate(LocalDateTime.now());
+                        if (temp.getLastPlayed()==null)
+                            temp.setLastPlayed(LocalDateTime.MIN);
                         songs.add(temp);
+                    }
                 }
             }
         }
@@ -175,7 +181,13 @@ public class FileAndFolderBrowsing
                     Vector<Music> tempMusics = loadingLibrary.loadFilesFromFolders(path);
                     for (Music music : tempMusics)
                         if (!songs.contains(music))
+                        {
+                            if (music.getAddDate() == null)
+                                music.setAddDate(LocalDateTime.now());
+                            if (music.getLastPlayed() == null)
+                                music.setLastPlayed(LocalDateTime.MIN);
                             songs.add(music);
+                        }
                 }
             }
         }

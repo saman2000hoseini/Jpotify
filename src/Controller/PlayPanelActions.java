@@ -196,7 +196,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
             Music temp = new Music(null, artist, name, null, null, null, null, null);
             index = playlist.indexOf(temp) - 1;
             temp = playlist.get(index + 1);
-            if (playState == 2)
+            if (playState == 2 && audioPlayer!=null && audioPlayer.getPath() == temp.getFileLocation())
             {
                 state(shuffleState, repeatState, playState, 2);
                 playState = 1;

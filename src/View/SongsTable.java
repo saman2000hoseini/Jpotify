@@ -214,17 +214,18 @@ public class SongsTable extends JTable
             songsTableButtons.doAction(col, (String) dataModel.getValueAt(row, 2), (String) dataModel.getValueAt(row, 3));
             if (col == 0)
             {
-                if (PlayPanel.playState == 2)
-                {
-                    SongsPanel.customLabelForSongsPanel.setText("PLAY");
-                    PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
-                    PlayPanel.playState = 1;
-                }
-                else
+                if (table.getValueAt(row, 0).equals("▶"))
                 {
                     SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                     PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                     PlayPanel.playState = 2;
+                }
+                else
+                {
+                    SongsPanel.customLabelForSongsPanel.setText("PLAY");
+                    PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
+                    System.out.println("here");
+                    PlayPanel.playState = 1;
                 }
                 if (row != selectedRowIndex && row >= 0)
                 {
