@@ -1,13 +1,9 @@
 package Controller;
 
-import Listeners.PlayListChanged;
-import Listeners.PlayPanelListener;
-import Listeners.SongsPanelListener;
-import Listeners.SongsTableButtons;
+import Listeners.*;
 import Model.Music;
 import Model.Sort;
 import com.mpatric.mp3agic.Mp3File;
-import javazoom.jl.player.AudioDevice;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -26,7 +22,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     private boolean shuffleState = false;
     private int repeatState = 0;
     private int playState = 0;
-
+    private PlayingMusicChanged playingMusicChanged = null;
     public PlayPanelActions(Vector<Music> playlist)
     {
         this.playlist = playlist;
@@ -69,6 +65,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
                 this.playState = 2;
                 if (index < 0)
                     index = playlist.size() - 1;
+                playingMusicChanged.setRow(index);
                 startPlayingMusic();
                 break;
             case 2:
@@ -105,6 +102,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
                 if (index > playlist.size() - 1)
                     index = 0;
                 this.playState = 2;
+                playingMusicChanged.setRow(index);
                 startPlayingMusic();
                 break;
             case 4:
@@ -250,5 +248,10 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
         {
             state(shuffleState, repeatState, playState, 2);
         }
+    }
+
+    public void setPlayingMusicChanged(PlayingMusicChanged playingMusicChanged)
+    {
+        this.playingMusicChanged = playingMusicChanged;
     }
 }

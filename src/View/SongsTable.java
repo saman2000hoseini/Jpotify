@@ -1,6 +1,7 @@
 package View;
 
 import Listeners.PlayListChanged;
+import Listeners.PlayingMusicChanged;
 import Listeners.SongsTableButtons;
 import Model.Music;
 
@@ -16,7 +17,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.*;
 
-public class SongsTable extends JTable
+public class SongsTable extends JTable implements PlayingMusicChanged
 {
 
     private int rollOverRowIndex = -1;
@@ -135,6 +136,35 @@ public class SongsTable extends JTable
         return c;
     }
 
+    @Override
+    public void setRow(int row)
+    {
+        PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
+        PlayPanel.playState = 2;
+        SongsPanel.customLabelForSongsPanel.setText("PAUSE");
+        if (row == selectedRowIndex)
+        {
+            selectedArtist = (String) this.getValueAt(row, 3);
+            selectedSongName = (String) this.getValueAt(row, 2);
+            rollOverRowIndex = -2;
+            isPlayedFromTable = false;
+            System.out.println("OMG");
+        }
+        else
+        {
+            ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(this, this.getValueAt(row, 0), true
+                    , true, row, 0)).setSelectedRow(row);
+            selectedRowIndex = row;
+            selectedArtist = (String) this.getValueAt(row, 3);
+            selectedSongName = (String) this.getValueAt(row, 2);
+            SongsPanel.customLabelForSongsPanel.setText("PAUSE");
+            PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
+            PlayPanel.playState = 2;
+            isPlayedFromTable = true;
+        }
+        repaint();
+    }
+
 
     private class HeaderRollOverListener extends MouseInputAdapter
     {
@@ -176,8 +206,10 @@ public class SongsTable extends JTable
                         (getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table
                                 , getColumnName(col), false, true, -1, col))).setSortOrder(sortOrder);
             }
-            if (selectedRowIndex >= 0) {
-                for (int i = 0; i < table.getRowCount(); i++) {
+            if (selectedRowIndex >= 0)
+            {
+                for (int i = 0; i < table.getRowCount(); i++)
+                {
                     if (table.getValueAt(i, 2).equals(selectedSongName) && table.getValueAt(i, 3).equals(selectedArtist))
                     {
                         ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(table, table.getValueAt(selectedRowIndex, 0), true
@@ -193,7 +225,7 @@ public class SongsTable extends JTable
             Vector<Music> musics = new Vector<>();
             for (int i = 0; i < table.getRowCount(); i++)
             {
-                Music temp = new Music(null,(String) table.getValueAt(i,3),(String) table.getValueAt(i,2), null, null, null, null, null);
+                Music temp = new Music(null, (String) table.getValueAt(i, 3), (String) table.getValueAt(i, 2), null, null, null, null, null);
                 musics.add(temp);
             }
             playListChanged.setPlaylist(musics);
@@ -260,8 +292,8 @@ public class SongsTable extends JTable
                     ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(table, table.getValueAt(row, 0), true
                             , true, row, 0)).setSelectedRow(row);
                     selectedRowIndex = row;
-                    selectedArtist = (String)table.getValueAt(row, 3);
-                    selectedSongName = (String)table.getValueAt(row, 2);
+                    selectedArtist = (String) table.getValueAt(row, 3);
+                    selectedSongName = (String) table.getValueAt(row, 2);
                     SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                     PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                     PlayPanel.playState = 2;
@@ -270,7 +302,8 @@ public class SongsTable extends JTable
             }
             else if (col == 1)
             {
-                if (row == selectedRowIndex) {
+                if (row == selectedRowIndex)
+                {
                     defaultTableModel.removeRow(row);
                     PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                     PlayPanel.playState = 0;
@@ -285,7 +318,8 @@ public class SongsTable extends JTable
                 else
                 {
                     defaultTableModel.removeRow(row);
-                    if (isPlayedFromTable) {
+                    if (isPlayedFromTable)
+                    {
                         if (selectedRowIndex > row)
                             selectedRowIndex -= 1;
                         if (selectedRowIndex == -1)

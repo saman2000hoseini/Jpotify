@@ -108,6 +108,7 @@ public class Main {
         LoginActions loginActions = new LoginActions();
         loginMainFrame.getLoginMainPanel().setLoginPanelListener(loginActions);
         loginActions.setUserLoginListener(mainFrame.getMainPanel().getCentrePanel());
+        playPanelActions.setPlayingMusicChanged(mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable());
     }
 
     public static int getStatus() {
