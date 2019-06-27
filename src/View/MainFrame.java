@@ -68,7 +68,7 @@ public class MainFrame extends JFrame
             }
         });
 
-        this.setVisible(true);
+        this.setVisible(false);
     }
 
     public void setFullScreenMode(Boolean fullScreenMode)

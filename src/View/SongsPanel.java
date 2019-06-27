@@ -19,6 +19,7 @@ public class SongsPanel extends JPanel
         songs.setForeground(Color.white);
         songs.setFont(new Font("Proxima Nova Rg", Font.BOLD, 30));
         customLabelForSongsPanel = new CustomLabelForSongsPanel("PLAY", 108, 32, new Color(29, 178, 73, 255));
+        customLabelForSongsPanel.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
         customLabelForSongsPanel.addMouseListener(new ListenerForSongsCustomLabel(customLabelForSongsPanel));
         layout = new GroupLayout(this);
         layout.setHorizontalGroup(layout.createSequentialGroup()

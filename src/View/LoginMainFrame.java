@@ -33,7 +33,7 @@ public class LoginMainFrame extends JFrame {
         this.setUndecorated(true);
         this.add(frame);
         this.add(loginMainPanel);
-        this.setMinimumSize(new Dimension((int)dimPant.getWidth(), (int)dimPant.getHeight() - 40));
+        this.setMinimumSize(new Dimension(950, 600));
         this.addComponentListener(new ComponentAdapter()
         {
             @Override

@@ -21,6 +21,8 @@ public class SongsTable extends JTable
     private int rollOverHeaderColumnIndex = -1;
     private int selectedHeaderColumnIndex = -1;
     private int selectedRowIndex = -1;
+    private String selectedArtist = "";
+    private String selectedSongName = "";
     private TableRowSorter<TableModel> sorter;
     private SongsTableButtons songsTableButtons = null;
     private DefaultTableModel defaultTableModel;
@@ -40,7 +42,6 @@ public class SongsTable extends JTable
         setIntercellSpacing(new Dimension(0, 1));
         setShowVerticalLines(true);
         setRowSelectionAllowed(true);
-
         setGridColor(new Color(40, 40, 40));
         getTableHeader().setDefaultRenderer(new SongsTableCellRenderer(true, -1));
         addMouseMotionListener(lst);
@@ -172,6 +173,20 @@ public class SongsTable extends JTable
                         (getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table
                                 , getColumnName(col), false, true, -1, col))).setSortOrder(sortOrder);
             }
+            if (selectedRowIndex >= 0) {
+                for (int i = 0; i < table.getRowCount(); i++) {
+                    if (table.getValueAt(i, 2).equals(selectedSongName) && table.getValueAt(i, 3).equals(selectedArtist))
+                    {
+                        ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(table, table.getValueAt(selectedRowIndex, 0), true
+                                , true, selectedRowIndex, 0)).setSelectedRow(i);
+                        selectedRowIndex = i;
+                        ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(table, table.getValueAt(i, 0), true
+                                , true, i, 0)).setSelectedRow(selectedRowIndex);
+                        break;
+                    }
+                }
+            }
+            repaint();
         }
 
         public void mouseExited(MouseEvent e)
@@ -214,7 +229,6 @@ public class SongsTable extends JTable
             int row = rowAtPoint(e.getPoint());
             int col = columnAtPoint(e.getPoint());
             songsTableButtons.doAction(col, (String) table.getValueAt(row, 2), (String) table.getValueAt(row, 3));
-            //"▶"
             if (col == 0)
             {
                 if (isPlayedFromTable == false)
@@ -228,15 +242,16 @@ public class SongsTable extends JTable
                 {
                     SongsPanel.customLabelForSongsPanel.setText("PLAY");
                     PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
-                    System.out.println("here");
                     PlayPanel.playState = 1;
                     isPlayedFromTable = false;
                 }
                 if (row != selectedRowIndex && row >= 0)
                 {
-                    ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(table, defaultTableModel.getValueAt(row, 0), true
+                    ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(table, table.getValueAt(row, 0), true
                             , true, row, 0)).setSelectedRow(row);
                     selectedRowIndex = row;
+                    selectedArtist = (String)table.getValueAt(row, 3);
+                    selectedSongName = (String)table.getValueAt(row, 2);
                     SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                     PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                     PlayPanel.playState = 2;
@@ -247,11 +262,29 @@ public class SongsTable extends JTable
             {
                 if (row == selectedRowIndex) {
                     defaultTableModel.removeRow(row);
-                    System.out.println("removeddddddddddd "+row);
                     PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                     PlayPanel.playState = 0;
                     SongsPanel.customLabelForSongsPanel.setText("PLAY");
+                    selectedRowIndex = -2;
+                    selectedArtist = "";
+                    selectedSongName = "";
+                    rollOverRowIndex = -2;
                     isPlayedFromTable = false;
+                    System.out.println("OMG");
+                }
+                else
+                {
+                    defaultTableModel.removeRow(row);
+                    if (isPlayedFromTable) {
+                        if (selectedRowIndex > row)
+                            selectedRowIndex -= 1;
+                        if (selectedRowIndex == -1)
+                            selectedRowIndex = 0;
+                        rollOverRowIndex = selectedRowIndex;
+                        PlayPanel.playState = 2;
+                        ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(table, table.getValueAt(selectedRowIndex, 0), true
+                                , true, row, 0)).setSelectedRow(selectedRowIndex);
+                    }
                 }
             }
             repaint();
