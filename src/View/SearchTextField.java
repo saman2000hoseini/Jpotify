@@ -1,6 +1,8 @@
 package View;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -16,9 +18,9 @@ public class SearchTextField extends JTextField {
         super();
         this.searchIcon = searchIcon;
         this.closeIcon = closeIcon;
-        this.setBorder(null);
-        this.setText("     Search");
-        this.setCaretPosition(5);
+        this.setText("Search");
+        this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(0, 0, 0, 0)));
+        this.setBorder(new CompoundBorder(new EmptyBorder(new Insets(0, 20, 0, 0)), this.getBorder()));
         this.inserted = false;
         this.addFocusListener(new FocusListenerForSearchTextField());
         this.getDocument().addDocumentListener(new DocumentListener() {
@@ -41,21 +43,14 @@ public class SearchTextField extends JTextField {
             @Override
             public void run() {
                 if (!flag) {
-                    if (getCaretPosition() < 5) {
-                        if (getText().length() >= 5) {
-                            setText("     " + getText().substring(4));
-                            setCaretPosition(5);
-                        }
-                        if (getText().length() < 5) {
-                            inserted = false;
-                            setText("     Search");
-                            setCaretPosition(5);
-
-                        }
+                    if (getCaretPosition() == 0) {
+                        inserted = false;
+                        setText("Search");
+                        setCaretPosition(0);
                     }
                 } else {
                     if (inserted == false) {
-                        if (!getText().equals("     Search")) {
+                        if (!getText().equals("Search")) {
                             setText(getText().replace("Search", ""));
                             inserted = true;
                         }
@@ -69,18 +64,14 @@ public class SearchTextField extends JTextField {
     private class FocusListenerForSearchTextField implements FocusListener {
         @Override
         public void focusLost(FocusEvent e) {
-            if (getText().length() == 5) {
-                setCaretPosition(5);
-                if (getText().equals("     "))
-                    setText("     Search");
-            }
+            if (getText().equals(""))
+                setText("Search");
         }
 
         @Override
         public void focusGained(FocusEvent e) {
-            if (getText().equals("     Search")) {
-                setCaretPosition(5);
-                setText("     ");
+            if (getText().equals("Search")) {
+                setText("");
                 inserted = true;
             }
         }

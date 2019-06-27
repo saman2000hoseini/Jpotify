@@ -19,7 +19,13 @@ public class SongsTablePanel extends JPanel implements SongsTableListener
         super();
         String columns[] = {"","","TITLE", "ARTIST", "ALBUM", "\uD83D\uDCC6", "","\uD83D\uDD52"};
         defaultTableModel = new DefaultTableModel(data,columns);
-        songsTable = new SongsTable(defaultTableModel);
+        songsTable = new SongsTable(defaultTableModel)
+        {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         songsTable.setBorder(null);
         modernScrollPane = new ModernScrollPane(songsTable);
         modernScrollPane.setBorder(BorderFactory.createEmptyBorder());

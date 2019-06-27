@@ -25,6 +25,7 @@ public class SongsTable extends JTable
     private SongsTableButtons songsTableButtons = null;
     private DefaultTableModel defaultTableModel;
     private PlayListChanged playListChanged = null;
+    private boolean isPlayedFromTable = false;
 
     public SongsTable(DefaultTableModel defaultTableModel)
     {
@@ -39,6 +40,7 @@ public class SongsTable extends JTable
         setIntercellSpacing(new Dimension(0, 1));
         setShowVerticalLines(true);
         setRowSelectionAllowed(true);
+
         setGridColor(new Color(40, 40, 40));
         getTableHeader().setDefaultRenderer(new SongsTableCellRenderer(true, -1));
         addMouseMotionListener(lst);
@@ -212,13 +214,15 @@ public class SongsTable extends JTable
             int row = rowAtPoint(e.getPoint());
             int col = columnAtPoint(e.getPoint());
             songsTableButtons.doAction(col, (String) dataModel.getValueAt(row, 2), (String) dataModel.getValueAt(row, 3));
+            //"▶"
             if (col == 0)
             {
-                if (table.getValueAt(row, 0).equals("▶"))
+                if (isPlayedFromTable == false)
                 {
                     SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                     PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                     PlayPanel.playState = 2;
+                    isPlayedFromTable = true;
                 }
                 else
                 {
@@ -226,20 +230,28 @@ public class SongsTable extends JTable
                     PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                     System.out.println("here");
                     PlayPanel.playState = 1;
+                    isPlayedFromTable = false;
                 }
                 if (row != selectedRowIndex && row >= 0)
                 {
                     ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(table, defaultTableModel.getValueAt(row, 0), true
                             , true, row, 0)).setSelectedRow(row);
                     selectedRowIndex = row;
+                    SongsPanel.customLabelForSongsPanel.setText("PAUSE");
+                    PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
+                    PlayPanel.playState = 2;
+                    isPlayedFromTable = true;
                 }
             }
             else if (col == 1)
             {
-                defaultTableModel.removeRow(row);
-                PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
-                PlayPanel.playState = 0;
-                SongsPanel.customLabelForSongsPanel.setText("PLAY");
+                if (row == selectedRowIndex) {
+                    defaultTableModel.removeRow(row);
+                    PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
+                    PlayPanel.playState = 0;
+                    SongsPanel.customLabelForSongsPanel.setText("PLAY");
+                    isPlayedFromTable = false;
+                }
             }
             repaint();
         }

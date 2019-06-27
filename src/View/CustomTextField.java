@@ -13,7 +13,6 @@ public class CustomTextField extends JPanel {
         super();
         this.setSize(width, height);
         textField = new SearchTextField(searchIcon, closeIcon);
-        textField.setBorder(null);
         textField.setSize(this.getWidth() - this.getHeight(), this.getHeight());
         this.searchIcon = searchIcon;
         this.closeIcon = closeIcon;
