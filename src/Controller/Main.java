@@ -8,6 +8,8 @@ import Model.Music;
 import Model.User;
 import Network.Client.MainClient;
 import Network.Server.MainServer;
+import View.LoginMainFrame;
+import View.LoginMainPanel;
 import View.MainFrame;
 import View.PlayPanel;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -23,6 +25,7 @@ public class Main
     private static Vector<Music> musics = new Vector<>();
     private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private static MainFrame mainFrame;
+    private static LoginMainFrame loginMainFrame;
     private static Vector<Library> libraries;
     private static Albums albums;
     private static SongsTableListener songsTableListener = null ;
@@ -43,6 +46,7 @@ public class Main
         fileAndFolderBrowsing.loadFiles(musics);
         libraries = fileAndFolderBrowsing.loadLibraries();
         albums = new Albums(musics);
+        //loginMainFrame = new LoginMainFrame();
         mainFrame = new MainFrame(musics);
         mainFrame.getMainPanel().update();
         setLinkers();

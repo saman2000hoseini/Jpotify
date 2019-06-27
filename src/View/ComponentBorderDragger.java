@@ -45,7 +45,12 @@ public class ComponentBorderDragger implements MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (!((MainFrame)controlledComponent).getFullScreenMode()) {
+        boolean fullScreenMode;
+        if (controlledComponent instanceof  MainFrame)
+            fullScreenMode = ((MainFrame)controlledComponent).getFullScreenMode();
+        else
+            fullScreenMode = ((LoginMainFrame)controlledComponent).getFullScreenMode();
+        if (!fullScreenMode) {
             if (direction == 0) {
                 return;
             }
@@ -99,7 +104,12 @@ public class ComponentBorderDragger implements MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (!((MainFrame)controlledComponent).getFullScreenMode()){
+        boolean fullScreenMode;
+        if (controlledComponent instanceof  MainFrame)
+            fullScreenMode = ((MainFrame)controlledComponent).getFullScreenMode();
+        else
+            fullScreenMode = ((LoginMainFrame)controlledComponent).getFullScreenMode();
+        if (!fullScreenMode){
             Component originator = e.getComponent();
             if (direction == 0) {
                 sourceCursor = originator.getCursor();
@@ -111,7 +121,12 @@ public class ComponentBorderDragger implements MouseMotionListener {
     }
 
     private void setCursor(Component component) {
-        if (!((MainFrame)controlledComponent).getFullScreenMode()) {
+        boolean fullScreenMode;
+        if (controlledComponent instanceof  MainFrame)
+            fullScreenMode = ((MainFrame)controlledComponent).getFullScreenMode();
+        else
+            fullScreenMode = ((LoginMainFrame)controlledComponent).getFullScreenMode();
+        if (!fullScreenMode) {
             if (direction == 0) {
                 component.setCursor(sourceCursor);
             } else {

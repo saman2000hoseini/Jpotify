@@ -11,12 +11,18 @@ public class BackgroundComponentDragger implements MouseMotionListener {
     private Point originPoint;
 
     public BackgroundComponentDragger(Component component) {
+
         this.controlledComponent = component;
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if(!((MainFrame)controlledComponent).getFullScreenMode())
+        boolean fullScreenMode;
+        if (controlledComponent instanceof  MainFrame)
+            fullScreenMode = ((MainFrame)controlledComponent).getFullScreenMode();
+        else
+            fullScreenMode = ((LoginMainFrame)controlledComponent).getFullScreenMode();
+        if(!fullScreenMode)
         {
             Point currentFramePosition = controlledComponent.getLocation();
             Point newFramePosition = new Point(currentFramePosition.x + e.getX()
@@ -27,7 +33,12 @@ public class BackgroundComponentDragger implements MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if(!((MainFrame)controlledComponent).getFullScreenMode()) {
+        boolean fullScreenMode;
+        if (controlledComponent instanceof  MainFrame)
+            fullScreenMode = ((MainFrame)controlledComponent).getFullScreenMode();
+        else
+            fullScreenMode = ((LoginMainFrame)controlledComponent).getFullScreenMode();
+        if(!fullScreenMode) {
             originPoint = e.getPoint();
         }
     }

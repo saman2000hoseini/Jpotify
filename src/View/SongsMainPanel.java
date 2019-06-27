@@ -23,7 +23,7 @@ public class SongsMainPanel extends JPanel {
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addComponent(songsPanel, 80, 80, 80)
                 .addComponent(filterPanel, 40, 40, 40)
-                .addComponent(songsTablePanel, 596, 596, 596));
+                .addComponent(songsTablePanel, 200, 596, 596));
         this.setLayout(layout);
     }
 

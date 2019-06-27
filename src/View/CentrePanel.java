@@ -193,7 +193,7 @@ public class CentrePanel extends JPanel {
                                                     .addComponent(userPic, 25, 25, 25)
                                                     .addComponent(userName, 25, 25, 25)
                                                     .addComponent(userMenu, 20, 20, 20))))
-                            .addComponent(songsMainPanel, 716, 716, 716));
+                            .addComponent(songsMainPanel, 300, 716, 716));
         } else {
             layout.setHorizontalGroup(layout.createParallelGroup().
                     addGroup(layout.createSequentialGroup()
@@ -234,7 +234,7 @@ public class CentrePanel extends JPanel {
                                             .addComponent(userPic, 25, 25, 25)
                                             .addComponent(userName, 25, 25, 25)
                                             .addComponent(userMenu, 20, 20, 20)))))
-                .addComponent(songsMainPanel, 716, 716, 716));
+                .addComponent(songsMainPanel, 200, 716, 716));
         }
         repaint();
     }

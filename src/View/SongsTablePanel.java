@@ -27,7 +27,7 @@ public class SongsTablePanel extends JPanel implements SongsTableListener
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addContainerGap(32, 32)
                 .addComponent(modernScrollPane, 200, 1035, 1035));
-        layout.setVerticalGroup(layout.createParallelGroup().addComponent(modernScrollPane, 596, 596, 596));
+        layout.setVerticalGroup(layout.createParallelGroup().addComponent(modernScrollPane, 200, 596, 596));
         this.setLayout(layout);
         this.setBorder(null);
         this.setBackground(new Color(24, 24, 24));

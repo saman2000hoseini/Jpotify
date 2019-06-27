@@ -24,6 +24,7 @@ public class PlayPanel extends JPanel
     private int repeatState = 0;
     static int playState =0;
     private PlayPanelListener playPanelListener = null;
+    private MainPanel mainPanel;
 
     public PlayPanelListener getPlayPanelListener()
     {
@@ -132,9 +133,10 @@ public class PlayPanel extends JPanel
         this.playPanelListener = playPanelListener;
     }
 
-    public PlayPanel(int width, Vector<Music> playlist)
+    public PlayPanel(MainPanel mainPanel, int width, Vector<Music> playlist)
     {
         super();
+        this.mainPanel = mainPanel;
         setBackground(new Color(40, 40, 40));
         this.setSize(width, 88);
         ListenerForMouse listenerForMouse = new ListenerForMouse();
@@ -235,6 +237,7 @@ public class PlayPanel extends JPanel
                     {
                         play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                         SongsPanel.customLabelForSongsPanel.setText("PAUSE");
+                        mainPanel.getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().repaint();
                     }
 
                 }
@@ -247,12 +250,14 @@ public class PlayPanel extends JPanel
                 {
                     SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                     play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
+                    mainPanel.getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().repaint();
                     playState = 2;
                 }
                 else
                 {
                     SongsPanel.customLabelForSongsPanel.setText("PLAY");
                     play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
+                    mainPanel.getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().repaint();
                     playState = 1;
                 }
 
@@ -275,6 +280,7 @@ public class PlayPanel extends JPanel
                     if (playState != 2)
                     {
                         SongsPanel.customLabelForSongsPanel.setText("PAUSE");
+                        mainPanel.getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().repaint();
                         play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                     }
                 }

@@ -20,6 +20,7 @@ public class SongsTableCellRenderer extends JLabel
     private int rolledOverRow;
     private int rolledOverHeaderColumn;
     private int selectedHeaderColumn;
+    private int selectedRow = -2;
     private int sortOrder = 0;
     boolean isRolledOver;
     private int column;
@@ -50,7 +51,7 @@ public class SongsTableCellRenderer extends JLabel
             else if (column == 5)
                 setFont(new Font("Proxima Nova Rg", Font.PLAIN, 16));
             else if (column == 0)
-                setFont(new Font("Serif", Font.PLAIN, 15));
+                setFont(new Font("Serif", Font.PLAIN, 20));
             else if (column == 1)
                 setFont(new Font("Serif", Font.PLAIN, 20));
             else
@@ -146,6 +147,14 @@ public class SongsTableCellRenderer extends JLabel
             }
         }
         gd.dispose();
+    }
+
+    public int getSelectedRow() {
+        return selectedRow;
+    }
+
+    public void setSelectedRow(int selectedRow) {
+        this.selectedRow = selectedRow;
     }
 
     public int getSortOrder() {

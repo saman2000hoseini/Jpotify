@@ -20,7 +20,9 @@ public class MainPanel extends JPanel {
         prevHeight = height;
         prevWidth = width;
         setSize(width, height);
-        playPanel = new PlayPanel(getWidth(), MainFrame.musics);
+        centrePanel = new CentrePanel(getWidth(), getHeight());
+        centrePanel.update();
+        playPanel = new PlayPanel(this, getWidth(), MainFrame.musics);
         this.setBackground(new Color(24, 24, 24));
     }
 
@@ -29,14 +31,14 @@ public class MainPanel extends JPanel {
         if ((getWidth() != prevWidth || getHeight() != prevHeight) || firstApearence == true) {
             prevWidth = getWidth();
             prevHeight = getHeight();
+            if (centrePanel == null) {
+                centrePanel = new CentrePanel(getWidth(), getHeight());
+                centrePanel.update();
+            }
             if (firstApearence)
             {
                 playPanel.update();
                 westPanel.update();
-            }
-            if (centrePanel == null) {
-                centrePanel = new CentrePanel(getWidth(), getHeight());
-                centrePanel.update();
             }
             this.getLayout().removeLayoutComponent(this);
             GroupLayout layout = new GroupLayout(this);

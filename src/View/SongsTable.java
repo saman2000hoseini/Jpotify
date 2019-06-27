@@ -19,10 +19,12 @@ public class SongsTable extends JTable {
     private int rollOverColumnIndex = -1;
     private int rollOverHeaderColumnIndex = -1;
     private int selectedHeaderColumnIndex = -1;
+    private int selectedRowIndex = -1;
     private TableRowSorter<TableModel> sorter;
     private SongsTableButtons songsTableButtons = null;
     private DefaultTableModel defaultTableModel;
     private PlayListChanged playListChanged = null;
+
     public SongsTable(DefaultTableModel defaultTableModel) {
         super(defaultTableModel);
         this.defaultTableModel = defaultTableModel;
@@ -79,7 +81,7 @@ public class SongsTable extends JTable {
     public void newFilter(String text) {
         RowFilter<TableModel, Object> filter = null;
         try {
-            filter = RowFilter.regexFilter(text );
+            filter = RowFilter.regexFilter(text);
         } catch (java.util.regex.PatternSyntaxException e) {
             return;
         }
@@ -88,20 +90,27 @@ public class SongsTable extends JTable {
 
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component c = super.prepareRenderer(renderer, row, column);
+        ((SongsTableCellRenderer) c).setSelectedRow(row);
         if (c instanceof SongsTableCellRenderer) {
             if (row == rollOverRowIndex) {
                 if ((row == rollOverRowIndex && column == rollOverColumnIndex) && column < 5 || column == 6) {
                     ((SongsTableCellRenderer) c).setRolledOver(true);
                     if (column == 1)
                         ((SongsTableCellRenderer) c).setText("☓");
+                    if (column == 0 && PlayPanel.playState == 2 && row == selectedRowIndex)
+                        ((SongsTableCellRenderer) c).setText("\u23F8");
                 } else {
                     ((SongsTableCellRenderer) c).setRolledOver(false);
+                    if (column == 0 && PlayPanel.playState == 2 && row == selectedRowIndex)
+                        ((SongsTableCellRenderer) c).setText("\uD83D\uDD0A");
                 }
                 c.setBackground(new Color(40, 40, 40));
                 if (column == 6 || column == 1 || column == 0)
                     c.setForeground(Color.white);
             } else {
                 ((SongsTableCellRenderer) c).setRolledOver(false);
+                if (column == 0 && PlayPanel.playState == 2 && row == selectedRowIndex)
+                    ((SongsTableCellRenderer) c).setText("\uD83D\uDD0A");
             }
         }
         return c;
@@ -157,9 +166,9 @@ public class SongsTable extends JTable {
             if (col != rollOverHeaderColumnIndex) {
                 rollOverHeaderColumnIndex = col;
                 if (col != -1)
-                ((SongsTableCellRenderer)
-                        (getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table
-                                , getColumnName(col), false, true, -1, col))).setRolledOverHeaderColumn(col);
+                    ((SongsTableCellRenderer)
+                            (getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table
+                                    , getColumnName(col), false, true, -1, col))).setRolledOverHeaderColumn(col);
                 getTableHeader().repaint();
             }
         }
@@ -177,20 +186,19 @@ public class SongsTable extends JTable {
             super.mouseClicked(e);
             int row = rowAtPoint(e.getPoint());
             int col = columnAtPoint(e.getPoint());
-            songsTableButtons.doAction(col, (String) dataModel.getValueAt(row,2), (String) dataModel.getValueAt(row,3));
-            if (col==0)
-            {
+            songsTableButtons.doAction(col, (String) dataModel.getValueAt(row, 2), (String) dataModel.getValueAt(row, 3));
+            if (col == 0) {
                 PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
-                SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                 PlayPanel.playState = 2;
-            }
-            else if(col==1)
-            {
+                SongsPanel.customLabelForSongsPanel.setText("PAUSE");
+                selectedRowIndex = row;
+            } else if (col == 1) {
                 defaultTableModel.removeRow(row);
-                SongsPanel.customLabelForSongsPanel.setText("PLAY");
                 PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                 PlayPanel.playState = 0;
+                SongsPanel.customLabelForSongsPanel.setText("PLAY");
             }
+            repaint();
         }
 
         public void mouseExited(MouseEvent e) {
@@ -214,8 +222,7 @@ public class SongsTable extends JTable {
         }
     }
 
-    public void setSongsTableButtons(SongsTableButtons songsTableButtons)
-    {
+    public void setSongsTableButtons(SongsTableButtons songsTableButtons) {
         this.songsTableButtons = songsTableButtons;
     }
 }

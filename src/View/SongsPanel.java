@@ -10,8 +10,7 @@ import java.awt.event.MouseEvent;
 public class SongsPanel extends JPanel
 {
     private JLabel songs = new JLabel("Songs");
-    static CustomLabelForSongsPanel customLabelForSongsPanel =
-            new CustomLabelForSongsPanel("PLAY", 108, 32, new Color(29, 178, 73, 255));
+    static CustomLabelForSongsPanel customLabelForSongsPanel;
     private GroupLayout layout;
     private SongsPanelListener songsPanelListener = null;
     SongsPanel()
@@ -19,6 +18,7 @@ public class SongsPanel extends JPanel
         super();
         songs.setForeground(Color.white);
         songs.setFont(new Font("Proxima Nova Rg", Font.BOLD, 30));
+        customLabelForSongsPanel = new CustomLabelForSongsPanel("PLAY", 108, 32, new Color(29, 178, 73, 255));
         customLabelForSongsPanel.addMouseListener(new ListenerForSongsCustomLabel(customLabelForSongsPanel));
         layout = new GroupLayout(this);
         layout.setHorizontalGroup(layout.createSequentialGroup()
