@@ -213,7 +213,7 @@ public class SongsTable extends JTable
             super.mouseClicked(e);
             int row = rowAtPoint(e.getPoint());
             int col = columnAtPoint(e.getPoint());
-            songsTableButtons.doAction(col, (String) dataModel.getValueAt(row, 2), (String) dataModel.getValueAt(row, 3));
+            songsTableButtons.doAction(col, (String) table.getValueAt(row, 2), (String) table.getValueAt(row, 3));
             //"▶"
             if (col == 0)
             {
@@ -247,6 +247,7 @@ public class SongsTable extends JTable
             {
                 if (row == selectedRowIndex) {
                     defaultTableModel.removeRow(row);
+                    System.out.println("removeddddddddddd "+row);
                     PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                     PlayPanel.playState = 0;
                     SongsPanel.customLabelForSongsPanel.setText("PLAY");

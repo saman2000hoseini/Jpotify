@@ -282,9 +282,9 @@ public class LoadingLibrary
 
     private String normalized(String str)
     {
-        String normalized = str.replaceAll("[^a-zA-Z0-9 ._-]", "");
-        normalized = String.format("%s" + File.separator, str);
-        return normalized;
+//        String normalized = str.replaceAll("[^a-zA-Z0-9 ._-]", "");
+//        normalized = String.format("%s" + File.separator, str);
+        return str;
     }
 
     public Music processFile(String directory) throws IOException, TagException
@@ -325,33 +325,36 @@ public class LoadingLibrary
         System.out.println(genre);
         bufferedReader.close();
          */
-        if (mp3File.getID3v2Tag().getSongTitle() != null && !mp3File.getID3v2Tag().getSongTitle().trim().equals(""))
-        {
-            title = normalized(mp3File.getID3v2Tag().getSongTitle());
-        }
-        else if (mp3File.getID3v1Tag()!=null)
+
+        if (mp3File.getID3v1Tag()!=null)
         {
             title = normalized(mp3File.getID3v1Tag().getTitle());
         }
-        else return null;
-        if (mp3File.getID3v2Tag().getLeadArtist() != null && !mp3File.getID3v2Tag().getLeadArtist().trim().equals(""))
+        else if (mp3File.getID3v2Tag().getSongTitle() != null && !mp3File.getID3v2Tag().getSongTitle().trim().equals(""))
         {
-            artist = normalized(mp3File.getID3v2Tag().getLeadArtist());
+            title = normalized(mp3File.getID3v2Tag().getSongTitle());
         }
-        else if (mp3File.getID3v1Tag()!=null)
+        else return null;
+
+        if (mp3File.getID3v1Tag()!=null)
         {
             artist = normalized(mp3File.getID3v1Tag().getArtist());
         }
-        else return null;
-        if (mp3File.getID3v2Tag().getAlbumTitle() != null && !mp3File.getID3v2Tag().getAlbumTitle().trim().equals(""))
+        else if (mp3File.getID3v2Tag().getLeadArtist() != null && !mp3File.getID3v2Tag().getLeadArtist().trim().equals(""))
         {
-            album = normalized(mp3File.getID3v2Tag().getAlbumTitle());
+            artist = normalized(mp3File.getID3v2Tag().getLeadArtist());
         }
-        else if (mp3File.getID3v1Tag()!=null)
+        else return null;
+
+        if (mp3File.getID3v1Tag()!=null)
         {
             album = normalized(mp3File.getID3v1Tag().getAlbum());
         }
-        if (mp3File.getID3v2Tag().getSongTitle() != null && !mp3File.getID3v2Tag().getSongTitle().trim().equals(""))
+        else if (mp3File.getID3v2Tag().getAlbumTitle() != null && !mp3File.getID3v2Tag().getAlbumTitle().trim().equals(""))
+        {
+            album = normalized(mp3File.getID3v2Tag().getAlbumTitle());
+        }
+        if (mp3File.getID3v2Tag().getYearReleased() != null && !mp3File.getID3v2Tag().getYearReleased().trim().equals(""))
         {
             year = normalized(mp3File.getID3v2Tag().getYearReleased());
         }

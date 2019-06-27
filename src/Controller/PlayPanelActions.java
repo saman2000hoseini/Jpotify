@@ -196,14 +196,14 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
             Music temp = new Music(null, artist, name, null, null, null, null, null);
             index = playlist.indexOf(temp) - 1;
             temp = playlist.get(index + 1);
-            if (playState == 2 && audioPlayer!=null && audioPlayer.getPath() == temp.getFileLocation())
+            if (playState == 2 && audioPlayer != null && audioPlayer.getPath() == temp.getFileLocation())
             {
                 state(shuffleState, repeatState, playState, 2);
                 playState = 1;
             }
             else
             {
-                if (audioPlayer!=null && audioPlayer.getPath() == temp.getFileLocation())
+                if (audioPlayer != null && audioPlayer.getPath() == temp.getFileLocation())
                     state(shuffleState, repeatState, playState, 2);
                 else
                     state(shuffleState, repeatState, playState, 3);
@@ -217,7 +217,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
             File file = new File(temp.getFileLocation());
             file.delete();
             playlist.remove(temp);
-            if (playState == 2)
+            if (playState == 2 && audioPlayer.getPath()==temp.getFileLocation())
             {
                 index = 0;
                 playState = 0;
