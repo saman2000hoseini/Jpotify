@@ -43,28 +43,28 @@ public class SongsTableCellRenderer extends JLabel
         this.column = column;
         if (!isHeader) {
             if (column != 6 && column != 5 && column != 7 && column != 0 && column != 1)
-                setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
+                setFont(new Font("NotoSans-Regular", Font.BOLD, 15));
             else if (column == 6)
-                setFont(new Font("Proxima Nova Rg", Font.PLAIN, 7));
+                setFont(new Font("NotoSans-Regular", Font.PLAIN, 7));
             else if (column == 7)
-                setFont(new Font("Proxima Nova Rg", Font.PLAIN, 16));
+                setFont(new Font("NotoSans-Regular", Font.PLAIN, 16));
             else if (column == 5)
-                setFont(new Font("Proxima Nova Rg", Font.PLAIN, 16));
+                setFont(new Font("NotoSans-Regular", Font.PLAIN, 16));
             else if (column == 0)
-                setFont(new Font("Serif", Font.PLAIN, 20));
+                setFont(new Font("NotoSans-Regular", Font.PLAIN, 20));
             else if (column == 1)
-                setFont(new Font("Serif", Font.PLAIN, 20));
+                setFont(new Font("NotoSans-Regular", Font.PLAIN, 20));
             else
-                setFont(new Font("Proxima Nova Rg", Font.PLAIN, 15));
+                setFont(new Font("NotoSans-Regular", Font.PLAIN, 15));
         } else {
             if (column < 5)
-                setFont(new Font("Proxima Nova Rg", Font.PLAIN, 13));
+                setFont(new Font("NotoSans-Regular", Font.PLAIN, 13));
             else if (column == 5)
-                setFont(new Font("Serif", Font.PLAIN, 16));
+                setFont(new Font("NotoSans-Regular", Font.PLAIN, 16));
             else if (column == 7)
-                setFont(new Font("Serif", Font.PLAIN, 16));
+                setFont(new Font("NotoSans-Regular", Font.PLAIN, 16));
             else
-                setFont(new Font("Serif", Font.PLAIN, 13));
+                setFont(new Font("NotoSans-Regular", Font.PLAIN, 13));
         }
         setBorder(null);
         setText((String) text);
