@@ -70,4 +70,9 @@ public class LoginMainFrame extends JFrame {
     {
         return fullScreenMode;
     }
+
+    public LoginMainPanel getLoginMainPanel()
+    {
+        return loginMainPanel;
+    }
 }

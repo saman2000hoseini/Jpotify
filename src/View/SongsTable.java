@@ -2,11 +2,14 @@ package View;
 
 import Listeners.PlayListChanged;
 import Listeners.SongsTableButtons;
+import Model.Music;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Vector;
 
+import javax.sql.RowSet;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -187,6 +190,13 @@ public class SongsTable extends JTable
                 }
             }
             repaint();
+            Vector<Music> musics = new Vector<>();
+            for (int i = 0; i < table.getRowCount(); i++)
+            {
+                Music temp = new Music(null,(String) table.getValueAt(i,3),(String) table.getValueAt(i,2), null, null, null, null, null);
+                musics.add(temp);
+            }
+            playListChanged.setPlaylist(musics);
         }
 
         public void mouseExited(MouseEvent e)
@@ -312,6 +322,11 @@ public class SongsTable extends JTable
                 repaint();
             }
         }
+    }
+
+    public void setPlayListChanged(PlayListChanged playListChanged)
+    {
+        this.playListChanged = playListChanged;
     }
 
     public void setSongsTableButtons(SongsTableButtons songsTableButtons)

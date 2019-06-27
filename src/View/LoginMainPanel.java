@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Main;
+import Listeners.LoginPanelListener;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -13,6 +14,8 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class LoginMainPanel extends JPanel {
     private GroupLayout layout;
@@ -22,7 +25,7 @@ public class LoginMainPanel extends JPanel {
     private TransparentButton restoreDown = new TransparentButton("◻", false);
     private TransparentButton minimize = new TransparentButton("⚊", false);
     private ListenerLoginMainPanel listenerLoginMainPanel = new ListenerLoginMainPanel();
-
+    private LoginPanelListener loginPanelListener = null;
     LoginMainPanel(int width, int height) {
         super();
         this.setBackground(new Color(20, 20, 20));
@@ -147,12 +150,21 @@ public class LoginMainPanel extends JPanel {
             }
             if (e.getSource() == customLabelForSongsPanel)
             {
-                if ((!userName.getText().equals("Username")) && userName.getText().length() > 2
-                    && (!ip.getText().equals("IP")) && (ip.getText().length() > 6)) {
+                if ((!userName.getText().equals("Username")) && userName.getText().length() > 2) {
                     ((JFrame) (getParent().getParent().getParent().getParent())).dispose();
                     Main.username = userName.getText();
                     Main.ip = ip.getText();
                     Main.setStatus(1);
+                    ArrayList<String> friends = new ArrayList<>();
+                    friends.add(ip.getText());
+                    try
+                    {
+                        loginPanelListener.login(userName.getText(),friends);
+                    }
+                    catch (IOException ex)
+                    {
+                        ex.printStackTrace();
+                    }
                     Main.getMainFrame().setVisible(true);
                 }
             }
@@ -316,5 +328,10 @@ public class LoginMainPanel extends JPanel {
                     .addComponent(customLoginLabel, 30, 30, 30));
             this.setLayout(loginLayout);
         }
+    }
+
+    public void setLoginPanelListener(LoginPanelListener loginPanelListener)
+    {
+        this.loginPanelListener = loginPanelListener;
     }
 }

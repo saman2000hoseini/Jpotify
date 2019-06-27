@@ -1,11 +1,14 @@
 package View;
 
+import Listeners.UserLoginListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class CentrePanel extends JPanel {
+public class CentrePanel extends JPanel implements UserLoginListener
+{
     private CustomTextField search = new CustomTextField(175, 24, Icons.rescaleIcon(Icons.SEARCH2_ICON, 15, 15)
             , Icons.rescaleIcon(Icons.CLOSE2_ICON, 10, 10));
     private SongsMainPanel songsMainPanel;
@@ -33,6 +36,12 @@ public class CentrePanel extends JPanel {
     private TransparentButton close = new TransparentButton("✕", false);
     private TransparentButton restoreDown = new TransparentButton("◻", false);
     private TransparentButton minimize = new TransparentButton("⚊", false);
+
+    @Override
+    public void setUser(String user)
+    {
+        userName.setText(user);
+    }
 
     private class CustomLabelForCentrePanel extends JLabel {
         private boolean focused;

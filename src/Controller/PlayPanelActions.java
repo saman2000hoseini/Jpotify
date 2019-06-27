@@ -1,5 +1,6 @@
 package Controller;
 
+import Listeners.PlayListChanged;
 import Listeners.PlayPanelListener;
 import Listeners.SongsPanelListener;
 import Listeners.SongsTableButtons;
@@ -12,12 +13,12 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Vector;
 
-public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, SongsPanelListener
+public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, SongsPanelListener, PlayListChanged
 {
     private static AudioPlayer audioPlayer;
     private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private static int index = 0;
-    private Vector<Music> playlist;
+    static Vector<Music> playlist;
     private static Sort sort;
     private static int sortState = 8, lastSort = 8;
     //    private AudioDevice audioDevice = System.out. ;
@@ -181,11 +182,16 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
         }
     }
 
+    @Override
     public void setPlaylist(Vector<Music> playlist)
     {
         index = 0;
+        for (int i = 0; i < playlist.size(); i++)
+        {
+            int temp = this.playlist.indexOf(playlist.get(i));
+            playlist.set(i,this.playlist.get(temp));
+        }
         this.playlist = playlist;
-        sortPlaylist();
     }
 
     @Override

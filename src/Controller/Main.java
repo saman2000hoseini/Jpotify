@@ -24,6 +24,7 @@ import java.util.Vector;
 
 public class Main {
     private static Vector<Music> musics = new Vector<>();
+    static Vector<Music> playlist;
     private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private static MainFrame mainFrame;
     private static LoginMainFrame loginMainFrame;
@@ -34,6 +35,7 @@ public class Main {
     public static String username;
     public static String ip;
     static int status = 0;
+    static MainClient mainClient;
 
     public static void main(String[] args) throws IOException, InvalidDataException, UnsupportedTagException {
         createDirs();
@@ -66,10 +68,10 @@ public class Main {
         libraries = fileAndFolderBrowsing.loadLibraries();
         albums = new Albums(musics);
         loginMainFrame = new LoginMainFrame();
-        mainFrame = new MainFrame(musics);
+        playlist = musics;
+        mainFrame = new MainFrame(playlist);
         mainFrame.getMainPanel().update();
         setLinkers();
-        MainClient main = new MainClient(musics, new User("test", null));
         albums.loadAlbums();
         songsTableListener.addSongs(loadingLibrary.generateTable(musics));
         for (Library library : albums.getAlbums())
@@ -94,14 +96,18 @@ public class Main {
     }
 
     private static void setLinkers() {
-        PlayPanelActions playPanelActions = new PlayPanelActions(musics);
+        PlayPanelActions playPanelActions = new PlayPanelActions(playlist);
         mainFrame.getMainPanel().getPlayPanel().setPlayPanelListener(playPanelActions);
-        TopLeftMenuActions topLeftMenuActions = new TopLeftMenuActions(musics, albums);
+        TopLeftMenuActions topLeftMenuActions = new TopLeftMenuActions(playlist, albums);
         mainFrame.getMainPanel().getWestPanel().getMenuForWestPanel().setTopLeftMenuListener(topLeftMenuActions);
         songsTableListener = mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel();
         topLeftMenuActions.setSongsTableListener(mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel());
         mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().setSongsTableButtons(playPanelActions);
         mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsPanel().setSongsPanelListener(playPanelActions);
+        mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().setPlayListChanged(playPanelActions);
+        LoginActions loginActions = new LoginActions();
+        loginMainFrame.getLoginMainPanel().setLoginPanelListener(loginActions);
+        loginActions.setUserLoginListener(mainFrame.getMainPanel().getCentrePanel());
     }
 
     public static int getStatus() {
