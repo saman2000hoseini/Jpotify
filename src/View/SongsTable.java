@@ -54,7 +54,7 @@ public class SongsTable extends JTable implements PlayingMusicChanged
         tableHeader.addMouseListener(hlst);
         setRowHeight(39);
         getTableHeader().setBackground(new Color(24, 24, 24));
-        getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(40, 40, 40)));
+        getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(40, 40, 40)));setColumnSelectionAllowed(false);
         getTableHeader().setBorder(new CompoundBorder(new EmptyBorder(new Insets(0, 0, 0, 28)), getTableHeader().getBorder()));
         getTableHeader().setPreferredSize(new Dimension(1004, 39));
         getTableHeader().setReorderingAllowed(false);

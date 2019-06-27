@@ -10,29 +10,38 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.MouseInputAdapter;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class LoginMainPanel extends JPanel {
     private GroupLayout layout;
     private LoginPanel loginPanel;
+    private TableForIpPanel tableForIpPanel;
+    private DefaultTableModel defaultListModel;
     private boolean inserted;
     private TransparentButton close = new TransparentButton("✕", false);
     private TransparentButton restoreDown = new TransparentButton("◻", false);
     private TransparentButton minimize = new TransparentButton("⚊", false);
     private ListenerLoginMainPanel listenerLoginMainPanel = new ListenerLoginMainPanel();
     private LoginPanelListener loginPanelListener = null;
+    Object data[][] = {};
+    String headers[] = {"Connected Devices"};
     LoginMainPanel(int width, int height) {
         super();
-        this.setBackground(new Color(20, 20, 20));
+        setBackground(new Color(18, 18, 18));
+        defaultListModel = new DefaultTableModel(data, headers);
         loginPanel = new LoginPanel();
-        close.setBackground(new Color(20, 20, 20));
-        restoreDown.setBackground(new Color(20, 20, 20));
-        minimize.setBackground(new Color(20, 20, 20));
+        tableForIpPanel = new TableForIpPanel(defaultListModel);
+        close.setBackground(new Color(18, 18, 18));
+        restoreDown.setBackground(new Color(18, 18, 18));
+        minimize.setBackground(new Color(18, 18, 18));
         close.setSize(45, 30);
         restoreDown.setSize(45, 30);
         minimize.setSize(45, 30);
@@ -54,7 +63,8 @@ public class LoginMainPanel extends JPanel {
                 .addGroup(layout.createSequentialGroup()
                         .addContainerGap(610, 610)
                         .addComponent(loginPanel, 500, 500, 1000)
-                        .addContainerGap(480, 480))
+                        .addComponent(tableForIpPanel, 180, 180, 180)
+                        .addContainerGap(400, 400))
                 .addComponent(minimize, 45, 45, 45)
                 .addComponent(restoreDown, 45, 45, 45)
                 .addComponent(close, 45, 45, 45));
@@ -65,7 +75,9 @@ public class LoginMainPanel extends JPanel {
                         .addComponent(close, 30, 30, 30))
                 .addGroup(layout.createSequentialGroup()
                         .addContainerGap(410, 410)
-                        .addComponent(loginPanel, 500, 500, 1000)
+                        .addGroup(layout.createParallelGroup()
+                                .addComponent(loginPanel, 500, 500, 1000)
+                                .addComponent(tableForIpPanel, 500, 500, 500))
                         .addContainerGap(450, 450)));
         this.setLayout(layout);
     }
@@ -119,14 +131,13 @@ public class LoginMainPanel extends JPanel {
                 textField.setText("");
                 inserted = true;
             }
-            textField.setBackground(new Color(120, 120, 120));
+            textField.setBackground(new Color(118, 118, 118));
         }
     }
 
     public class ListenerLoginMainPanel extends MouseInputAdapter {
         private CustomLabelForSongsPanel customLabelForSongsPanel;
         private JTextField userName;
-        private JTextField ip;
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -153,10 +164,8 @@ public class LoginMainPanel extends JPanel {
                 if ((!userName.getText().equals("Username")) && userName.getText().length() > 2) {
                     ((JFrame) (getParent().getParent().getParent().getParent())).dispose();
                     Main.username = userName.getText();
-                    Main.ip = ip.getText();
                     Main.setStatus(1);
                     ArrayList<String> friends = new ArrayList<>();
-                    friends.add(ip.getText());
                     try
                     {
                         loginPanelListener.login(userName.getText(),friends);
@@ -183,7 +192,7 @@ public class LoginMainPanel extends JPanel {
         public void mouseReleased(MouseEvent e) {
             super.mouseReleased(e);
             if (e.getSource() == customLabelForSongsPanel) {
-                customLabelForSongsPanel.setColor(new Color(29, 205, 75, 255));
+                customLabelForSongsPanel.setColor(new Color(29, 185, 75, 255));
                 customLabelForSongsPanel.repaint();
             }
         }
@@ -192,11 +201,11 @@ public class LoginMainPanel extends JPanel {
         public void mouseEntered(MouseEvent e) {
             super.mouseEntered(e);
             if (e.getSource() == customLabelForSongsPanel) {
-                customLabelForSongsPanel.setColor(new Color(29, 205, 75, 255));
+                customLabelForSongsPanel.setColor(new Color(29, 185, 75, 255));
                 customLabelForSongsPanel.repaint();
             }
             if (e.getSource() == close) {
-                close.setBackground(new Color(255, 22, 14));
+                close.setBackground(new Color(255, 18, 14));
             }
             if (e.getSource() == restoreDown) {
                 restoreDown.setBackground(new Color(100, 100, 100));
@@ -214,13 +223,13 @@ public class LoginMainPanel extends JPanel {
                 customLabelForSongsPanel.repaint();
             }
             if (e.getSource() == close) {
-                close.setBackground(new Color(20, 20, 20));
+                close.setBackground(new Color(18, 18, 18));
             }
             if (e.getSource() == restoreDown) {
-                restoreDown.setBackground(new Color(20, 20, 20));
+                restoreDown.setBackground(new Color(18, 18, 18));
             }
             if (e.getSource() == minimize) {
-                minimize.setBackground(new Color(20, 20, 20));
+                minimize.setBackground(new Color(18, 18, 18));
             }
         }
 
@@ -231,10 +240,6 @@ public class LoginMainPanel extends JPanel {
         public void setUserName(JTextField userName) {
             this.userName = userName;
         }
-
-        public void setIp(JTextField ip) {
-            this.ip = ip;
-        }
     }
 
     private class LoginPanel extends JPanel {
@@ -242,22 +247,15 @@ public class LoginMainPanel extends JPanel {
         private JLabel jPotify = new JLabel("JPotify®");
         private CustomLabelForSongsPanel customLoginLabel;
         private JTextField userName;
-        private JTextField ip;
 
         LoginPanel() {
             customLoginLabel = new CustomLabelForSongsPanel("LOG IN", 105, 30, new Color(29, 178, 73, 255));
-            listenerLoginMainPanel.setCustomLabelForSongsPanel(customLoginLabel);
             customLoginLabel.addMouseListener(listenerLoginMainPanel);
             userName = new JTextField("Username");
             userName.setCaretPosition(0);
             userName.setCaretColor(Color.white);
-            ip = new JTextField("IP");
-            ip.setCaretColor(Color.white);
-            ip.setCaretPosition(0);
             userName.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(0, 0, 0, 0)));
             userName.setBorder(new CompoundBorder(new EmptyBorder(new Insets(0, 15, 0, 0)), userName.getBorder()));
-            ip.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(0, 0, 0, 0)));
-            ip.setBorder(new CompoundBorder(new EmptyBorder(new Insets(0, 15, 0, 0)), ip.getBorder()));
             userName.getDocument().addDocumentListener(new DocumentListener() {
                 public void changedUpdate(DocumentEvent e) {
 
@@ -271,46 +269,28 @@ public class LoginMainPanel extends JPanel {
                     textHandler(true, userName, "Username");
                 }
             });
-            ip.getDocument().addDocumentListener(new DocumentListener() {
-                public void changedUpdate(DocumentEvent e) {
-
-                }
-
-                public void removeUpdate(DocumentEvent e) {
-                    textHandler(false, ip, "IP");
-                }
-
-                public void insertUpdate(DocumentEvent e) {
-                    textHandler(true, ip, "IP");
-                }
-            });
             userName.addFocusListener(new FocusListenerForLoginPanel(userName, "Username"));
-            ip.addFocusListener(new FocusListenerForLoginPanel(ip, "IP"));
             userName.setBackground(new Color(60, 60, 60));
-            ip.setBackground(new Color(60, 60, 60));
             userName.setForeground(new Color(115, 115, 115));
-            ip.setForeground(new Color(115, 115, 115));
             jPotify.setForeground(Color.white);
             userName.setFont(new Font("Proxima Nova Rg", Font.BOLD, 13));
-            ip.setFont(new Font("Proxima Nova Rg", Font.BOLD, 13));
             jPotify.setFont(new Font("Proxima Nova Rg", Font.BOLD, 35));
             customLoginLabel.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
-            listenerLoginMainPanel.setIp(ip);
             listenerLoginMainPanel.setUserName(userName);
+            listenerLoginMainPanel.setCustomLabelForSongsPanel(customLoginLabel);
             jPotify.setHorizontalAlignment(SwingConstants.LEFT);
             jPotify.setVerticalAlignment(SwingConstants.CENTER);
             setBackground(new Color(18, 18, 18));
             GroupLayout loginLayout = new GroupLayout(this);
             loginLayout.setHorizontalGroup(loginLayout.createSequentialGroup()
-                    .addContainerGap(100, 100)
+                    .addContainerGap(140, 140)
                     .addGroup(loginLayout.createParallelGroup()
                             .addGroup(loginLayout.createSequentialGroup()
                                     .addGap(70, 70, 70)
                                     .addComponent(logo, 70, 70, 70)
                                     .addGap(5, 5, 5)
-                                    .addComponent(jPotify, 200, 200, 200))
+                                    .addComponent(jPotify, 180, 180, 180))
                             .addComponent(userName, 340, 340, 340)
-                            .addComponent(ip, 340, 340, 340)
                             .addGroup(loginLayout.createSequentialGroup()
                                     .addGap(115, 115, 115)
                                     .addComponent(customLoginLabel, 105, 105, 105)))
@@ -320,12 +300,11 @@ public class LoginMainPanel extends JPanel {
                             .addGroup(loginLayout.createSequentialGroup()
                                     .addGap(62, 62, 62)
                                     .addComponent(logo, 70, 70, 70))
-                            .addComponent(jPotify, 200, 200, 200))
+                            .addComponent(jPotify, 180, 180, 180))
                     .addComponent(userName, 30, 30, 30)
-                    .addGap(25, 25, 25)
-                    .addComponent(ip, 30, 30, 30)
                     .addGap(50, 50, 50)
-                    .addComponent(customLoginLabel, 30, 30, 30));
+                    .addGroup(loginLayout.createParallelGroup()
+                            .addComponent(customLoginLabel, 30, 30, 30)));
             this.setLayout(loginLayout);
         }
     }

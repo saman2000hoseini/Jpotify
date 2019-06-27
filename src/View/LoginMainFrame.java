@@ -15,7 +15,7 @@ public class LoginMainFrame extends JFrame {
 
     public LoginMainFrame() {
         super();
-        loginMainPanel = new LoginMainPanel(950, 600);
+        loginMainPanel = new LoginMainPanel(970, 600);
         this.setTitle(WINDOW_TITLE);
         frame = new FrameComponent(new Insets(5, 5, 5, 5));
         this.setIconImage(Toolkit.getDefaultToolkit().getImage("src/View/Icons/JPotify.png"));
@@ -33,15 +33,15 @@ public class LoginMainFrame extends JFrame {
         this.setUndecorated(true);
         this.add(frame);
         this.add(loginMainPanel);
-        this.setMinimumSize(new Dimension(950, 600));
+        this.setMinimumSize(new Dimension(970, 600));
         this.addComponentListener(new ComponentAdapter()
         {
             @Override
             public void componentResized(ComponentEvent e)
             {
                 Dimension sizeIn = ((JFrame) e.getComponent()).getContentPane().getSize();
-                if (sizeIn.getWidth() < 950)
-                    sizeIn.width = 950;
+                if (sizeIn.getWidth() < 970)
+                    sizeIn.width = 970;
                 if (sizeIn.getHeight() < 600)
                     sizeIn.height = 600;
                 frame.setSize(sizeIn);
