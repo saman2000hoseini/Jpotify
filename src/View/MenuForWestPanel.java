@@ -1,6 +1,5 @@
 package View;
 
-import Listeners.PlayPanelListener;
 import Listeners.TopLeftMenuListener;
 
 import javax.swing.*;
@@ -18,7 +17,7 @@ public class MenuForWestPanel extends JMenuBar
     private JMenu menu = new JMenu("");
     private JMenuItem newSong = new JMenuItem("New Song");
     private JMenuItem newPlayList = new JMenuItem("New Playlist");
-    private JMenuItem newPlayListFolder = new JMenuItem("New Playlist Folder");
+    private JMenuItem newFriend = new JMenuItem("Add New Friend");
     private JMenuItem exit = new JMenuItem("Exit");
     private JMenuItem search = new JMenuItem("Search");
     private JMenuItem play = new JMenuItem("Play");
@@ -42,7 +41,7 @@ public class MenuForWestPanel extends JMenuBar
         this.exit.setMnemonic(KeyEvent.VK_E);
         this.file.add(newSong);
         this.file.add(newPlayList);
-        this.file.add(newPlayListFolder);
+        this.file.add(newFriend);
         this.file.addSeparator();
         this.file.add(exit);
         this.edit.setMnemonic(KeyEvent.VK_E);
@@ -85,6 +84,7 @@ public class MenuForWestPanel extends JMenuBar
         ListenerForMouse listenerForMouse = new ListenerForMouse();
         exit.addMouseListener(listenerForMouse);
         newSong.addMouseListener(listenerForMouse);
+        newFriend.addMouseListener(listenerForMouse);
     }
 
     public void setTopLeftMenuListener(TopLeftMenuListener topLeftMenuListener)
@@ -109,13 +109,11 @@ public class MenuForWestPanel extends JMenuBar
         private void menuActions(MouseEvent e)
         {
             if (e.getSource() == exit)
-            {
                 topLeftMenuListener.state(0);
-            }
             else if (e.getSource() == newSong)
-            {
                 topLeftMenuListener.state(1);
-            }
+            else if(e.getSource() == newFriend)
+                topLeftMenuListener.state(2);
         }
 
         @Override

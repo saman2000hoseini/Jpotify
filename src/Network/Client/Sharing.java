@@ -17,7 +17,7 @@ public class Sharing implements Runnable
 {
     private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private Vector<Socket> connections;
-    private Vector<User> users;
+    private Vector<User> users = new Vector<>();
     private ObjectInputStream objectInputStream;
     private Library sharedLibrary;
 
@@ -141,6 +141,8 @@ public class Sharing implements Runnable
     public void setConnections(Vector<Socket> connections) throws IOException
     {
         this.connections = connections;
+        if (this.connections==null)
+            this.connections=new Vector<>();
         for (int i = users.size(); i < connections.size(); i++)
         {
             hiFriend(connections.get(i));

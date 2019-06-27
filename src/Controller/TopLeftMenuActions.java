@@ -68,6 +68,19 @@ public class TopLeftMenuActions implements TopLeftMenuListener
                 }
             }
         }
+        else if (statues == 2)
+        {
+            System.out.println("here");
+            String ip = JOptionPane.showInputDialog("Enter your friends ip ");
+            try
+            {
+                Main.mainClient.addFriend(ip);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setSongsTableListener(SongsTableListener songsTableListener)

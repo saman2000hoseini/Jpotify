@@ -15,8 +15,9 @@ public class LoginActions implements LoginPanelListener
     public void login(String user, ArrayList<String> friends) throws IOException
     {
         Main.mainClient = new MainClient(PlayPanelActions.playlist,new User(user, null));
-//        for(String ip:friends)
-//            Main.mainClient.addFriend(ip);
+        for(String ip:friends)
+            Main.mainClient.addFriend(ip);
+//            System.out.println(ip);
         userLoginListener.setUser(user);
     }
 

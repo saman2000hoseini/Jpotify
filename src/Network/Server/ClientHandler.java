@@ -36,7 +36,7 @@ public class ClientHandler implements Runnable
                 if (request.getMusic().isLocal())
                 {
                     thisOut = objectOutputStream;
-                    System.out.println("User Joined successfully");
+                    System.out.println("Welcome to your server "+request.getUser().getUserName());
                 }
                 else
                     thisOut.writeObject(request);

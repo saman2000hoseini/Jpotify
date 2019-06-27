@@ -168,6 +168,10 @@ public class LoginMainPanel extends JPanel {
                     Main.username = userName.getText();
                     Main.setStatus(1);
                     ArrayList<String> friends = new ArrayList<>();
+                    for (int i = 0; i < tableForIpPanel.getTableForIp().getRowCount(); i++)
+                    {
+                        friends.add((String) tableForIpPanel.getTableForIp().getValueAt(i,0));
+                    }
                     try {
                         loginPanelListener.login(userName.getText(), friends);
                     } catch (IOException ex) {
