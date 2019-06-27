@@ -23,6 +23,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     private int repeatState = 0;
     private int playState = 0;
     private PlayingMusicChanged playingMusicChanged = null;
+
     public PlayPanelActions(Vector<Music> playlist)
     {
         this.playlist = playlist;
@@ -71,7 +72,6 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
             case 2:
                 if (playState != 2)
                 {
-                    System.out.println(playState);
                     if (playState == 0)
                     {
                         startPlayingMusic();
@@ -183,12 +183,12 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     @Override
     public void setPlaylist(Vector<Music> playlist)
     {
-        index = 0;
         for (int i = 0; i < playlist.size(); i++)
         {
             int temp = this.playlist.indexOf(playlist.get(i));
-            playlist.set(i,this.playlist.get(temp));
+            playlist.set(i, this.playlist.get(temp));
         }
+        index = playlist.indexOf(this.playlist.get(index));
         this.playlist = playlist;
     }
 
@@ -198,8 +198,10 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
         if (col == 0)
         {
             Music temp = new Music(null, artist, name, null, null, null, null, null);
-            index = playlist.indexOf(temp) - 1;
-            temp = playlist.get(index + 1);
+//            index = playlist.indexOf(temp) - 1;
+//            temp = playlist.get(index + 1);
+            index = playlist.indexOf(temp);
+            temp = playlist.get(index);
             if (playState == 2 && audioPlayer != null && audioPlayer.getPath() == temp.getFileLocation())
             {
                 state(shuffleState, repeatState, playState, 2);
@@ -210,7 +212,15 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
                 if (audioPlayer != null && audioPlayer.getPath() == temp.getFileLocation())
                     state(shuffleState, repeatState, playState, 2);
                 else
-                    state(shuffleState, repeatState, playState, 3);
+                    if (audioPlayer == null)
+                        state(shuffleState, repeatState, playState, 2);
+                    else
+                    {
+                        audioPlayer.stop();
+                        playState=0;
+                        state(shuffleState, repeatState, playState, 2);
+                    }
+                    //                    state(shuffleState, repeatState, playState, 3);
                 playState = 2;
             }
         }
@@ -221,7 +231,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
             File file = new File(temp.getFileLocation());
             file.delete();
             playlist.remove(temp);
-            if (playState == 2 && audioPlayer.getPath()==temp.getFileLocation())
+            if (playState == 2 && audioPlayer.getPath() == temp.getFileLocation())
             {
                 index = 0;
                 playState = 0;

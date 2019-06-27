@@ -152,16 +152,13 @@ public class SongsTable extends JTable implements PlayingMusicChanged
         }
         else
         {
-            ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(this, this.getValueAt(row, 0), true
-                    , true, row, 0)).setSelectedRow(row);
             selectedRowIndex = row;
             selectedArtist = (String) this.getValueAt(row, 3);
             selectedSongName = (String) this.getValueAt(row, 2);
-            SongsPanel.customLabelForSongsPanel.setText("PAUSE");
-            PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
-            PlayPanel.playState = 2;
             isPlayedFromTable = true;
         }
+        ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(this, this.getValueAt(row, 0), true
+                , true, row, 0)).setSelectedRow(row);
         repaint();
     }
 
