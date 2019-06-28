@@ -41,11 +41,13 @@ public class MainPanel extends JPanel {
                 westPanel.update();
             }
             this.getLayout().removeLayoutComponent(this);
+            this.setLayout(null);
             GroupLayout layout = new GroupLayout(this);
             this.setLayout(layout);
             if (getWidth() >= 1070) {
-                if (friendsPanel == null)
+                if (friendsPanel == null) {
                     friendsPanel = new FriendsPanel(getHeight());
+                }
                 layout.setHorizontalGroup(layout.createParallelGroup()
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(westPanel, 215, 215, Short.MAX_VALUE)
@@ -59,8 +61,11 @@ public class MainPanel extends JPanel {
                                 .addComponent(friendsPanel, 500, 952, Short.MAX_VALUE))
                         .addComponent(playPanel, 72, 88, Short.MAX_VALUE));
             } else {
-                if (friendsPanel != null)
+                if (friendsPanel != null) {
                     remove(friendsPanel);
+                    friendsPanel.removeAll();
+                    friendsPanel = null;
+                }
                 layout.setHorizontalGroup(layout.createParallelGroup()
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(westPanel, 215, 215, Short.MAX_VALUE)
@@ -79,9 +84,6 @@ public class MainPanel extends JPanel {
                 playPanel.setSize(getWidth(), playPanel.getHeight());
                 playPanel.update();
                 westPanel.update();
-                if (friendsPanel != null) {
-                    friendsPanel.update(getHeight());
-                }
             }
             firstApearence = false;
         }

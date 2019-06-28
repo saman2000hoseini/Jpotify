@@ -21,10 +21,11 @@ public class FriendsTable extends JTable{
         setShowGrid(false);
         setRowSelectionAllowed(true);
         getTableHeader().setBackground(new Color(18, 18, 18));
-        getTableHeader().setPreferredSize(new Dimension(220, 50));
-        getTableHeader().setMaximumSize(new Dimension(220, 50));
-        getTableHeader().setMinimumSize(new Dimension(220, 50));
-        getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(40, 40, 40)));setColumnSelectionAllowed(false);
+        getTableHeader().setPreferredSize(new Dimension(240, 73));
+        getTableHeader().setMaximumSize(new Dimension(240, 73));
+        getTableHeader().setMinimumSize(new Dimension(240, 73));
+        getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(40, 40, 40)));
+        setColumnSelectionAllowed(false);
         getTableHeader().setBorder(new CompoundBorder(new EmptyBorder(new Insets(0, 0, 0, 10)), getTableHeader().getBorder()));
         getTableHeader().setReorderingAllowed(false);
         getTableHeader().setResizingAllowed(false);

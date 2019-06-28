@@ -30,8 +30,7 @@ public class FriendsPanel extends JPanel {
             f = new FriendsActivity(new Music("C:\\Users\\asus\\Music\\Anime\\MIYAVI vs KenKen - Flashback.mp3", "Roham", "test", "oof", null, null, "Rock", "Album")
                     , "testUser");
             friendsActivities = new FriendsActivity[12][1];
-            for (int i = 0 ; i < 12; i++)
-            {
+            for (int i = 0; i < 12; i++) {
                 friendsActivities[i][0] = f;
             }
         } catch (IOException e) {
@@ -48,11 +47,6 @@ public class FriendsPanel extends JPanel {
         restoreDown.addMouseListener(listenerForMouse);
         minimize.addMouseListener(listenerForMouse);
         setBackground(new Color(18, 18, 18));
-    }
-
-    public void update(int height) {
-        this.getLayout().removeLayoutComponent(this);
-        friendsTablePanel.update(height);
         close.setBackground(new Color(24, 24, 24));
         restoreDown.setBackground(new Color(24, 24, 24));
         minimize.setBackground(new Color(24, 24, 24));
@@ -84,8 +78,7 @@ public class FriendsPanel extends JPanel {
                         .addComponent(restoreDown, 30, 30, 30)
                         .addComponent(close, 30, 30, 30))
                 .addGap(15, 15, 15)
-                .addComponent(friendsTablePanel, height - 45, height - 45, height - 45)
-        );
+                .addComponent(friendsTablePanel, 220, 220, 1000));
     }
 
     private class ListenerForMouse implements MouseListener {
