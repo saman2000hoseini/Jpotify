@@ -184,6 +184,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         if (this.connections == null)
             this.connections = new Vector<>();
         hiFriend(connections.get(connections.size() - 1));
+        System.out.println("saying hello");
     }
 
     public static void setMusic(Music music)
