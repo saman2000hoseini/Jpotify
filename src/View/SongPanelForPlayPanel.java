@@ -29,28 +29,30 @@ public class SongPanelForPlayPanel extends JPanel implements LoadPlayingPanel
         songName.setBackground(new Color(40, 40, 40));
         songArtist.setBackground(new Color(40, 40, 40));
         songName.setForeground(Color.WHITE);
-        songArtist.setForeground(new Color(170, 170, 170));
+        songArtist.setForeground(new Color(120, 120, 120));
         songName.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
         songArtist.setFont(new Font("Proxima Nova Rg", Font.BOLD, 13));
         layout.setHorizontalGroup(layout.createSequentialGroup()
-            .addComponent(musicImage, 50, 50, 50)
-            .addGap(5, 5, 5)
-            .addGroup(layout.createParallelGroup()
-                    .addComponent(songName, 80, 80, 80)));
-        layout.setVerticalGroup(layout.createSequentialGroup()
-                .addContainerGap(5, 5)
+                .addContainerGap(15, 15)
+                .addComponent(musicImage, 60, 60, 60)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup()
-                            .addComponent(musicImage, 50, 50, 50)
-                            .addGroup(layout.createSequentialGroup()
-                                        .addGap(5, 5, 5)
-                                        .addComponent(songName,15, 15, 15)
-                                        .addGap(5, 5, 5)
-                                        .addComponent(songArtist, 15, 15, 15))));
+                        .addComponent(songName, 270, 270, 270)
+                        .addComponent(songArtist, 270, 270, 270)));
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(musicImage, 60, 60, 60)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(songName,15, 15, 15)
+                                .addGap(5, 5, 5)
+                                .addComponent(songArtist, 15, 15, 15))));
+        setLayout(layout);
     }
 
     public void setMusicImage(BufferedImage image)
     {
-        musicImage.setIcon(ImageEditor.rescaleImage(image, 50, 50));
+        musicImage.setIcon(ImageEditor.rescaleImage(image, 60, 60));
     }
 
     public void setSongName(String songName)
@@ -75,5 +77,6 @@ public class SongPanelForPlayPanel extends JPanel implements LoadPlayingPanel
         setSongName(music.getName());
         setSongArtist(music.getArtist());
         this.repaint();
+        getParent().repaint();
     }
 }

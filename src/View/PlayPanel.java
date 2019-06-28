@@ -179,21 +179,26 @@ public class PlayPanel extends JPanel {
                         .addComponent(musicSlider, 500, 500, 500))
                 .addGroup(layout.createSequentialGroup()
                         .addContainerGap(10, 10))
-                .addComponent(songPanelForPlayPanel, 70, 70, 70));
-        layout.setVerticalGroup(layout.createSequentialGroup()
-                .addGap(5, 15, 15)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(play, 35, 35, 35)
-                        .addComponent(skip_backward, 25, 25, 25)
-                        .addComponent(skip_forward, 25, 25, 25)
-                        .addGroup(layout.createSequentialGroup().addGap(2, 2, 2)
-                                .addGroup(layout.createParallelGroup()
-                                        .addComponent(shuffle, 25, 25, 25)
-                                        .addComponent(repeat, 25, 25, 25)))
-                        .addComponent(songPanelForPlayPanel, 70, 70, 70))
-                .addGap(5, 5, 5)
-                .addComponent(musicSlider, 20, 20, 20)
-                .addContainerGap(30, 30));
+                .addComponent(songPanelForPlayPanel, 350, 350, 350));
+        layout.setVerticalGroup(layout.createParallelGroup()
+                .addGroup(layout.createSequentialGroup()
+                        .addGap(5, 15, 15)
+                        .addGroup(layout.createParallelGroup()
+                                .addComponent(play, 35, 35, 35)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(5, 5, 5)
+                                        .addGroup(layout.createParallelGroup()
+                                            .addComponent(skip_backward, 25, 25, 25)
+                                            .addComponent(skip_forward, 25, 25, 25)))
+                                .addGroup(layout.createSequentialGroup().addGap(7, 7, 7)
+                                        .addGroup(layout.createParallelGroup()
+                                                .addComponent(shuffle, 25, 25, 25)
+                                                .addComponent(repeat, 25, 25, 25)))
+                                .addComponent(songPanelForPlayPanel, 70, 70, 70)))
+                .addGroup(layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(musicSlider, 20, 20, 20)
+                        .addContainerGap(30, 30)));
         this.setLayout(layout);
     }
 

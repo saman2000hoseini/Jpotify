@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class Library
+public class Library implements Serializable
 {
     private Vector<Music> musics = new Vector<>();
     private String name ;
