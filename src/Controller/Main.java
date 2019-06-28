@@ -110,7 +110,8 @@ public class Main {
         AddSongAction addSongAction = new AddSongAction();
         mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().getMenuForMusics().setAddSongToLibrary(addSongAction);
         playPanelActions.setLoadPlayingPanel(mainFrame.getMainPanel().getPlayPanel().getSongPanelForPlayPanel());
-
+        playPanelActions.setjSliderListener(mainFrame.getMainPanel().getPlayPanel().getLightSliderUI());
+        JSliderActions.getInstance().setMusicFinishedListener(playPanelActions);
     }
 
     public static int getStatus() {

@@ -41,19 +41,20 @@ public class Sharing implements Runnable, RequestToGetMusic
                 try
                 {
                     Request request = null;
-                    if (music != null)
-                        request = new Request(new PlayingMusic(music, false), MainClient.user);
                     sharedLibrary = Main.getPlayLists().get(Main.getPlayLists().indexOf(new Library("Shared playlist")));
                     try
                     {
+                        System.out.println(music);
+                        if (music != null)
+                            request = new Request(new PlayingMusic(music, false), MainClient.user);
                         if (music != null)
                         {
                             System.out.println("sending music " + music.getName());
                             shareMusic(request);
                         }
                         request = new Request(sharedLibrary, MainClient.user);
-                        if (sharedLibrary != null)
-                            shareMusic(request);
+//                        if (sharedLibrary != null)
+//                            shareMusic(request);
                     }
                     catch (IOException e)
                     {

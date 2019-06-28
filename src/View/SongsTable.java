@@ -5,9 +5,13 @@ import Listeners.PlayListChanged;
 import Listeners.PlayingMusicChanged;
 import Listeners.SongsTableButtons;
 import Model.Music;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
+import org.farng.mp3.TagException;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -279,7 +283,30 @@ public class SongsTable extends JTable implements PlayingMusicChanged
             super.mouseClicked(e);
             int row = rowAtPoint(e.getPoint());
             int col = columnAtPoint(e.getPoint());
-            songsTableButtons.doAction(col, (String) table.getValueAt(row, 2), (String) table.getValueAt(row, 3));
+            try
+            {
+                songsTableButtons.doAction(col, (String) table.getValueAt(row, 2), (String) table.getValueAt(row, 3));
+            }
+            catch (InterruptedException ex)
+            {
+                ex.printStackTrace();
+            }
+            catch (UnsupportedTagException ex)
+            {
+                ex.printStackTrace();
+            }
+            catch (TagException ex)
+            {
+                ex.printStackTrace();
+            }
+            catch (InvalidDataException ex)
+            {
+                ex.printStackTrace();
+            }
+            catch (IOException ex)
+            {
+                ex.printStackTrace();
+            }
             if (col == 0)
             {
                 if (isPlayedFromTable == false)

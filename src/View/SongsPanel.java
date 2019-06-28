@@ -1,11 +1,15 @@
 package View;
 
 import Listeners.SongsPanelListener;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
+import org.farng.mp3.TagException;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class SongsPanel extends JPanel
 {
@@ -55,7 +59,30 @@ public class SongsPanel extends JPanel
                 customLabelForSongsPanel.setText("PAUSE");
                 PlayPanel.playState = 2;
                 PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
-                songsPanelListener.playMusic(false, (String) SongsTablePanel.defaultTableModel.getValueAt(0,2), (String) SongsTablePanel.defaultTableModel.getValueAt(0,3));
+                try
+                {
+                    songsPanelListener.playMusic(false, (String) SongsTablePanel.defaultTableModel.getValueAt(0,2), (String) SongsTablePanel.defaultTableModel.getValueAt(0,3));
+                }
+                catch (InterruptedException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (UnsupportedTagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (TagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (InvalidDataException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
                 //Pause the song
             }
             else
@@ -63,7 +90,30 @@ public class SongsPanel extends JPanel
                 customLabelForSongsPanel.setText("PLAY");
                 PlayPanel.play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                 PlayPanel.playState = 1;
-                songsPanelListener.playMusic(true, (String) SongsTablePanel.defaultTableModel.getValueAt(0,2), (String) SongsTablePanel.defaultTableModel.getValueAt(0,3));
+                try
+                {
+                    songsPanelListener.playMusic(true, (String) SongsTablePanel.defaultTableModel.getValueAt(0,2), (String) SongsTablePanel.defaultTableModel.getValueAt(0,3));
+                }
+                catch (InterruptedException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (UnsupportedTagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (TagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (InvalidDataException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
                 //Resume the song if any song is playing or play the first row
             }
         }

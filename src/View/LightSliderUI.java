@@ -1,5 +1,14 @@
 package View;
 
+import Controller.JSliderActions;
+import Listeners.JSliderListener;
+import Model.Music;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
+import org.farng.mp3.MP3File;
+import org.farng.mp3.TagException;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -9,25 +18,36 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public class LightSliderUI extends BasicSliderUI {
+public class LightSliderUI extends BasicSliderUI implements JSliderListener
+{
 
     public Color rangeColor = Color.white;
     private final BasicStroke stroke = new BasicStroke(2f);
-
+    private JSliderActions jSliderActions = JSliderActions.getInstance();
     private transient boolean upperDragging;
 
-    public LightSliderUI(JSlider b) {
+    public LightSliderUI(JSlider b)
+    {
         super(b);
+        jSliderActions.setLightSliderUI(b);
     }
 
-    public static ComponentUI createUI(JComponent c) {
+    public static ComponentUI createUI(JComponent c)
+    {
         return new LightSliderUI((JSlider) c);
     }
 
 
     @Override
-    protected void calculateThumbSize() {
+    protected void calculateThumbSize()
+    {
         super.calculateThumbSize();
         thumbRect.setSize(thumbRect.width, thumbRect.height);
     }
@@ -36,39 +56,48 @@ public class LightSliderUI extends BasicSliderUI {
      * Creates a listener to handle track events in the specified slider.
      */
     @Override
-    protected TrackListener createTrackListener(JSlider slider) {
+    protected TrackListener createTrackListener(JSlider slider)
+    {
         return new RangeTrackListener(this);
     }
 
 
     @Override
-    protected void calculateThumbLocation() {
+    protected void calculateThumbLocation()
+    {
         // Call superclass method for lower thumb location.
         super.calculateThumbLocation();
 
         // Adjust upper value to snap to ticks if necessary.
-        if (slider.getSnapToTicks()) {
+        if (slider.getSnapToTicks())
+        {
             int upperValue = slider.getValue() + slider.getExtent();
             int snappedValue = upperValue;
             int majorTickSpacing = slider.getMajorTickSpacing();
             int minorTickSpacing = slider.getMinorTickSpacing();
             int tickSpacing = 0;
 
-            if (minorTickSpacing > 0) {
+            if (minorTickSpacing > 0)
+            {
                 tickSpacing = minorTickSpacing;
-            } else if (majorTickSpacing > 0) {
+            }
+            else if (majorTickSpacing > 0)
+            {
                 tickSpacing = majorTickSpacing;
             }
 
-            if (tickSpacing != 0) {
+            if (tickSpacing != 0)
+            {
                 // If it's not on a tick, change the value
-                if ((upperValue - slider.getMinimum()) % tickSpacing != 0) {
+                if ((upperValue - slider.getMinimum()) % tickSpacing != 0)
+                {
                     float temp = (float) (upperValue - slider.getMinimum()) / (float) tickSpacing;
                     int whichTick = Math.round(temp);
                     snappedValue = slider.getMinimum() + (whichTick * tickSpacing);
                 }
 
-                if (snappedValue != upperValue) {
+                if (snappedValue != upperValue)
+                {
                     slider.setExtent(snappedValue - slider.getValue());
                 }
             }
@@ -76,12 +105,15 @@ public class LightSliderUI extends BasicSliderUI {
 
         // Calculate upper thumb location.  The thumb is centered over its
         // value on the track.
-        if (slider.getOrientation() == JSlider.HORIZONTAL) {
+        if (slider.getOrientation() == JSlider.HORIZONTAL)
+        {
             int upperPosition = xPositionForValue(slider.getValue() + slider.getExtent());
             thumbRect.x = upperPosition - (thumbRect.width / 2);
             thumbRect.y = trackRect.y;
 
-        } else {
+        }
+        else
+        {
             int upperPosition = yPositionForValue(slider.getValue() + slider.getExtent());
             thumbRect.x = trackRect.x;
             thumbRect.y = upperPosition - (thumbRect.height / 2);
@@ -96,25 +128,29 @@ public class LightSliderUI extends BasicSliderUI {
      * @return size of trumb
      */
     @Override
-    protected Dimension getThumbSize() {
+    protected Dimension getThumbSize()
+    {
         return new Dimension(15, 15);
     }
 
 
-    private Shape createThumbShape(int width, int height) {
+    private Shape createThumbShape(int width, int height)
+    {
         Ellipse2D shape = new Ellipse2D.Double(0, 0, width, height);
         return shape;
     }
 
     @Override
-    public void paintTrack(Graphics g) {
+    public void paintTrack(Graphics g)
+    {
         Graphics2D g2d = (Graphics2D) g;
         Stroke old = g2d.getStroke();
         g2d.setStroke(stroke);
         g2d.setPaint(Color.gray);
         Color oldColor = Color.gray;
         Rectangle trackBounds = trackRect;
-        if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
+        if (slider.getOrientation() == SwingConstants.HORIZONTAL)
+        {
             g2d.drawLine(trackRect.x, trackRect.y + trackRect.height / 2,
                     trackRect.x + trackRect.width, trackRect.y + trackRect.height / 2);
             int lowerX = thumbRect.width / 2;
@@ -135,7 +171,8 @@ public class LightSliderUI extends BasicSliderUI {
      * within the <code>paint()</code> method.
      */
     @Override
-    public void paintThumb(Graphics g) {
+    public void paintThumb(Graphics g)
+    {
         Rectangle knobBounds = thumbRect;
         int w = knobBounds.width;
         int h = knobBounds.height;
@@ -152,13 +189,27 @@ public class LightSliderUI extends BasicSliderUI {
         g2d.dispose();
     }
 
+    @Override
+    public void playPause(Music music, int state) throws IOException, TagException, InterruptedException, InvalidDataException, UnsupportedTagException
+    {
+        File file = null;
+        if (state==0)
+        {
+            file = new File(music.getFileLocation());
+            jSliderActions.setMax((int) new Mp3File(file).getLengthInSeconds());
+        }
+        jSliderActions.setPlayState(state);
+    }
+
     /**
      * Listener to handle model change events.  This calculates the thumb
      * locations and repaints the slider if the value change is not caused by dragging a thumb.
      */
-    public class ChangeHandler implements ChangeListener {
+    public class ChangeHandler implements ChangeListener
+    {
         @Override
-        public void stateChanged(ChangeEvent arg0) {
+        public void stateChanged(ChangeEvent arg0)
+        {
             calculateThumbLocation();
             slider.repaint();
         }
@@ -168,17 +219,21 @@ public class LightSliderUI extends BasicSliderUI {
      * Listener to handle mouse movements in the slider track.
      */
 
-    public class RangeTrackListener extends TrackListener {
+    public class RangeTrackListener extends TrackListener
+    {
 
         LightSliderUI lightSliderUI;
+
         RangeTrackListener(LightSliderUI lightSliderUI)
         {
             this.lightSliderUI = lightSliderUI;
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
-            if (!slider.isEnabled()) {
+        public void mouseClicked(MouseEvent e)
+        {
+            if (!slider.isEnabled())
+            {
                 return;
             }
             currentMouseX -= thumbRect.width / 2; // Because we want the mouse location correspond to middle of the "thumb", not left side of it.
@@ -186,31 +241,41 @@ public class LightSliderUI extends BasicSliderUI {
             moveUpperThumb();
         }
 
-        public void mousePressed(MouseEvent e) {
-            if (!slider.isEnabled()) {
+        public void mousePressed(MouseEvent e)
+        {
+            if (!slider.isEnabled())
+            {
                 return;
             }
 
             currentMouseX = e.getX();
             currentMouseY = e.getY();
 
-            if (slider.isRequestFocusEnabled()) {
+            if (slider.isRequestFocusEnabled())
+            {
                 slider.requestFocus();
             }
 
             boolean upperPressed = false;
-            if (slider.getMinimum() == slider.getValue()) {
-                if (thumbRect.contains(currentMouseX, currentMouseY)) {
+            if (slider.getMinimum() == slider.getValue())
+            {
+                if (thumbRect.contains(currentMouseX, currentMouseY))
+                {
                     upperPressed = true;
                 }
-            } else {
-                if (thumbRect.contains(currentMouseX, currentMouseY)) {
+            }
+            else
+            {
+                if (thumbRect.contains(currentMouseX, currentMouseY))
+                {
                     upperPressed = true;
                 }
             }
 
-            if (upperPressed) {
-                switch (slider.getOrientation()) {
+            if (upperPressed)
+            {
+                switch (slider.getOrientation())
+                {
                     case JSlider.VERTICAL:
                         offset = currentMouseY - thumbRect.y;
                         break;
@@ -229,7 +294,8 @@ public class LightSliderUI extends BasicSliderUI {
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void mouseReleased(MouseEvent e)
+        {
             upperDragging = false;
             slider.setValueIsAdjusting(false);
             rangeColor = Color.white;
@@ -237,15 +303,18 @@ public class LightSliderUI extends BasicSliderUI {
         }
 
         @Override
-        public void mouseDragged(MouseEvent e) {
-            if (!slider.isEnabled()) {
+        public void mouseDragged(MouseEvent e)
+        {
+            if (!slider.isEnabled())
+            {
                 return;
             }
 
             currentMouseX = e.getX();
             currentMouseY = e.getY();
 
-            if (upperDragging) {
+            if (upperDragging)
+            {
                 slider.setValueIsAdjusting(true);
                 moveUpperThumb();
 
@@ -253,16 +322,19 @@ public class LightSliderUI extends BasicSliderUI {
         }
 
         @Override
-        public boolean shouldScroll(int direction) {
+        public boolean shouldScroll(int direction)
+        {
             return false;
         }
 
         /**
          * Moves the location of the upper thumb, and sets its corresponding  value in the slider.
          */
-        public void moveUpperThumb() {
+        public void moveUpperThumb()
+        {
             int thumbMiddle = 0;
-            switch (slider.getOrientation()) {
+            switch (slider.getOrientation())
+            {
 
                 case JSlider.HORIZONTAL:
                     int halfThumbWidth = thumbRect.width / 2;
@@ -272,9 +344,12 @@ public class LightSliderUI extends BasicSliderUI {
                     int hMax = xPositionForValue(slider.getMaximum() -
                             slider.getExtent());
 
-                    if (drawInverted()) {
+                    if (drawInverted())
+                    {
                         trackLeft = hMax;
-                    } else {
+                    }
+                    else
+                    {
                         trackRight = hMax;
                     }
                     thumbLeft = Math.max(thumbLeft, trackLeft - halfThumbWidth);

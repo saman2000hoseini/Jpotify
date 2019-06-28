@@ -4,13 +4,17 @@ import Listeners.*;
 import Model.Music;
 import Model.Sort;
 import Network.Client.Sharing;
+import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
+import org.farng.mp3.TagException;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Vector;
 
-public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, SongsPanelListener, PlayListChanged
+public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, SongsPanelListener, PlayListChanged, MusicFinishedListener
 {
     private static AudioPlayer audioPlayer;
     private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
@@ -24,7 +28,9 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     private int repeatState = 0;
     private int playState = 0;
     private PlayingMusicChanged playingMusicChanged = null;
+    private JSliderListener jSliderListener = null;
     private LoadPlayingPanel loadPlayingPanel = null;
+
     public PlayPanelActions(Vector<Music> playlist)
     {
         this.playlist = playlist;
@@ -32,7 +38,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     }
 
     @Override
-    public void state(boolean shuffleState, int repeatState, int playState, int plPaSk)
+    public void state(boolean shuffleState, int repeatState, int playState, int plPaSk) throws InterruptedException, UnsupportedTagException, InvalidDataException, TagException, IOException
     {
         this.repeatState = repeatState;
         this.playState = playState;
@@ -68,6 +74,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
                 if (index < 0)
                     index = playlist.size() - 1;
                 playingMusicChanged.setRow(index);
+                jSliderListener.playPause(playlist.get(index), 0);
                 startPlayingMusic();
                 break;
             case 2:
@@ -75,17 +82,20 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
                 {
                     if (playState == 0)
                     {
+                        jSliderListener.playPause(playlist.get(index), 0);
                         startPlayingMusic();
                         this.playState = 2;
                     }
                     else
                     {
+                        jSliderListener.playPause(playlist.get(index), 1);
                         this.playState = 2;
                         audioPlayer.resume();
                     }
                 }
                 else
                 {
+                    jSliderListener.playPause(playlist.get(index), 2);
                     this.playState = 1;
                     audioPlayer.pauseMusic();
                 }
@@ -104,6 +114,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
                     index = 0;
                 this.playState = 2;
                 playingMusicChanged.setRow(index);
+                jSliderListener.playPause(playlist.get(index), 0);
                 startPlayingMusic();
                 break;
             case 4:
@@ -196,7 +207,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     }
 
     @Override
-    public void doAction(int col, String name, String artist)
+    public void doAction(int col, String name, String artist) throws InterruptedException, UnsupportedTagException, TagException, InvalidDataException, IOException
     {
         if (col == 0)
         {
@@ -214,16 +225,15 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
             {
                 if (audioPlayer != null && audioPlayer.getPath() == temp.getFileLocation())
                     state(shuffleState, repeatState, playState, 2);
+                else if (audioPlayer == null)
+                    state(shuffleState, repeatState, playState, 2);
                 else
-                    if (audioPlayer == null)
-                        state(shuffleState, repeatState, playState, 2);
-                    else
-                    {
-                        audioPlayer.stop();
-                        playState=0;
-                        state(shuffleState, repeatState, playState, 2);
-                    }
-                    //                    state(shuffleState, repeatState, playState, 3);
+                {
+                    audioPlayer.stop();
+                    playState = 0;
+                    state(shuffleState, repeatState, playState, 2);
+                }
+                //                    state(shuffleState, repeatState, playState, 3);
                 playState = 2;
             }
         }
@@ -244,7 +254,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     }
 
     @Override
-    public void playMusic(boolean isPaused, String name, String artist)
+    public void playMusic(boolean isPaused, String name, String artist) throws InterruptedException, UnsupportedTagException, TagException, InvalidDataException, IOException
     {
         Music temp = new Music(null, artist, name, null, null, null, null, null);
         temp = playlist.get(playlist.indexOf(temp));
@@ -268,8 +278,34 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
         this.playingMusicChanged = playingMusicChanged;
     }
 
+    public void setjSliderListener(JSliderListener jSliderListener)
+    {
+        this.jSliderListener = jSliderListener;
+    }
+
     public void setLoadPlayingPanel(LoadPlayingPanel loadPlayingPanel)
     {
         this.loadPlayingPanel = loadPlayingPanel;
+    }
+
+    @Override
+    public void doRepeat() throws InterruptedException, UnsupportedTagException, InvalidDataException, TagException, IOException
+    {
+        if (repeatState == 0)
+        {
+            if (index == playlist.size() - 1)
+                jSliderListener.playPause(playlist.get(index), 4);
+            else
+                state(shuffleState,repeatState,playState,3);
+        }
+        else if (repeatState == 1)
+        {
+            index--;
+            state(shuffleState,repeatState,playState,3);
+        }
+        else
+        {
+            state(shuffleState,repeatState,playState,3);
+        }
     }
 }

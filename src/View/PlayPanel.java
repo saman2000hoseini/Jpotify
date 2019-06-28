@@ -8,6 +8,7 @@ import Model.Sort;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import org.farng.mp3.TagException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +28,7 @@ public class PlayPanel extends JPanel {
     private MainPanel mainPanel;
     private JSlider musicSlider = new JSlider();
     private SongPanelForPlayPanel songPanelForPlayPanel = new SongPanelForPlayPanel();
-
+    private LightSliderUI lightSliderUI;
     public PlayPanelListener getPlayPanelListener() {
         return playPanelListener;
     }
@@ -147,7 +148,8 @@ public class PlayPanel extends JPanel {
         repeat.setToolTipText("Repeat");
         shuffle.setToolTipText("Shuffle");
         play.setToolTipText("Play");
-        musicSlider.setUI(new LightSliderUI(musicSlider));
+        lightSliderUI = new LightSliderUI(musicSlider);
+        musicSlider.setUI(lightSliderUI);
         musicSlider.setBackground(new Color(40, 40, 40));
         musicSlider.setMinimum(0);
         musicSlider.setMaximum(100);
@@ -207,7 +209,30 @@ public class PlayPanel extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getSource() == shuffle) {
-                playPanelListener.state(shuffleState, repeatState, playState, 0);
+                try
+                {
+                    playPanelListener.state(shuffleState, repeatState, playState, 0);
+                }
+                catch (InterruptedException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (UnsupportedTagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (InvalidDataException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (TagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
                 if (!shuffleState) {
                     shuffle.setForeground(new Color(1, 180, 53));
                     shuffleState = true;
@@ -218,7 +243,30 @@ public class PlayPanel extends JPanel {
 
             }
             if (e.getSource() == skip_backward) {
-                playPanelListener.state(shuffleState, repeatState, playState, 1);
+                try
+                {
+                    playPanelListener.state(shuffleState, repeatState, playState, 1);
+                }
+                catch (InterruptedException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (UnsupportedTagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (InvalidDataException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (TagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
                 skip_backward.setForeground(new Color(255, 255, 255));
                 try {
 //                    player.stop();
@@ -236,7 +284,30 @@ public class PlayPanel extends JPanel {
                 playState = 2;
             }
             if (e.getSource() == play) {
-                playPanelListener.state(shuffleState, repeatState, playState, 2);
+                try
+                {
+                    playPanelListener.state(shuffleState, repeatState, playState, 2);
+                }
+                catch (InterruptedException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (UnsupportedTagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (InvalidDataException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (TagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
                 if (playState != 2) {
                     SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                     play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
@@ -251,7 +322,30 @@ public class PlayPanel extends JPanel {
 
             }
             if (e.getSource() == skip_forward) {
-                playPanelListener.state(shuffleState, repeatState, playState, 3);
+                try
+                {
+                    playPanelListener.state(shuffleState, repeatState, playState, 3);
+                }
+                catch (InterruptedException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (UnsupportedTagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (InvalidDataException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (TagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
                 skip_forward.setForeground(new Color(255, 255, 255));
                 try {
 //                    player.stop();
@@ -268,7 +362,30 @@ public class PlayPanel extends JPanel {
                 playState = 2;
             }
             if (e.getSource() == repeat) {
-                playPanelListener.state(shuffleState, repeatState, playState, 4);
+                try
+                {
+                    playPanelListener.state(shuffleState, repeatState, playState, 4);
+                }
+                catch (InterruptedException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (UnsupportedTagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (InvalidDataException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (TagException ex)
+                {
+                    ex.printStackTrace();
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
                 if (repeatState == 0) {
                     repeat.setText("\uD83D\uDD01");
                     repeat.setForeground(new Color(1, 180, 53));
@@ -393,6 +510,16 @@ public class PlayPanel extends JPanel {
                 }
             }
         }
+    }
+
+    public JSlider getMusicSlider()
+    {
+        return musicSlider;
+    }
+
+    public LightSliderUI getLightSliderUI()
+    {
+        return lightSliderUI;
     }
 
     public SongPanelForPlayPanel getSongPanelForPlayPanel() {
