@@ -1,5 +1,6 @@
 package View;
 
+import Listeners.AddSongToLibrary;
 import Listeners.PlayListChanged;
 import Listeners.PlayingMusicChanged;
 import Listeners.SongsTableButtons;
@@ -28,15 +29,16 @@ public class SongsTable extends JTable implements PlayingMusicChanged
     private String selectedArtist = "";
     private String selectedSongName = "";
     private TableRowSorter<TableModel> sorter;
+    private MenuForMusics menuForMusics;
     private SongsTableButtons songsTableButtons = null;
     private DefaultTableModel defaultTableModel;
     private PlayListChanged playListChanged = null;
     private boolean isPlayedFromTable = false;
-
     public SongsTable(DefaultTableModel defaultTableModel)
     {
         super(defaultTableModel);
         this.defaultTableModel = defaultTableModel;
+        menuForMusics = new MenuForMusics();
         setBorder(null);
         setBackground(new Color(24, 24, 24));
         RollOverListener lst = new RollOverListener(this);
@@ -54,7 +56,8 @@ public class SongsTable extends JTable implements PlayingMusicChanged
         tableHeader.addMouseListener(hlst);
         setRowHeight(39);
         getTableHeader().setBackground(new Color(24, 24, 24));
-        getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(40, 40, 40)));setColumnSelectionAllowed(false);
+        getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(40, 40, 40)));
+        setColumnSelectionAllowed(false);
         getTableHeader().setBorder(new CompoundBorder(new EmptyBorder(new Insets(0, 0, 0, 28)), getTableHeader().getBorder()));
         getTableHeader().setPreferredSize(new Dimension(1004, 39));
         getTableHeader().setReorderingAllowed(false);
@@ -153,7 +156,8 @@ public class SongsTable extends JTable implements PlayingMusicChanged
         else
         {
             selectedRowIndex = row;
-            try{
+            try
+            {
                 selectedArtist = (String) this.getValueAt(row, 3);
                 selectedSongName = (String) this.getValueAt(row, 2);
             }
@@ -336,6 +340,14 @@ public class SongsTable extends JTable implements PlayingMusicChanged
                     }
                 }
             }
+            else if (col == 6)
+            {
+                Music temp = new Music(null,(String)table.getValueAt(row,3),(String)table.getValueAt(row,2),null,null,null,null,null);
+//                menuForMusics.getComponent().addMouseListener(new menuListener(row,table));
+//                menuForMusics.addMouseListener(new menuListener(row,table));
+                menuForMusics.setMusic(temp);
+                menuForMusics.show(table, e.getX(), e.getY());
+            }
             repaint();
         }
 
@@ -363,6 +375,36 @@ public class SongsTable extends JTable implements PlayingMusicChanged
         }
     }
 
+    private class menuListener extends MouseInputAdapter
+    {
+        int row;
+        JTable table;
+
+        public menuListener(int row, JTable table)
+        {
+            this.row = row;
+            this.table = table;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+//            addSongToLibrary.addSongToLib(temp,e.getSource().toString());
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+            mouseClicked(e);
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+            mouseClicked(e);
+        }
+    }
+
     public void setPlayListChanged(PlayListChanged playListChanged)
     {
         this.playListChanged = playListChanged;
@@ -372,4 +414,10 @@ public class SongsTable extends JTable implements PlayingMusicChanged
     {
         this.songsTableButtons = songsTableButtons;
     }
+
+    public MenuForMusics getMenuForMusics()
+    {
+        return menuForMusics;
+    }
+
 }

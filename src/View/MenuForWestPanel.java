@@ -36,14 +36,14 @@ public class MenuForWestPanel extends JMenuBar
     {
         super();
         this.file.setMnemonic(KeyEvent.VK_F);
-        this.newSong.setMnemonic(KeyEvent.VK_S);
-        this.newPlayList.setMnemonic(KeyEvent.VK_P);
-        this.exit.setMnemonic(KeyEvent.VK_E);
         this.file.add(newSong);
         this.file.add(newPlayList);
         this.file.add(newFriend);
         this.file.addSeparator();
         this.file.add(exit);
+        this.newSong.setMnemonic(KeyEvent.VK_S);
+        this.newPlayList.setMnemonic(KeyEvent.VK_P);
+        this.exit.setMnemonic(KeyEvent.VK_E);
         this.edit.setMnemonic(KeyEvent.VK_E);
         this.search.setMnemonic(KeyEvent.VK_S);
         this.edit.add(search);
@@ -85,6 +85,7 @@ public class MenuForWestPanel extends JMenuBar
         exit.addMouseListener(listenerForMouse);
         newSong.addMouseListener(listenerForMouse);
         newFriend.addMouseListener(listenerForMouse);
+        newPlayList.addMouseListener(listenerForMouse);
     }
 
     public void setTopLeftMenuListener(TopLeftMenuListener topLeftMenuListener)
@@ -114,6 +115,8 @@ public class MenuForWestPanel extends JMenuBar
                 topLeftMenuListener.state(1);
             else if(e.getSource() == newFriend)
                 topLeftMenuListener.state(2);
+            else if (e.getSource() == newPlayList)
+                topLeftMenuListener.state(3);
         }
 
         @Override

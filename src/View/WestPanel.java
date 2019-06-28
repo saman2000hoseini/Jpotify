@@ -1,5 +1,7 @@
 package View;
 
+import Listeners.AddNewPlaylistListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -15,7 +17,7 @@ public class WestPanel extends JPanel {
     private ModernScrollPane scrollPaneForWestPanel;
     private JSeparator newPlaylistSeparator;
     private GroupLayout layout;
-
+    private AddNewPlaylistListener addNewPlaylistListener = null;
     WestPanel() {
         super();
         newPlaylistSeparator = new JSeparator();
@@ -152,6 +154,7 @@ public class WestPanel extends JPanel {
                 viewPortPanel.loseFocus();
             }
             if (e.getSource() == addNewPlaylist) {
+                addNewPlaylistListener.newPlaylist();
             }
         }
 
@@ -269,5 +272,10 @@ public class WestPanel extends JPanel {
     public MenuForWestPanel getMenuForWestPanel()
     {
         return menuForWestPanel;
+    }
+
+    public void setAddNewPlaylistListener(AddNewPlaylistListener addNewPlaylistListener)
+    {
+        this.addNewPlaylistListener = addNewPlaylistListener;
     }
 }

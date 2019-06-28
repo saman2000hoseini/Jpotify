@@ -1,23 +1,16 @@
 package Controller;
 
-import Listeners.PlayPanelListener;
 import Listeners.SongsTableListener;
 import Model.Albums;
 import Model.Library;
 import Model.Music;
-import Model.User;
 import Network.Client.MainClient;
 import Network.Server.MainServer;
 import View.LoginMainFrame;
-import View.LoginMainPanel;
 import View.MainFrame;
-import View.PlayPanel;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
-import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
@@ -28,7 +21,7 @@ public class Main {
     private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private static MainFrame mainFrame;
     private static LoginMainFrame loginMainFrame;
-    private static Vector<Library> libraries;
+    static Vector<Library> playLists;
     private static Albums albums;
     private static SongsTableListener songsTableListener = null;
     private static LoadingLibrary loadingLibrary = new LoadingLibrary();
@@ -65,7 +58,7 @@ public class Main {
 
     private static void createAndShowGUI() throws IOException, InvalidDataException, UnsupportedTagException, InterruptedException {
         fileAndFolderBrowsing.loadFiles(musics);
-        libraries = fileAndFolderBrowsing.loadLibraries();
+        playLists = fileAndFolderBrowsing.loadLibraries();
         albums = new Albums(musics);
         loginMainFrame = new LoginMainFrame();
         playlist = musics;
@@ -76,6 +69,7 @@ public class Main {
         songsTableListener.addSongs(loadingLibrary.generateTable(musics));
         for (Library library : albums.getAlbums())
             System.out.println(library.getName() + " " + library.getMusics().size());
+        mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().getMenuForMusics().addLibraries(playLists);
     }
 
     private static void createDirs() throws IOException {
@@ -109,6 +103,10 @@ public class Main {
         loginMainFrame.getLoginMainPanel().setLoginPanelListener(loginActions);
         loginActions.setUserLoginListener(mainFrame.getMainPanel().getCentrePanel());
         playPanelActions.setPlayingMusicChanged(mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable());
+        mainFrame.getMainPanel().getWestPanel().setAddNewPlaylistListener(topLeftMenuActions);
+        topLeftMenuActions.setAddLibrariesListener(mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().getMenuForMusics());
+        AddSongAction addSongAction = new AddSongAction();
+        mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().getMenuForMusics().setAddSongToLibrary(addSongAction);
     }
 
     public static int getStatus() {
