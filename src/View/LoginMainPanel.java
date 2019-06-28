@@ -31,6 +31,7 @@ public class LoginMainPanel extends JPanel {
     private TransparentButton minimize = new TransparentButton("⚊", false);
     private ListenerLoginMainPanel listenerLoginMainPanel = new ListenerLoginMainPanel();
     private LoginPanelListener loginPanelListener = null;
+    private MainFrame mainFrame;
     Object data[][] = {};
     String headers[] = {"Connected Devices"};
 
@@ -173,7 +174,7 @@ public class LoginMainPanel extends JPanel {
                         friends.add((String) tableForIpPanel.getTableForIp().getValueAt(i,0));
                     }
                     try {
-                        loginPanelListener.login(userName.getText(), friends);
+                        loginPanelListener.login(userName.getText(), friends,mainFrame);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -391,5 +392,10 @@ public class LoginMainPanel extends JPanel {
 
     public void setLoginPanelListener(LoginPanelListener loginPanelListener) {
         this.loginPanelListener = loginPanelListener;
+    }
+
+    public void setMainFrame(MainFrame mainFrame)
+    {
+        this.mainFrame = mainFrame;
     }
 }

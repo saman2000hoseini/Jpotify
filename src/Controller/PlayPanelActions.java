@@ -3,6 +3,7 @@ package Controller;
 import Listeners.*;
 import Model.Music;
 import Model.Sort;
+import Network.Client.Sharing;
 import com.mpatric.mp3agic.Mp3File;
 
 import java.io.File;
@@ -131,6 +132,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
             player = new Thread(audioPlayer);
             playlist.get(index).setLastPlayed(LocalDateTime.now());
             audioPlayer.playMusic(player);
+            Sharing.setMusic(playlist.get(index));
         }
         catch (Exception ex)
         {

@@ -8,18 +8,11 @@ import java.time.LocalTime;
 
 public class PlayingMusic extends Music implements Serializable
 {
-    private LocalTime startsAt;
     private boolean isLocal;
-    public PlayingMusic(String fileLocation, String artist, String name,String genre, String year, LocalTime startsAt, LocalDateTime addDate, LocalDateTime lastPlayed,String album, boolean isLocal)
+    public PlayingMusic(Music music, boolean isLocal)
     {
-        super(fileLocation, artist, name,year,addDate,lastPlayed,genre,album);
-        this.startsAt = startsAt;
+        super(music.getFileLocation(), music.getArtist(), music.getName(),music.getYear(),music.getAddDate(),music.getLastPlayed(),music.getGenre(),music.getAlbum());
         this.isLocal=isLocal;
-    }
-
-    public LocalTime getStartsAt()
-    {
-        return startsAt;
     }
 
     public boolean isLocal()

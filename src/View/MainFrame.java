@@ -128,4 +128,8 @@ public class MainFrame extends JFrame
         return mainPanel;
     }
 
+    public static void setMusics(Vector<Music> musics)
+    {
+        MainFrame.musics = musics;
+    }
 }

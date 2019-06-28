@@ -24,6 +24,7 @@ public class MainPanel extends JPanel {
         centrePanel.update();
         playPanel = new PlayPanel(this, getWidth(), MainFrame.musics);
         this.setBackground(new Color(24, 24, 24));
+        friendsPanel = new FriendsPanel(getHeight());
     }
 
     public void update()
@@ -45,9 +46,6 @@ public class MainPanel extends JPanel {
             GroupLayout layout = new GroupLayout(this);
             this.setLayout(layout);
             if (getWidth() >= 1070) {
-                if (friendsPanel == null) {
-                    friendsPanel = new FriendsPanel(getHeight());
-                }
                 layout.setHorizontalGroup(layout.createParallelGroup()
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(westPanel, 215, 215, Short.MAX_VALUE)
@@ -61,11 +59,6 @@ public class MainPanel extends JPanel {
                                 .addComponent(friendsPanel, 500, 952, Short.MAX_VALUE))
                         .addComponent(playPanel, 72, 88, Short.MAX_VALUE));
             } else {
-                if (friendsPanel != null) {
-                    remove(friendsPanel);
-                    friendsPanel.removeAll();
-                    friendsPanel = null;
-                }
                 layout.setHorizontalGroup(layout.createParallelGroup()
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(westPanel, 215, 215, Short.MAX_VALUE)
@@ -102,5 +95,10 @@ public class MainPanel extends JPanel {
     public CentrePanel getCentrePanel()
     {
         return centrePanel;
+    }
+
+    public FriendsPanel getFriendsPanel()
+    {
+        return friendsPanel;
     }
 }

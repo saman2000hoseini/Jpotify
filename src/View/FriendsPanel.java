@@ -1,7 +1,8 @@
 package View;
 
-import Model.FriendsActivity;
-import Model.Music;
+import Listeners.AddPlayingMusic;
+import Listeners.RequestToGetMusic;
+import Model.*;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -13,7 +14,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
-public class FriendsPanel extends JPanel {
+public class FriendsPanel extends JPanel implements AddPlayingMusic
+{
     private TransparentButton close = new TransparentButton("✕", false);
     private TransparentButton restoreDown = new TransparentButton("◻", false);
     private TransparentButton minimize = new TransparentButton("⚊", false);
@@ -23,23 +25,10 @@ public class FriendsPanel extends JPanel {
     private String[] tableHeader = {"Friend Activity"};
     private FriendsActivity f;
     private FriendsActivity[][] friendsActivities;
-
+    private RequestToGetMusic requestToGetMusic = null;
     FriendsPanel(int frameHeight) {
         super();
-        try {
-            f = new FriendsActivity(new Music("C:\\Users\\asus\\Music\\Anime\\MIYAVI vs KenKen - Flashback.mp3", "Roham", "test", "oof", null, null, "Rock", "Album")
-                    , "testUser");
-            friendsActivities = new FriendsActivity[12][1];
-            for (int i = 0; i < 12; i++) {
-                friendsActivities[i][0] = f;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedTagException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
-        }
+
         defaultTableModel = new DefaultTableModel(friendsActivities, tableHeader);
         friendsTablePanel = new FriendsTablePanel(defaultTableModel, frameHeight);
         listenerForMouse = new ListenerForMouse();
@@ -79,6 +68,43 @@ public class FriendsPanel extends JPanel {
                         .addComponent(close, 30, 30, 30))
                 .addGap(15, 15, 15)
                 .addComponent(friendsTablePanel, 220, 220, 1000));
+    }
+
+    @Override
+    public void addMusicToActivity(Music music, User user)
+    {
+        try {
+            FriendsActivity[][] temp;
+            f = new FriendsActivity(music, user.getUserName());
+            if (!MainFrame.musics.contains(music)){
+                requestToGetMusic.send(new Request(new PlayingMusic(music,false),user));
+                this.wait(3000);
+            }
+
+            if (friendsActivities==null)
+            {
+                temp = new FriendsActivity[1][1];
+            }
+            else
+            {
+                temp = new FriendsActivity[friendsActivities.length + 1][1];
+                for (int i = 0; i < temp.length-1; i++) {
+                    temp[i][0] = f;
+                }
+            }
+            temp[temp.length-1][1] = f;
+            friendsActivities = temp;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedTagException e) {
+            e.printStackTrace();
+        } catch (InvalidDataException e) {
+            e.printStackTrace();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private class ListenerForMouse implements MouseListener {
@@ -138,5 +164,10 @@ public class FriendsPanel extends JPanel {
                 minimize.setBackground(new Color(24, 24, 24));
             }
         }
+    }
+
+    public void setRequestToGetMusic(RequestToGetMusic requestToGetMusic)
+    {
+        this.requestToGetMusic = requestToGetMusic;
     }
 }

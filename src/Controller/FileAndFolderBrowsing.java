@@ -227,6 +227,7 @@ public class FileAndFolderBrowsing
                         while (true)
                         {
                             songs.add((Music) objectInputStream.readObject());
+                            System.out.println(songs);
                         }
                     }
                     catch (FileNotFoundException e)

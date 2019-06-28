@@ -12,7 +12,7 @@ public class LoginMainFrame extends JFrame {
     private FrameComponent frame;
     private BackgroundComponentDragger backgroundComponentDragger;
     private Boolean fullScreenMode;
-
+    private MainFrame mainFrame;
     public LoginMainFrame() {
         super();
         loginMainPanel = new LoginMainPanel(970, 600);
@@ -74,5 +74,11 @@ public class LoginMainFrame extends JFrame {
     public LoginMainPanel getLoginMainPanel()
     {
         return loginMainPanel;
+    }
+
+    public void setMainFrame(MainFrame mainFrame)
+    {
+        this.mainFrame = mainFrame;
+        loginMainPanel.setMainFrame(mainFrame);
     }
 }

@@ -2,6 +2,7 @@ package Network.Client;
 
 import Model.Music;
 import Model.User;
+import View.MainFrame;
 //import com.sun.deploy.util.SessionState;
 
 import java.io.IOException;
@@ -21,8 +22,10 @@ public class MainClient
     private Sharing sharing;
     private int port;
     static User user;
-    public MainClient(Vector<Music> musics,User user) throws IOException
+    static MainFrame mainFrame;
+    public MainClient(Vector<Music> musics, User user, MainFrame mainFrame) throws IOException
     {
+        this.mainFrame = mainFrame;
         this.user = user;
         this.musics=musics;
         port = 6500;
@@ -52,5 +55,10 @@ public class MainClient
     {
         connections.add(new Socket(ip, port));
         sharing.setConnections(connections);
+    }
+
+    public Sharing getSharing()
+    {
+        return sharing;
     }
 }

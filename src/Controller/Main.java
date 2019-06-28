@@ -4,6 +4,7 @@ import Listeners.SongsTableListener;
 import Model.Albums;
 import Model.Library;
 import Model.Music;
+import Model.User;
 import Network.Client.MainClient;
 import Network.Server.MainServer;
 import View.LoginMainFrame;
@@ -63,6 +64,7 @@ public class Main {
         loginMainFrame = new LoginMainFrame();
         playlist = musics;
         mainFrame = new MainFrame(playlist);
+        loginMainFrame.setMainFrame(mainFrame);
         mainFrame.getMainPanel().update();
         setLinkers();
         albums.loadAlbums();
@@ -119,5 +121,10 @@ public class Main {
 
     public static MainFrame getMainFrame() {
         return mainFrame;
+    }
+
+    public static Vector<Library> getPlayLists()
+    {
+        return playLists;
     }
 }
