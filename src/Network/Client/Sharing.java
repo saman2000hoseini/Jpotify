@@ -41,6 +41,7 @@ public class Sharing implements Runnable, RequestToGetMusic
                         shareMusic(request);
                         request = new Request(sharedLibrary, MainClient.user);
                         shareMusic(request);
+                        System.out.println("sending music " + music.getName());
                     }
                     catch (IOException e)
                     {
@@ -119,12 +120,13 @@ public class Sharing implements Runnable, RequestToGetMusic
                         }
                     }
                     Socket temp = new Socket(request.getUser().getIp(), 6500);
-                    request.getUser().setObjectOutputStream((ObjectOutputStream) temp.getOutputStream());
+                    request.getUser().setObjectOutputStream(new ObjectOutputStream(temp.getOutputStream()));
                     users.add(request.getUser());
+                    System.out.println(request.getUser().getUserName() + " has joined Your server");
                 }
                 else if (request.getReqsMusic() == 0 && !request.getMusic().isLocal())
                 {
-                    addPlayingMusic.addMusicToActivity(music,request.getUser());
+                    addPlayingMusic.addMusicToActivity(music, request.getUser());
                 }
                 else if (request.getReqsMusic() == 1 && request.wantsMusic())
                 {
@@ -153,7 +155,7 @@ public class Sharing implements Runnable, RequestToGetMusic
                 else if (request.getReqsMusic() == 2)
                 {
                     sharedLibrary = request.getSharedLibrary();
-                    Main.getPlayLists().set(Main.getPlayLists().indexOf(new Library("Shared playlist")),sharedLibrary);
+                    Main.getPlayLists().set(Main.getPlayLists().indexOf(new Library("Shared playlist")), sharedLibrary);
                 }
             }
             catch (IOException e)
@@ -181,10 +183,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         this.connections = connections;
         if (this.connections == null)
             this.connections = new Vector<>();
-        for (int i = users.size(); i < connections.size(); i++)
-        {
-            hiFriend(connections.get(i));
-        }
+        hiFriend(connections.get(connections.size() - 1));
     }
 
     public static void setMusic(Music music)

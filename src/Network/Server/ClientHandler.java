@@ -33,10 +33,12 @@ public class ClientHandler implements Runnable
             while (!socket.isClosed())
             {
                 Request request = (Request) objectInputStream.readObject();
-                if (request.getMusic().isLocal())
+                System.out.println(request);
+                System.out.println(request.getMusic());
+                if (request.getMusic() != null && request.getMusic().isLocal())
                 {
                     thisOut = objectOutputStream;
-                    System.out.println("Welcome to your server "+request.getUser().getUserName());
+                    System.out.println("Welcome to your server " + request.getUser().getUserName());
                 }
                 else
                     thisOut.writeObject(request);
