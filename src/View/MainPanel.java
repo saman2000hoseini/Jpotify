@@ -45,7 +45,7 @@ public class MainPanel extends JPanel {
             this.setLayout(layout);
             if (getWidth() >= 1070) {
                 if (friendsPanel == null)
-                    friendsPanel = new FriendsPanel();
+                    friendsPanel = new FriendsPanel(getHeight());
                 layout.setHorizontalGroup(layout.createParallelGroup()
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(westPanel, 215, 215, Short.MAX_VALUE)
@@ -80,7 +80,7 @@ public class MainPanel extends JPanel {
                 playPanel.update();
                 westPanel.update();
                 if (friendsPanel != null) {
-                    friendsPanel.update();
+                    friendsPanel.update(getHeight());
                 }
             }
             firstApearence = false;

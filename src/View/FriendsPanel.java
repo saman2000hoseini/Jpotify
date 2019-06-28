@@ -1,19 +1,48 @@
 package View;
 
+import Model.FriendsActivity;
+import Model.Music;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
 public class FriendsPanel extends JPanel {
     private TransparentButton close = new TransparentButton("✕", false);
     private TransparentButton restoreDown = new TransparentButton("◻", false);
     private TransparentButton minimize = new TransparentButton("⚊", false);
     private ListenerForMouse listenerForMouse = new ListenerForMouse();
+    private FriendsTablePanel friendsTablePanel;
+    private DefaultTableModel defaultTableModel;
+    private String[] tableHeader = {"Friend Activity"};
+    private FriendsActivity f;
+    private FriendsActivity[][] friendsActivities;
 
-    FriendsPanel() {
+    FriendsPanel(int frameHeight) {
         super();
-        //this.setSize(255, 952);
+        try {
+            f = new FriendsActivity(new Music("C:\\Users\\asus\\Music\\Anime\\MIYAVI vs KenKen - Flashback.mp3", "Roham", "test", "oof", null, null, "Rock", "Album")
+                    , "testUser");
+            friendsActivities = new FriendsActivity[12][1];
+            for (int i = 0 ; i < 12; i++)
+            {
+                friendsActivities[i][0] = f;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedTagException e) {
+            e.printStackTrace();
+        } catch (InvalidDataException e) {
+            e.printStackTrace();
+        }
+        defaultTableModel = new DefaultTableModel(friendsActivities, tableHeader);
+        friendsTablePanel = new FriendsTablePanel(defaultTableModel, frameHeight);
         listenerForMouse = new ListenerForMouse();
         close.addMouseListener(listenerForMouse);
         restoreDown.addMouseListener(listenerForMouse);
@@ -21,9 +50,9 @@ public class FriendsPanel extends JPanel {
         setBackground(new Color(18, 18, 18));
     }
 
-    public void update()
-    {
+    public void update(int height) {
         this.getLayout().removeLayoutComponent(this);
+        friendsTablePanel.update(height);
         close.setBackground(new Color(24, 24, 24));
         restoreDown.setBackground(new Color(24, 24, 24));
         minimize.setBackground(new Color(24, 24, 24));
@@ -42,15 +71,21 @@ public class FriendsPanel extends JPanel {
         setVisible(true);
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(minimize, 45, 45, 45)
-                .addComponent(restoreDown, 45, 45, 45)
-                .addComponent(close, 45, 45, 45));
-        layout.setVerticalGroup(layout.createParallelGroup()
-                .addComponent(minimize, 30, 30, 30)
-                .addComponent(restoreDown, 30, 30, 30)
-                .addComponent(close, 30, 30, 30));
+        layout.setHorizontalGroup(layout.createParallelGroup()
+                .addGroup(layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(minimize, 45, 45, 45)
+                        .addComponent(restoreDown, 45, 45, 45)
+                        .addComponent(close, 45, 45, 45))
+                .addComponent(friendsTablePanel, 255, 255, 255));
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(minimize, 30, 30, 30)
+                        .addComponent(restoreDown, 30, 30, 30)
+                        .addComponent(close, 30, 30, 30))
+                .addGap(15, 15, 15)
+                .addComponent(friendsTablePanel, height - 45, height - 45, height - 45)
+        );
     }
 
     private class ListenerForMouse implements MouseListener {

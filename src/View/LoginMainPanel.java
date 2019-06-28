@@ -320,7 +320,7 @@ public class LoginMainPanel extends JPanel {
             ip.setCaretPosition(0);
             ip.setCaretColor(Color.white);
             ip.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(0, 0, 0, 0)));
-            ip.setBorder(new CompoundBorder(new EmptyBorder(new Insets(0, 15, 0, 0)), userName.getBorder()));
+            ip.setBorder(new CompoundBorder(new EmptyBorder(new Insets(0, 5, 0, 0)), userName.getBorder()));
             ip.getDocument().addDocumentListener(new DocumentListener() {
                 public void changedUpdate(DocumentEvent e) {
 

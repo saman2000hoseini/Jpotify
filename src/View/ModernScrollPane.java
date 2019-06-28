@@ -22,6 +22,9 @@ public class ModernScrollPane extends JScrollPane {
     public ModernScrollPane(Component view) {
         this(view, VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
     }
+    public ModernScrollPane(Component view, Color color) {
+        this(view, VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED, color);
+    }
 
     public ModernScrollPane(int vsbPolicy, int hsbPolicy) {
         this(null, vsbPolicy, hsbPolicy);
@@ -43,6 +46,24 @@ public class ModernScrollPane extends JScrollPane {
         viewport.setView(view);
         setBackground(new Color(24, 24, 24));
         viewport.setBackground(new Color(24, 24, 24));
+    }
+
+    public ModernScrollPane(Component view, int vsbPolicy, int hsbPolicy, Color color) {
+        setBorder(null);
+
+        // Set ScrollBar UI
+        JScrollBar verticalScrollBar = getVerticalScrollBar();
+        verticalScrollBar.setOpaque(false);
+        verticalScrollBar.setUI(new ModernScrollBarUI(this));
+        getVerticalScrollBar().setBorder(null);
+
+        JScrollBar horizontalScrollBar = getHorizontalScrollBar();
+        horizontalScrollBar.setOpaque(false);
+        horizontalScrollBar.setUI(new ModernScrollBarUI(this));
+        getHorizontalScrollBar().setBorder(null);
+        viewport.setView(view);
+        setBackground(color);
+        viewport.setBackground(color);
     }
 
     /**
