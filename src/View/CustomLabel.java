@@ -6,6 +6,10 @@ import java.awt.*;
 public class CustomLabel extends JLabel {
     private boolean focused;
     private boolean westPanel;
+    CustomLabel()
+    {
+        super();
+    }
     CustomLabel(String text, boolean focused, boolean westPanel)
     {
         super(text);

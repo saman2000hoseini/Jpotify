@@ -8,6 +8,7 @@ import Model.Albums;
 import Model.CustomizedFileChooser;
 import Model.Library;
 import Model.Music;
+import View.WestPanel;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import org.farng.mp3.TagException;
@@ -105,8 +106,8 @@ public class TopLeftMenuActions implements TopLeftMenuListener, AddNewPlaylistLi
             Main.playLists.add(temp);
             temp.savePlaylist();
             addLibrariesListener.addLibraries(Main.playLists);
+            WestPanel.defaultListModel.addElement(name);
         }
-
     }
 
     public void setAddLibrariesListener(AddLibrariesListener addLibrariesListener)

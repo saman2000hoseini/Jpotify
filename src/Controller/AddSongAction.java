@@ -3,6 +3,10 @@ package Controller;
 import Listeners.AddSongToLibrary;
 import Model.Library;
 import Model.Music;
+import View.PlayListForWestPanel;
+import View.WestPanel;
+
+import javax.swing.*;
 
 public class AddSongAction implements AddSongToLibrary
 {

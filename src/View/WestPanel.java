@@ -1,5 +1,6 @@
 package View;
 
+import Controller.Main;
 import Listeners.AddNewPlaylistListener;
 
 import javax.swing.*;
@@ -18,6 +19,8 @@ public class WestPanel extends JPanel {
     private JSeparator newPlaylistSeparator;
     private GroupLayout layout;
     private AddNewPlaylistListener addNewPlaylistListener = null;
+    private PlayListPanel playListPanel;
+    public static DefaultListModel<String> defaultListModel;
     WestPanel() {
         super();
         newPlaylistSeparator = new JSeparator();
@@ -51,8 +54,22 @@ public class WestPanel extends JPanel {
         radio.addMouseListener(listenerForMouse);
         addNewPlaylist.addMouseListener(listenerForMouse);
         menuForWestPanel = new MenuForWestPanel();
-        viewPortPanel = new ViewPortPanel();
-        scrollPaneForWestPanel = new ModernScrollPane(viewPortPanel);
+        defaultListModel = new DefaultListModel<String>();
+        defaultListModel.addElement("YOUR LIBRARY");
+        defaultListModel.addElement("Made For You");
+        defaultListModel.addElement("Songs");
+        defaultListModel.addElement("Albums");
+        defaultListModel.addElement("Artists");
+        defaultListModel.addElement("Favourite Songs");
+        defaultListModel.addElement("Shared Songs");
+        defaultListModel.addElement("PLAYLISTS");
+        for (int i = 0; i < Main.getPlayLists().size(); i++)
+        {
+            String name = Main.getPlayLists().get(i).getName();
+            if ((!name.equals("Shared playlist")) && (!name.equals("Favourites")))
+                defaultListModel.addElement(name);
+        }
+        playListPanel = new PlayListPanel(defaultListModel, this);
         layout = new GroupLayout(this);
         this.setLayout(layout);
         setBackground(new Color(18, 18, 18));
@@ -70,7 +87,7 @@ public class WestPanel extends JPanel {
                                 .addComponent(radio, 215, 215, 215))
                 )
                 .addGroup(layout.createSequentialGroup()
-                        .addComponent(scrollPaneForWestPanel, 215, 215, 215))
+                        .addComponent(playListPanel, 215, 215, 215))
                 .addComponent(newPlaylistSeparator, 215, 215, 215)
                 .addComponent(addNewPlaylist, 215, 215, 215));
         layout.setVerticalGroup(layout.createSequentialGroup()
@@ -83,7 +100,7 @@ public class WestPanel extends JPanel {
                 .addGap(20, 20, 20)
                 .addComponent(radio, 25, 25, 25)
                 .addGap(30, 30, 30)
-                .addComponent(scrollPaneForWestPanel, 0, 470, 470)
+                .addComponent(playListPanel, 0, 470, 470)
                 .addComponent(newPlaylistSeparator, 1, 1, 1)
                 .addGap(10, 10, 10)
                 .addComponent(addNewPlaylist, 40, 40, 40)
@@ -121,7 +138,8 @@ public class WestPanel extends JPanel {
                 home.repaint();
                 browse.repaint();
                 radio.repaint();
-                viewPortPanel.loseFocus();
+                playListPanel.getList().setSelectedIndex(0);
+                PlayListCellRendererForWestPanel.previousSelectedIndex = -1;
             }
             if (e.getSource() == browse) {
                 browse.setForeground(new Color(255, 255, 255));
@@ -136,7 +154,8 @@ public class WestPanel extends JPanel {
                 home.repaint();
                 browse.repaint();
                 radio.repaint();
-                viewPortPanel.loseFocus();
+                playListPanel.getList().setSelectedIndex(0);
+                PlayListCellRendererForWestPanel.previousSelectedIndex = -1;
             }
             if (e.getSource() == radio) {
                 radio.setForeground(new Color(255, 255, 255));
@@ -151,7 +170,8 @@ public class WestPanel extends JPanel {
                 home.repaint();
                 browse.repaint();
                 radio.repaint();
-                viewPortPanel.loseFocus();
+                playListPanel.getList().setSelectedIndex(0);
+                PlayListCellRendererForWestPanel.previousSelectedIndex = -1;
             }
             if (e.getSource() == addNewPlaylist) {
                 addNewPlaylistListener.newPlaylist();
@@ -277,5 +297,13 @@ public class WestPanel extends JPanel {
     public void setAddNewPlaylistListener(AddNewPlaylistListener addNewPlaylistListener)
     {
         this.addNewPlaylistListener = addNewPlaylistListener;
+    }
+
+    public PlayListPanel getPlayListPanel() {
+        return playListPanel;
+    }
+
+    public DefaultListModel<String> getDefaultListModel() {
+        return defaultListModel;
     }
 }

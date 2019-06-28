@@ -99,7 +99,7 @@ public class CentrePanel extends JPanel implements UserLoginListener
         }
     };
 
-    CentrePanel(int width, int height) {
+    CentrePanel(int width, int height, MainPanel mainPanel) {
         super();
         frameHeight = height;
         frameWidth = width;
@@ -138,7 +138,7 @@ public class CentrePanel extends JPanel implements UserLoginListener
         userMenu.setForeground(new Color(180, 180, 180));
         previous.setForeground(new Color(155, 155, 155));
         next.setForeground(new Color(155, 155, 155));
-        songsMainPanel = new SongsMainPanel();
+        songsMainPanel = new SongsMainPanel(mainPanel.getWestPanel().getDefaultListModel());
         setBackground(new Color(18, 18, 18));
         setVisible(true);
     }

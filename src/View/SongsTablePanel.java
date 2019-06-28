@@ -14,12 +14,14 @@ public class SongsTablePanel extends JPanel implements SongsTableListener
     private ModernScrollPane modernScrollPane;
     private Object data[][]=null;
     static DefaultTableModel defaultTableModel;
-    SongsTablePanel()
+    static DefaultListModel defaultListModel;
+    SongsTablePanel(DefaultListModel defaultListModel)
     {
         super();
+        this.defaultListModel = defaultListModel;
         String columns[] = {"","","TITLE", "ARTIST", "ALBUM", "\uD83D\uDCC6", "","\uD83D\uDD52"};
         defaultTableModel = new DefaultTableModel(data,columns);
-        songsTable = new SongsTable(defaultTableModel)
+        songsTable = new SongsTable(defaultTableModel, defaultListModel)
         {
             @Override
             public boolean isCellEditable(int row, int column) {

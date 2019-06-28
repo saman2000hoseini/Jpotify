@@ -38,11 +38,13 @@ public class SongsTable extends JTable implements PlayingMusicChanged
     private DefaultTableModel defaultTableModel;
     private PlayListChanged playListChanged = null;
     private boolean isPlayedFromTable = false;
-    public SongsTable(DefaultTableModel defaultTableModel)
+    private DefaultListModel defaultListModel;
+    public SongsTable(DefaultTableModel defaultTableModel, DefaultListModel defaultListModel)
     {
         super(defaultTableModel);
         this.defaultTableModel = defaultTableModel;
-        menuForMusics = new MenuForMusics();
+        this.defaultListModel = defaultListModel;
+        menuForMusics = new MenuForMusics(defaultListModel);
         setBorder(null);
         setBackground(new Color(24, 24, 24));
         RollOverListener lst = new RollOverListener(this);
@@ -155,7 +157,6 @@ public class SongsTable extends JTable implements PlayingMusicChanged
             selectedSongName = (String) this.getValueAt(row, 2);
             rollOverRowIndex = -2;
             isPlayedFromTable = false;
-            System.out.println("OMG");
         }
         else
         {

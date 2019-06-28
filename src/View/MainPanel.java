@@ -20,7 +20,8 @@ public class MainPanel extends JPanel {
         prevHeight = height;
         prevWidth = width;
         setSize(width, height);
-        centrePanel = new CentrePanel(getWidth(), getHeight());
+        westPanel = new WestPanel();
+        centrePanel = new CentrePanel(getWidth(), getHeight(), this);
         centrePanel.update();
         playPanel = new PlayPanel(this, getWidth(), MainFrame.musics, 100);
         this.setBackground(new Color(24, 24, 24));
@@ -32,7 +33,7 @@ public class MainPanel extends JPanel {
             prevWidth = getWidth();
             prevHeight = getHeight();
             if (centrePanel == null) {
-                centrePanel = new CentrePanel(getWidth(), getHeight());
+                centrePanel = new CentrePanel(getWidth(), getHeight(), this);
                 centrePanel.update();
             }
             if (firstApearence) {
