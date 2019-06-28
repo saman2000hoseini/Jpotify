@@ -12,6 +12,9 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Sharing implements Runnable, RequestToGetMusic
 {
@@ -27,14 +30,17 @@ public class Sharing implements Runnable, RequestToGetMusic
     {
         this.connections = connections;
         objectInputStream = new ObjectInputStream(client.getInputStream());
-        Thread shareMyMusic = new Thread(new Runnable()
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(new Runnable()
         {
             @Override
             public void run()
             {
                 try
                 {
-                    Request request = new Request(new PlayingMusic(music, false), MainClient.user);
+                    Request request = null;
+                    if (music != null)
+                        request = new Request(new PlayingMusic(music, false), MainClient.user);
                     sharedLibrary = Main.getPlayLists().get(Main.getPlayLists().indexOf(new Library("Shared playlist")));
                     try
                     {
@@ -47,22 +53,13 @@ public class Sharing implements Runnable, RequestToGetMusic
                     {
                         e.printStackTrace();
                     }
-                    try
-                    {
-                        this.wait(15000);
-                    }
-                    catch (InterruptedException e)
-                    {
-                        e.printStackTrace();
-                    }
                 }
                 catch (Exception e)
                 {
-
+                    e.printStackTrace();
                 }
             }
-        });
-        shareMyMusic.start();
+        }, 0, 30, TimeUnit.SECONDS);
     }
 
     public void hiFriend(Socket socket)
@@ -90,6 +87,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         {
             for (User user : users)
             {
+                System.out.println("sending to "+ user.getUserName());
                 user.getObjectOutputStream().writeObject(request);
             }
         }
@@ -126,10 +124,12 @@ public class Sharing implements Runnable, RequestToGetMusic
                 }
                 else if (request.getReqsMusic() == 0 && !request.getMusic().isLocal())
                 {
+                    System.out.println(request.getUser().getUserName()+" is playing music"+request.getMusic().getName());
                     addPlayingMusic.addMusicToActivity(music, request.getUser());
                 }
                 else if (request.getReqsMusic() == 1 && request.wantsMusic())
                 {
+                    System.out.println(request.getUser().getUserName()+" wants music "+request.getMusic().getName());
                     User wants = users.get(users.indexOf(request.getUser()));
                     File file = new File(MainClient.musics.get(MainClient.musics.indexOf(request.getMusic())).getFileLocation());
                     ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
@@ -141,6 +141,7 @@ public class Sharing implements Runnable, RequestToGetMusic
                 }
                 else if (request.getReqsMusic() == 1)
                 {
+                    System.out.println(request.getMusic().getName()+" Sending to "+request.getUser().getUserName());
                     byte[] byteArray = new byte[request.getFileSize()];
                     objectInputStream.read(byteArray);
                     if (!MainClient.musics.contains(request.getMusic()))

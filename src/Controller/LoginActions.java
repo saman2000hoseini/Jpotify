@@ -15,6 +15,7 @@ public class LoginActions implements LoginPanelListener
     @Override
     public void login(String user, ArrayList<String> friends, MainFrame mainFrame) throws IOException
     {
+
         Main.mainClient = new MainClient(PlayPanelActions.playlist,new User(user, null),mainFrame);
         Main.mainClient.getSharing().setAddPlayingMusic(mainFrame.getMainPanel().getFriendsPanel());
         mainFrame.getMainPanel().getFriendsPanel().setRequestToGetMusic(Main.mainClient.getSharing());
