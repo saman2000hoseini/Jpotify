@@ -8,6 +8,7 @@ import Model.Sort;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -18,24 +19,22 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Vector;
 
-public class PlayPanel extends JPanel
-{
+public class PlayPanel extends JPanel {
     private boolean shuffleState = false;
     private int repeatState = 0;
-    static int playState =0;
+    static int playState = 0;
     private PlayPanelListener playPanelListener = null;
     private MainPanel mainPanel;
+    private JSlider musicSlider = new JSlider();
+    private SongPanelForPlayPanel songPanelForPlayPanel = new SongPanelForPlayPanel();
 
-    public PlayPanelListener getPlayPanelListener()
-    {
+    public PlayPanelListener getPlayPanelListener() {
         return playPanelListener;
     }
 
-    static JLabel shuffle = new JLabel("\uD83D\uDD00")
-    {
+    static JLabel shuffle = new JLabel("\uD83D\uDD00") {
         @Override
-        public JToolTip createToolTip()
-        {
+        public JToolTip createToolTip() {
             JToolTip tip = super.createToolTip();
             tip.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
             tip.setBackground(new Color(24, 24, 24));
@@ -45,16 +44,13 @@ public class PlayPanel extends JPanel
         }
 
         @Override
-        public Point getToolTipLocation(MouseEvent event)
-        {
+        public Point getToolTipLocation(MouseEvent event) {
             return new Point(-1 * super.getWidth() + 3, super.getHeight());
         }
     };
-    static JLabel skip_backward = new JLabel("⏮")
-    {
+    static JLabel skip_backward = new JLabel("⏮") {
         @Override
-        public JToolTip createToolTip()
-        {
+        public JToolTip createToolTip() {
             JToolTip tip = super.createToolTip();
             tip.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
             tip.setBackground(new Color(24, 24, 24));
@@ -64,17 +60,14 @@ public class PlayPanel extends JPanel
         }
 
         @Override
-        public Point getToolTipLocation(MouseEvent event)
-        {
+        public Point getToolTipLocation(MouseEvent event) {
             return new Point(-1 * super.getWidth(), super.getHeight());
         }
     };
 
-    static JLabel play = new JLabel(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35))
-    {
+    static JLabel play = new JLabel(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35)) {
         @Override
-        public JToolTip createToolTip()
-        {
+        public JToolTip createToolTip() {
             JToolTip tip = super.createToolTip();
             tip.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
             tip.setBackground(new Color(24, 24, 24));
@@ -84,16 +77,13 @@ public class PlayPanel extends JPanel
         }
 
         @Override
-        public Point getToolTipLocation(MouseEvent event)
-        {
+        public Point getToolTipLocation(MouseEvent event) {
             return new Point(0, super.getHeight());
         }
     };
-    static JLabel skip_forward = new JLabel("⏭")
-    {
+    static JLabel skip_forward = new JLabel("⏭") {
         @Override
-        public JToolTip createToolTip()
-        {
+        public JToolTip createToolTip() {
             JToolTip tip = super.createToolTip();
             tip.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
             tip.setBackground(new Color(24, 24, 24));
@@ -103,16 +93,13 @@ public class PlayPanel extends JPanel
         }
 
         @Override
-        public Point getToolTipLocation(MouseEvent event)
-        {
+        public Point getToolTipLocation(MouseEvent event) {
             return new Point(-10, super.getHeight());
         }
     };
-    JLabel repeat = new JLabel("\uD83D\uDD01")
-    {
+    JLabel repeat = new JLabel("\uD83D\uDD01") {
         @Override
-        public JToolTip createToolTip()
-        {
+        public JToolTip createToolTip() {
             JToolTip tip = super.createToolTip();
             tip.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
             tip.setBackground(new Color(24, 24, 24));
@@ -122,19 +109,16 @@ public class PlayPanel extends JPanel
         }
 
         @Override
-        public Point getToolTipLocation(MouseEvent event)
-        {
+        public Point getToolTipLocation(MouseEvent event) {
             return new Point(-1 * super.getWidth() + 5, super.getHeight());
         }
     };
 
-    public void setPlayPanelListener(PlayPanelListener playPanelListener)
-    {
+    public void setPlayPanelListener(PlayPanelListener playPanelListener) {
         this.playPanelListener = playPanelListener;
     }
 
-    public PlayPanel(MainPanel mainPanel, int width, Vector<Music> playlist)
-    {
+    public PlayPanel(MainPanel mainPanel, int width, Vector<Music> playlist, int maxFrameCount) {
         super();
         this.mainPanel = mainPanel;
         setBackground(new Color(40, 40, 40));
@@ -163,78 +147,81 @@ public class PlayPanel extends JPanel
         repeat.setToolTipText("Repeat");
         shuffle.setToolTipText("Shuffle");
         play.setToolTipText("Play");
+        musicSlider.setUI(new LightSliderUI(musicSlider));
+        musicSlider.setBackground(new Color(40, 40, 40));
+        musicSlider.setMinimum(0);
+        musicSlider.setMaximum(100);
+        musicSlider.setValue(0);
+        musicSlider.setEnabled(false);
         shuffleState = false;
         repeatState = 0;
         playState = 0;
         setVisible(true);
     }
 
-    public  void update()
-    {
+    public void update() {
         this.getLayout().removeLayoutComponent(this);
         GroupLayout layout = new GroupLayout(this);
-        layout.setHorizontalGroup(layout.createSequentialGroup()
-                .addContainerGap((getWidth() / 2) - 115, (getWidth() / 2) - 115)
-                .addComponent(shuffle, 25, 25, 25)
-                .addGap(23, 23, 23)
-                .addComponent(skip_backward, 25, 25, 25)
-                .addGap(20, 20, 20)
-                .addComponent(play, 35, 35, 35)
-                .addGap(25, 25, 25)
-                .addComponent(skip_forward, 25, 25, 25)
-                .addGap(23, 23, 23)
-                .addComponent(repeat, 25, 25, 25));
+        layout.setHorizontalGroup(layout.createParallelGroup()
+                .addGroup(layout.createSequentialGroup()
+                        .addContainerGap((getWidth() / 2) - 115, (getWidth() / 2) - 115)
+                        .addComponent(shuffle, 25, 25, 25)
+                        .addGap(23, 23, 23)
+                        .addComponent(skip_backward, 25, 25, 25)
+                        .addGap(20, 20, 20)
+                        .addComponent(play, 35, 35, 35)
+                        .addGap(25, 25, 25)
+                        .addComponent(skip_forward, 25, 25, 25)
+                        .addGap(23, 23, 23)
+                        .addComponent(repeat, 25, 25, 25))
+                .addGroup(layout.createSequentialGroup()
+                        .addContainerGap((getWidth() / 2) - 255, (getWidth() / 2) - 255)
+                        .addComponent(musicSlider, 500, 500, 500))
+                .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(10, 10))
+                .addComponent(songPanelForPlayPanel, 70, 70, 70));
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(5, 15, 15)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addComponent(play, 35, 35, 35)
                         .addComponent(skip_backward, 25, 25, 25)
                         .addComponent(skip_forward, 25, 25, 25)
-                        .addGroup(layout.createSequentialGroup().addGap(2, 2, 2).addGroup(layout.createParallelGroup()
-                                .addComponent(shuffle, 25, 25, 25)
-                                .addComponent(repeat, 25, 25, 25))))
+                        .addGroup(layout.createSequentialGroup().addGap(2, 2, 2)
+                                .addGroup(layout.createParallelGroup()
+                                        .addComponent(shuffle, 25, 25, 25)
+                                        .addComponent(repeat, 25, 25, 25)))
+                        .addComponent(songPanelForPlayPanel, 70, 70, 70))
+                .addGap(5, 5, 5)
+                .addComponent(musicSlider, 20, 20, 20)
                 .addContainerGap(30, 30));
         this.setLayout(layout);
     }
 
-    private class ListenerForMouse implements MouseListener
-    {
+    private class ListenerForMouse implements MouseListener {
 
         @Override
-        public void mouseClicked(MouseEvent e)
-        {
-            if (e.getSource() == shuffle)
-            {
-                playPanelListener.state(shuffleState,repeatState,playState,0);
-                if (!shuffleState)
-                {
+        public void mouseClicked(MouseEvent e) {
+            if (e.getSource() == shuffle) {
+                playPanelListener.state(shuffleState, repeatState, playState, 0);
+                if (!shuffleState) {
                     shuffle.setForeground(new Color(1, 180, 53));
                     shuffleState = true;
-                }
-                else
-                {
+                } else {
                     shuffle.setForeground(new Color(255, 255, 255));
                     shuffleState = false;
                 }
 
             }
-            if (e.getSource() == skip_backward)
-            {
-                playPanelListener.state(shuffleState,repeatState,playState,1);
+            if (e.getSource() == skip_backward) {
+                playPanelListener.state(shuffleState, repeatState, playState, 1);
                 skip_backward.setForeground(new Color(255, 255, 255));
-                try
-                {
+                try {
 //                    player.stop();
 //                    player.interrupt();
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
 
-                }
-                finally
-                {
-                    if (playState != 2)
-                    {
+                } finally {
+                    if (playState != 2) {
                         play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                         SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                         mainPanel.getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().repaint();
@@ -243,18 +230,14 @@ public class PlayPanel extends JPanel
                 }
                 playState = 2;
             }
-            if (e.getSource() == play)
-            {
-                playPanelListener.state(shuffleState,repeatState,playState,2);
-                if (playState != 2)
-                {
+            if (e.getSource() == play) {
+                playPanelListener.state(shuffleState, repeatState, playState, 2);
+                if (playState != 2) {
                     SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                     play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
                     mainPanel.getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().repaint();
                     playState = 2;
-                }
-                else
-                {
+                } else {
                     SongsPanel.customLabelForSongsPanel.setText("PLAY");
                     play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                     mainPanel.getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().repaint();
@@ -262,23 +245,16 @@ public class PlayPanel extends JPanel
                 }
 
             }
-            if (e.getSource() == skip_forward)
-            {
-                playPanelListener.state(shuffleState,repeatState,playState,3);
+            if (e.getSource() == skip_forward) {
+                playPanelListener.state(shuffleState, repeatState, playState, 3);
                 skip_forward.setForeground(new Color(255, 255, 255));
-                try
-                {
+                try {
 //                    player.stop();
 //                    player.interrupt();
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
 
-                }
-                finally
-                {
-                    if (playState != 2)
-                    {
+                } finally {
+                    if (playState != 2) {
                         SongsPanel.customLabelForSongsPanel.setText("PAUSE");
                         mainPanel.getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().repaint();
                         play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
@@ -286,23 +262,17 @@ public class PlayPanel extends JPanel
                 }
                 playState = 2;
             }
-            if (e.getSource() == repeat)
-            {
-                playPanelListener.state(shuffleState,repeatState,playState,4);
-                if (repeatState == 0)
-                {
+            if (e.getSource() == repeat) {
+                playPanelListener.state(shuffleState, repeatState, playState, 4);
+                if (repeatState == 0) {
                     repeat.setText("\uD83D\uDD01");
                     repeat.setForeground(new Color(1, 180, 53));
                     repeatState = 1;
-                }
-                else if (repeatState == 1)
-                {
+                } else if (repeatState == 1) {
                     repeat.setText("\uD83D\uDD02");
                     repeatState = 2;
                     repeat.setForeground(new Color(1, 180, 49));
-                }
-                else if (repeatState == 2)
-                {
+                } else if (repeatState == 2) {
                     repeat.setText("\uD83D\uDD01");
                     repeatState = 0;
                     repeat.setForeground(new Color(255, 255, 255));
@@ -311,38 +281,29 @@ public class PlayPanel extends JPanel
         }
 
 
-
         @Override
-        public void mousePressed(MouseEvent e)
-        {
+        public void mousePressed(MouseEvent e) {
             mouseActions(e);
         }
 
         @Override
-        public void mouseReleased(MouseEvent e)
-        {
+        public void mouseReleased(MouseEvent e) {
             mouseActions(e);
         }
 
-        private void mouseActions(MouseEvent e)
-        {
+        private void mouseActions(MouseEvent e) {
             refreshIcons(e);
-            if (e.getSource() == repeat)
-            {
-                if (e.getSource() == repeat)
-                {
-                    if (repeatState == 0)
-                    {
+            if (e.getSource() == repeat) {
+                if (e.getSource() == repeat) {
+                    if (repeatState == 0) {
                         repeat.setText("\uD83D\uDD01");
                         repeat.setForeground(new Color(155, 155, 155));
                     }
-                    if (repeatState == 1)
-                    {
+                    if (repeatState == 1) {
                         repeat.setText("\uD83D\uDD01");
                         repeat.setForeground(new Color(1, 155, 49));
                     }
-                    if (repeatState == 2)
-                    {
+                    if (repeatState == 2) {
                         repeat.setText("\uD83D\uDD02");
                         repeat.setForeground(new Color(1, 155, 49));
                     }
@@ -350,79 +311,59 @@ public class PlayPanel extends JPanel
             }
         }
 
-        private void refreshIcons(MouseEvent e)
-        {
-            if (e.getSource() == shuffle)
-            {
-                if (!shuffleState)
-                {
+        private void refreshIcons(MouseEvent e) {
+            if (e.getSource() == shuffle) {
+                if (!shuffleState) {
                     shuffle.setForeground(new Color(155, 155, 155));
-                }
-                else
-                {
+                } else {
                     shuffle.setForeground(new Color(1, 155, 49));
                 }
             }
-            if (e.getSource() == skip_backward)
-            {
+            if (e.getSource() == skip_backward) {
                 skip_backward.setForeground(new Color(155, 155, 155));
             }
-            if (e.getSource() == play)
-            {
+            if (e.getSource() == play) {
                 if (playState != 2)
                     play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
                 else
                     play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 35, 35));
             }
-            if (e.getSource() == skip_forward)
-            {
+            if (e.getSource() == skip_forward) {
                 skip_forward.setForeground(new Color(155, 155, 155));
             }
         }
 
         @Override
-        public void mouseEntered(MouseEvent e)
-        {
-            if (e.getSource() == shuffle)
-            {
-                if (!shuffleState)
-                {
+        public void mouseEntered(MouseEvent e) {
+            if (e.getSource() == shuffle) {
+                if (!shuffleState) {
                     shuffle.setForeground(new Color(255, 255, 255));
-                }
-                else
-                {
+                } else {
                     shuffle.setForeground(new Color(1, 180, 50));
                 }
             }
-            if (e.getSource() == skip_backward)
-            {
+            if (e.getSource() == skip_backward) {
                 skip_backward.setForeground(new Color(255, 255, 255));
             }
-            if (e.getSource() == play)
-            {
+            if (e.getSource() == play) {
                 if (playState != 2)
                     play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 37, 37));
                 else
                     play.setIcon(Icons.rescaleIcon(Icons.PAUSE_ICON, 37, 37));
             }
-            if (e.getSource() == skip_forward)
-            {
+            if (e.getSource() == skip_forward) {
                 skip_forward.setForeground(new Color(255, 255, 255));
             }
-            if (e.getSource() == repeat)
-            {
-                if (repeatState == 0)
-                {
+            if (e.getSource() == repeat) {
+                if (repeatState == 0) {
                     repeat.setText("\uD83D\uDD01");
                     repeat.setForeground(new Color(255, 255, 255));
                 }
-                if (repeatState == 1)
-                {
+                if (repeatState == 1) {
                     repeat.setText("\uD83D\uDD01");
                     repeat.setForeground(new Color(1, 180, 55));
                 }
-                if (repeatState == 2)
-                {
+                if (repeatState == 2) {
                     repeat.setText("\uD83D\uDD02");
                     repeat.setForeground(new Color(1, 180, 56));
                 }
@@ -430,27 +371,26 @@ public class PlayPanel extends JPanel
         }
 
         @Override
-        public void mouseExited(MouseEvent e)
-        {
+        public void mouseExited(MouseEvent e) {
             refreshIcons(e);
-            if (e.getSource() == repeat)
-            {
-                if (repeatState == 0)
-                {
+            if (e.getSource() == repeat) {
+                if (repeatState == 0) {
                     repeat.setText("\uD83D\uDD01");
                     repeat.setForeground(new Color(155, 155, 155));
                 }
-                if (repeatState == 1)
-                {
+                if (repeatState == 1) {
                     repeat.setText("\uD83D\uDD01");
                     repeat.setForeground(new Color(1, 155, 49));
                 }
-                if (repeatState == 2)
-                {
+                if (repeatState == 2) {
                     repeat.setText("\uD83D\uDD02");
                     repeat.setForeground(new Color(1, 155, 49));
                 }
             }
         }
+    }
+
+    public SongPanelForPlayPanel getSongPanelForPlayPanel() {
+        return songPanelForPlayPanel;
     }
 }

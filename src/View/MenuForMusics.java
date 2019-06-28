@@ -21,9 +21,13 @@ public class MenuForMusics extends JPopupMenu implements AddLibrariesListener
     public MenuForMusics()
     {
         this.add(addToPlaylist);
-        this.setBackground(new Color(18, 18, 18));
-        this.setForeground(new Color(18, 18, 18));
-        this.setSize(40, 40);
+        this.setBackground(new Color(24, 24, 24));
+        this.setForeground(Color.white);
+        this.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
+        this.setBorder(BorderFactory.createEmptyBorder());
+        this.setPreferredSize(new Dimension(200, 40));
+        this.setMaximumSize(new Dimension(200, 40));
+        this.setMinimumSize(new Dimension(200, 40));
 //        ListenerForMouse listenerForMouse = new ListenerForMouse();
 //        addToPlaylist.addMouseListener(listenerForMouse);
     }
@@ -32,12 +36,34 @@ public class MenuForMusics extends JPopupMenu implements AddLibrariesListener
     public void addLibraries(Vector<Library> libraries)
     {
         addToPlaylist.removeAll();
+        addToPlaylist.setForeground(Color.white);
+        addToPlaylist.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
+        addToPlaylist.setBorder(BorderFactory.createEmptyBorder());
+        addToPlaylist.setPreferredSize(new Dimension(200, 40));
+        addToPlaylist.setMaximumSize(new Dimension(200, 40));
+        addToPlaylist.setMinimumSize(new Dimension(200, 40));
+        int counter = 0;
         for(Library library:libraries)
         {
+            JSeparator separator = new JSeparator();
             JMenuItem jMenuItem = new JMenuItem(library.getName());
+            jMenuItem.setBackground(new Color(24, 24, 24));
+            jMenuItem.setForeground(new Color(120, 120, 120));
+            jMenuItem.setBorder(BorderFactory.createEmptyBorder());
+            jMenuItem.setPreferredSize(new Dimension(200, 40));
+            jMenuItem.setMaximumSize(new Dimension(200, 40));
+            jMenuItem.setForeground(Color.white);
+            jMenuItem.setFont(new Font("Proxima Nova Rg", Font.BOLD, 15));
+            jMenuItem.setMinimumSize(new Dimension(200, 40));
             addToPlaylist.add(jMenuItem);
+            separator.setBackground(new Color(80, 80, 80));
+            separator.setForeground(new Color(80, 80, 80));
+            if (counter != (libraries.size() - 1))
+                addToPlaylist.add(separator);
             jMenuItem.addMouseListener(new ListenerForMouse(jMenuItem));
+            counter++;
         }
+        addToPlaylist.getPopupMenu().setBorder(BorderFactory.createEmptyBorder());
     }
 
     private class ListenerForMouse implements MouseListener

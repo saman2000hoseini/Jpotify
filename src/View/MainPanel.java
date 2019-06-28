@@ -22,13 +22,12 @@ public class MainPanel extends JPanel {
         setSize(width, height);
         centrePanel = new CentrePanel(getWidth(), getHeight());
         centrePanel.update();
-        playPanel = new PlayPanel(this, getWidth(), MainFrame.musics);
+        playPanel = new PlayPanel(this, getWidth(), MainFrame.musics, 100);
         this.setBackground(new Color(24, 24, 24));
         friendsPanel = new FriendsPanel(getHeight());
     }
 
-    public void update()
-    {
+    public void update() {
         if ((getWidth() != prevWidth || getHeight() != prevHeight) || firstApearence == true) {
             prevWidth = getWidth();
             prevHeight = getHeight();
@@ -36,8 +35,7 @@ public class MainPanel extends JPanel {
                 centrePanel = new CentrePanel(getWidth(), getHeight());
                 centrePanel.update();
             }
-            if (firstApearence)
-            {
+            if (firstApearence) {
                 playPanel.update();
                 westPanel.update();
             }
@@ -82,18 +80,15 @@ public class MainPanel extends JPanel {
         }
     }
 
-    public PlayPanel getPlayPanel()
-    {
+    public PlayPanel getPlayPanel() {
         return playPanel;
     }
 
-    public WestPanel getWestPanel()
-    {
+    public WestPanel getWestPanel() {
         return westPanel;
     }
 
-    public CentrePanel getCentrePanel()
-    {
+    public CentrePanel getCentrePanel() {
         return centrePanel;
     }
 

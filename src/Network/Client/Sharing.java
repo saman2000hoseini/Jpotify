@@ -6,6 +6,8 @@ import Listeners.AddPlayingMusic;
 import Listeners.RequestToGetMusic;
 import Model.*;
 import View.MainFrame;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import org.farng.mp3.TagException;
 
 import java.io.*;
@@ -177,6 +179,10 @@ public class Sharing implements Runnable, RequestToGetMusic
             }
             catch (TagException e)
             {
+                e.printStackTrace();
+            } catch (InvalidDataException e) {
+                e.printStackTrace();
+            } catch (UnsupportedTagException e) {
                 e.printStackTrace();
             }
         }

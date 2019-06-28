@@ -19,6 +19,7 @@ public class LoginActions implements LoginPanelListener
         Main.mainClient = new MainClient(PlayPanelActions.playlist,new User(user, null),mainFrame);
         Main.mainClient.getSharing().setAddPlayingMusic(mainFrame.getMainPanel().getFriendsPanel());
         mainFrame.getMainPanel().getFriendsPanel().setRequestToGetMusic(Main.mainClient.getSharing());
+        Main.mainClient.getSharing().setAddPlayingMusic(mainFrame.getMainPanel().getPlayPanel().getSongPanelForPlayPanel());
 
         for(String ip:friends)
             Main.mainClient.addFriend(ip);
