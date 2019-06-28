@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Vector;
 
-public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, SongsPanelListener, PlayListChanged, MusicFinishedListener
+public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, SongsPanelListener, PlayListChanged, MusicFinishedListener,JsliderValueChanged
 {
     private static AudioPlayer audioPlayer;
     private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
@@ -300,12 +300,38 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
         }
         else if (repeatState == 1)
         {
-            index--;
             state(shuffleState,repeatState,playState,3);
         }
         else
         {
+            index--;
             state(shuffleState,repeatState,playState,3);
+        }
+    }
+
+    @Override
+    public void setAudioPlayer(int value,int max)
+    {
+        try
+        {
+            jSliderListener.playPause(playlist.get(index),2);
+            System.out.println("reached here "+ value);
+            audioPlayer.stop();
+            player.stop();
+            Mp3File mp3File = new Mp3File(playlist.get(index).getFileLocation());
+            audioPlayer = new AudioPlayer(playlist.get(index).getFileLocation(), mp3File.getFrameCount());
+            audioPlayer.setPlayLocation(value* mp3File.getFrameCount()/max);
+            player = new Thread(audioPlayer);
+            playlist.get(index).setLastPlayed(LocalDateTime.now());
+            audioPlayer.playMusic(player);
+            jSliderListener.playPause(playlist.get(index),1);
+
+            loadPlayingPanel.addMusicToActivity(playlist.get(index));
+            Sharing.setMusic(playlist.get(index));
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
         }
     }
 }

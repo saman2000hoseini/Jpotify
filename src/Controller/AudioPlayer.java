@@ -40,7 +40,7 @@ public class AudioPlayer implements Runnable {
 
 
     }
-    public void playLocation(int value){
+    public void setPlayLocation(int value){
         this.value = value;
     }
     public void stop(){

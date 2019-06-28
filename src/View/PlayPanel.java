@@ -148,13 +148,19 @@ public class PlayPanel extends JPanel {
         repeat.setToolTipText("Repeat");
         shuffle.setToolTipText("Shuffle");
         play.setToolTipText("Play");
-        lightSliderUI = new LightSliderUI(musicSlider);
+        lightSliderUI = new LightSliderUI(musicSlider){
+            @Override
+            protected Color getFocusColor()
+            {
+                return new Color(40,40,40);
+            }
+        };
         musicSlider.setUI(lightSliderUI);
         musicSlider.setBackground(new Color(40, 40, 40));
         musicSlider.setMinimum(0);
         musicSlider.setMaximum(100);
         musicSlider.setValue(0);
-        musicSlider.setEnabled(false);
+        musicSlider.setEnabled(true);
         shuffleState = false;
         repeatState = 0;
         playState = 0;

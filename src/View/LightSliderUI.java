@@ -2,6 +2,7 @@ package View;
 
 import Controller.JSliderActions;
 import Listeners.JSliderListener;
+import Listeners.JsliderValueChanged;
 import Model.Music;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
@@ -32,11 +33,23 @@ public class LightSliderUI extends BasicSliderUI implements JSliderListener
     private final BasicStroke stroke = new BasicStroke(2f);
     private JSliderActions jSliderActions = JSliderActions.getInstance();
     private transient boolean upperDragging;
+    private JsliderValueChanged jsliderValueChanged = null;
 
     public LightSliderUI(JSlider b)
     {
         super(b);
         jSliderActions.setLightSliderUI(b);
+        b.setValue(0);
+//        b.addChangeListener(new ChangeListener()
+//        {
+//            @Override
+//            public void stateChanged(ChangeEvent e)
+//            {
+//                JSlider source = (JSlider)e.getSource();
+//                if (!source.get) {
+//                }
+//            }
+//        });
     }
 
     public static ComponentUI createUI(JComponent c)
@@ -193,7 +206,7 @@ public class LightSliderUI extends BasicSliderUI implements JSliderListener
     public void playPause(Music music, int state) throws IOException, TagException, InterruptedException, InvalidDataException, UnsupportedTagException
     {
         File file = null;
-        if (state==0)
+        if (state == 0)
         {
             file = new File(music.getFileLocation());
             jSliderActions.setMax((int) new Mp3File(file).getLengthInSeconds());
@@ -359,12 +372,17 @@ public class LightSliderUI extends BasicSliderUI implements JSliderListener
 
                     thumbMiddle = thumbLeft + halfThumbWidth;
                     slider.setValue(valueForXPosition(thumbMiddle));
+                    JSliderActions.getInstance().setValue(slider.getValue());
+                    jsliderValueChanged.setAudioPlayer(slider.getValue(),slider.getMaximum());
                     break;
-
-
                 default:
                     return;
             }
         }
+    }
+
+    public void setJsliderValueChanged(JsliderValueChanged jsliderValueChanged)
+    {
+        this.jsliderValueChanged = jsliderValueChanged;
     }
 }

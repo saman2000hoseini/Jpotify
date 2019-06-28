@@ -112,6 +112,7 @@ public class Main {
         playPanelActions.setLoadPlayingPanel(mainFrame.getMainPanel().getPlayPanel().getSongPanelForPlayPanel());
         playPanelActions.setjSliderListener(mainFrame.getMainPanel().getPlayPanel().getLightSliderUI());
         JSliderActions.getInstance().setMusicFinishedListener(playPanelActions);
+        mainFrame.getMainPanel().getPlayPanel().getLightSliderUI().setJsliderValueChanged(playPanelActions);
     }
 
     public static int getStatus() {
