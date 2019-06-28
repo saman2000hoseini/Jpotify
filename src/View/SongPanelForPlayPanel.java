@@ -1,6 +1,7 @@
 package View;
 
 import Listeners.AddPlayingMusic;
+import Listeners.LoadPlayingPanel;
 import Model.Music;
 import Model.User;
 import com.mpatric.mp3agic.ID3v2;
@@ -15,7 +16,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-public class SongPanelForPlayPanel extends JPanel implements AddPlayingMusic{
+public class SongPanelForPlayPanel extends JPanel implements LoadPlayingPanel
+{
     private JLabel musicImage = new JLabel();
     private JLabel songName = new JLabel();
     private JLabel songArtist = new JLabel();
@@ -62,7 +64,7 @@ public class SongPanelForPlayPanel extends JPanel implements AddPlayingMusic{
     }
 
     @Override
-    public void addMusicToActivity(Music music, User user) throws InvalidDataException, IOException, UnsupportedTagException {
+    public void addMusicToActivity(Music music) throws InvalidDataException, IOException, UnsupportedTagException {
         Mp3File song = new Mp3File(music.getFileLocation());
         if (song.hasId3v2Tag()){
             ID3v2 id3v2tag = song.getId3v2Tag();

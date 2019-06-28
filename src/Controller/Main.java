@@ -109,6 +109,8 @@ public class Main {
         topLeftMenuActions.setAddLibrariesListener(mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().getMenuForMusics());
         AddSongAction addSongAction = new AddSongAction();
         mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().getMenuForMusics().setAddSongToLibrary(addSongAction);
+        playPanelActions.setLoadPlayingPanel(mainFrame.getMainPanel().getPlayPanel().getSongPanelForPlayPanel());
+
     }
 
     public static int getStatus() {

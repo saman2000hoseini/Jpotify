@@ -24,7 +24,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     private int repeatState = 0;
     private int playState = 0;
     private PlayingMusicChanged playingMusicChanged = null;
-
+    private LoadPlayingPanel loadPlayingPanel = null;
     public PlayPanelActions(Vector<Music> playlist)
     {
         this.playlist = playlist;
@@ -132,6 +132,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
             player = new Thread(audioPlayer);
             playlist.get(index).setLastPlayed(LocalDateTime.now());
             audioPlayer.playMusic(player);
+            loadPlayingPanel.addMusicToActivity(playlist.get(index));
             Sharing.setMusic(playlist.get(index));
         }
         catch (Exception ex)
@@ -265,5 +266,10 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     public void setPlayingMusicChanged(PlayingMusicChanged playingMusicChanged)
     {
         this.playingMusicChanged = playingMusicChanged;
+    }
+
+    public void setLoadPlayingPanel(LoadPlayingPanel loadPlayingPanel)
+    {
+        this.loadPlayingPanel = loadPlayingPanel;
     }
 }

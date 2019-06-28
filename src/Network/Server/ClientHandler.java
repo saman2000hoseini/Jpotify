@@ -32,6 +32,7 @@ public class ClientHandler implements Runnable
         {
             while (!socket.isClosed())
             {
+                System.out.println("im listening");
                 Request request = (Request) objectInputStream.readObject();
                 System.out.println(request);
                 System.out.println(request.getMusic());
@@ -41,12 +42,15 @@ public class ClientHandler implements Runnable
                     System.out.println("Welcome to your server " + request.getUser().getUserName());
                 }
                 else
+                {
+                    System.out.println(request.getReqsMusic());
                     thisOut.writeObject(request);
+                }
             }
         }
         catch (IOException e)
         {
-            System.out.println("Someone Left");
+            e.printStackTrace();
         }
         catch (ClassNotFoundException e)
         {

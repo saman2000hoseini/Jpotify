@@ -95,8 +95,10 @@ public class Sharing implements Runnable, RequestToGetMusic
             for (User user : users)
             {
                 if (!user.getUserName().equals(MainClient.user.getUserName()))
+                {
                     user.getObjectOutputStream().writeObject(request);
-                System.out.println("sending to " + user.getUserName());
+                    System.out.println("sending to " + user.getUserName());
+                }
             }
         }
         catch (Exception e)
@@ -121,12 +123,14 @@ public class Sharing implements Runnable, RequestToGetMusic
                         Socket temp = (Socket) iterator.next();
                         if (temp.getInetAddress().equals(request.getUser().getIp()))
                         {
+                            System.out.println(temp.getInetAddress());
                             iterator.remove();
                             break;
                         }
                     }
                     Socket temp = new Socket(request.getUser().getIp(), 6500);
                     System.out.println(temp.getInetAddress()+" joinedddddddddddddddddddd");
+                    System.out.println(request.getUser().getUserName()+" "+request.getUser().getIp());
 
                     request.getUser().setObjectOutputStream(new ObjectOutputStream(temp.getOutputStream()));
                     users.add(request.getUser());
