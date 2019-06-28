@@ -44,10 +44,14 @@ public class Sharing implements Runnable, RequestToGetMusic
                     sharedLibrary = Main.getPlayLists().get(Main.getPlayLists().indexOf(new Library("Shared playlist")));
                     try
                     {
-                        shareMusic(request);
+                        if (music != null)
+                        {
+                            System.out.println("sending music " + music.getName());
+                            shareMusic(request);
+                        }
                         request = new Request(sharedLibrary, MainClient.user);
-                        shareMusic(request);
-                        System.out.println("sending music " + music.getName());
+                        if (sharedLibrary != null)
+                            shareMusic(request);
                     }
                     catch (IOException e)
                     {
@@ -87,8 +91,9 @@ public class Sharing implements Runnable, RequestToGetMusic
         {
             for (User user : users)
             {
-                System.out.println("sending to "+ user.getUserName());
-                user.getObjectOutputStream().writeObject(request);
+                if (!user.getUserName().equals(MainClient.user.getUserName()))
+                    user.getObjectOutputStream().writeObject(request);
+                System.out.println("sending to " + user.getUserName());
             }
         }
         catch (Exception e)
@@ -124,12 +129,12 @@ public class Sharing implements Runnable, RequestToGetMusic
                 }
                 else if (request.getReqsMusic() == 0 && !request.getMusic().isLocal())
                 {
-                    System.out.println(request.getUser().getUserName()+" is playing music"+request.getMusic().getName());
+                    System.out.println(request.getUser().getUserName() + " is playing music" + request.getMusic().getName());
                     addPlayingMusic.addMusicToActivity(music, request.getUser());
                 }
                 else if (request.getReqsMusic() == 1 && request.wantsMusic())
                 {
-                    System.out.println(request.getUser().getUserName()+" wants music "+request.getMusic().getName());
+                    System.out.println(request.getUser().getUserName() + " wants music " + request.getMusic().getName());
                     User wants = users.get(users.indexOf(request.getUser()));
                     File file = new File(MainClient.musics.get(MainClient.musics.indexOf(request.getMusic())).getFileLocation());
                     ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
@@ -141,7 +146,7 @@ public class Sharing implements Runnable, RequestToGetMusic
                 }
                 else if (request.getReqsMusic() == 1)
                 {
-                    System.out.println(request.getMusic().getName()+" Sending to "+request.getUser().getUserName());
+                    System.out.println(request.getMusic().getName() + " Sending to " + request.getUser().getUserName());
                     byte[] byteArray = new byte[request.getFileSize()];
                     objectInputStream.read(byteArray);
                     if (!MainClient.musics.contains(request.getMusic()))

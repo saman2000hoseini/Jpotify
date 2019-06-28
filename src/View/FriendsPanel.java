@@ -80,7 +80,6 @@ public class FriendsPanel extends JPanel implements AddPlayingMusic
                 requestToGetMusic.send(new Request(new PlayingMusic(music,false),user));
                 this.wait(3000);
             }
-
             if (friendsActivities==null)
             {
                 temp = new FriendsActivity[1][1];
