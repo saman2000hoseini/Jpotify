@@ -30,7 +30,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     private PlayingMusicChanged playingMusicChanged = null;
     private JSliderListener jSliderListener = null;
     private LoadPlayingPanel loadPlayingPanel = null;
-
+    private ResetPlaystate resetPlaystate = null;
     public PlayPanelActions(Vector<Music> playlist)
     {
         this.playlist = playlist;
@@ -294,7 +294,10 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
         if (repeatState == 0)
         {
             if (index == playlist.size() - 1)
+            {
                 jSliderListener.playPause(playlist.get(index), 4);
+                resetPlaystate.rest();
+            }
             else
                 state(shuffleState,repeatState,playState,3);
         }
@@ -333,5 +336,10 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
         {
             ex.printStackTrace();
         }
+    }
+
+    public void setResetPlaystate(ResetPlaystate resetPlaystate)
+    {
+        this.resetPlaystate = resetPlaystate;
     }
 }

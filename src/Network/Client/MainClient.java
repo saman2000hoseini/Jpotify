@@ -8,14 +8,13 @@ import View.MainFrame;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Vector;
 
 public class MainClient
 {
-    private ObjectOutputStream outStream;
+    private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
     private Socket client;
     private Vector<String> friends = new Vector<>();
@@ -23,7 +22,7 @@ public class MainClient
     static Vector<Music> musics = new Vector<>();
     private Sharing sharing;
     private int port;
-    static User user;
+    public static User user;
     static MainFrame mainFrame;
     public MainClient(Vector<Music> musics, User user, MainFrame mainFrame) throws IOException
     {
@@ -36,12 +35,14 @@ public class MainClient
         client = new Socket("localhost", port);
         try
         {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(client.getOutputStream());
+            outputStream = new ObjectOutputStream(client.getOutputStream());
+            inputStream = new ObjectInputStream(client.getInputStream());
             sharing = new Sharing(connections,client);
+            user.setObjectOutputStream(outputStream);
+            user.setObjectInputStream(inputStream);
             Thread t = new Thread(sharing);
             t.start();
-            sharing.hiServer(objectOutputStream);
-            System.out.println();
+            sharing.hiServer();
         }
         catch (IOException e)
         {

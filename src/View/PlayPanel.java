@@ -3,6 +3,7 @@ package View;
 import Controller.AudioPlayer;
 import Controller.FileAndFolderBrowsing;
 import Listeners.PlayPanelListener;
+import Listeners.ResetPlaystate;
 import Model.Music;
 import Model.Sort;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -20,7 +21,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Vector;
 
-public class PlayPanel extends JPanel {
+public class PlayPanel extends JPanel implements ResetPlaystate
+{
     private boolean shuffleState = false;
     private int repeatState = 0;
     static int playState = 0;
@@ -208,6 +210,15 @@ public class PlayPanel extends JPanel {
                         .addComponent(musicSlider, 20, 20, 20)
                         .addContainerGap(30, 30)));
         this.setLayout(layout);
+    }
+
+    @Override
+    public void rest()
+    {
+        SongsPanel.customLabelForSongsPanel.setText("PLAY");
+        play.setIcon(Icons.rescaleIcon(Icons.PLAY_ICON, 35, 35));
+        mainPanel.getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().repaint();
+        playState = 0;
     }
 
     private class ListenerForMouse implements MouseListener {

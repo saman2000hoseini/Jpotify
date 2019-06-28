@@ -1,5 +1,6 @@
 package Model;
 
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
@@ -8,6 +9,7 @@ public class User implements Serializable
     private String userName;
     private String ip;
     private ObjectOutputStream objectOutputStream;
+    private ObjectInputStream objectInputStream;
 
     public User(String userName, String ip)
     {
@@ -46,5 +48,15 @@ public class User implements Serializable
     public void setIp(String ip)
     {
         this.ip = ip;
+    }
+
+    public ObjectInputStream getObjectInputStream()
+    {
+        return objectInputStream;
+    }
+
+    public void setObjectInputStream(ObjectInputStream objectInputStream)
+    {
+        this.objectInputStream = objectInputStream;
     }
 }

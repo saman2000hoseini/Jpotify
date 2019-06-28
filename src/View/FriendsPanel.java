@@ -3,6 +3,7 @@ package View;
 import Listeners.AddPlayingMusic;
 import Listeners.RequestToGetMusic;
 import Model.*;
+import Network.Client.MainClient;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -26,7 +27,9 @@ public class FriendsPanel extends JPanel implements AddPlayingMusic
     private FriendsActivity f;
     private FriendsActivity[][] friendsActivities;
     private RequestToGetMusic requestToGetMusic = null;
-    FriendsPanel(int frameHeight) {
+
+    FriendsPanel(int frameHeight)
+    {
         super();
 
         defaultTableModel = new DefaultTableModel(friendsActivities, tableHeader);
@@ -73,93 +76,130 @@ public class FriendsPanel extends JPanel implements AddPlayingMusic
     @Override
     public void addMusicToActivity(Music music, User user)
     {
-        try {
+        try
+        {
             FriendsActivity[][] temp;
             f = new FriendsActivity(music, user.getUserName());
-            if (!MainFrame.musics.contains(music)){
-                requestToGetMusic.send(new Request(new PlayingMusic(music,false),true,user));
-                this.wait(3000);
+            if (!MainFrame.musics.contains(music))
+            {
+                requestToGetMusic.send(new Request(new User(user.getUserName(), user.getIp()), new User(MainClient.user.getUserName(), MainClient.user.getIp()), music));
             }
-            if (friendsActivities==null)
+            if (friendsActivities == null)
             {
                 temp = new FriendsActivity[1][1];
+                temp[0][0] = f;
+                friendsActivities = temp;
             }
             else
             {
-                temp = new FriendsActivity[friendsActivities.length + 1][1];
-                for (int i = 0; i < temp.length-1; i++) {
-                    temp[i][0] = f;
+                boolean flag = false;
+                for (int i = 0; i < friendsActivities.length; i++)
+                {
+                    if (friendsActivities[i][0].getUser().equals(f.getUser()))
+                    {
+                        friendsActivities[i][0] = f;
+                        flag = true;
+                    }
+                }
+                if (!flag)
+                {
+                    temp = new FriendsActivity[friendsActivities.length + 1][1];
+                    for (int i = 0; i < temp.length - 1; i++)
+                    {
+                        temp[i][0] = friendsActivities[i][0];
+                    }
+                    temp[temp.length - 1][0] = f;
+                    friendsActivities = temp;
                 }
             }
-            temp[temp.length-1][1] = f;
-            friendsActivities = temp;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedTagException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
+            defaultTableModel.setDataVector(friendsActivities, tableHeader);
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
-        catch (InterruptedException e)
+        catch (UnsupportedTagException e)
+        {
+            e.printStackTrace();
+        }
+        catch (InvalidDataException e)
         {
             e.printStackTrace();
         }
     }
 
-    private class ListenerForMouse implements MouseListener {
+    private class ListenerForMouse implements MouseListener
+    {
         @Override
-        public void mouseClicked(MouseEvent e) {
-            if (e.getSource() == close) {
+        public void mouseClicked(MouseEvent e)
+        {
+            if (e.getSource() == close)
+            {
                 System.exit(0);
             }
-            if (e.getSource() == restoreDown) {
+            if (e.getSource() == restoreDown)
+            {
                 if (((JFrame) (getParent().getParent().getParent().getParent().getParent())).getWidth() == Toolkit.getDefaultToolkit().getScreenSize().getWidth()
-                        && ((JFrame) (getParent().getParent().getParent().getParent().getParent())).getHeight() == Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 40) {
+                        && ((JFrame) (getParent().getParent().getParent().getParent().getParent())).getHeight() == Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 40)
+                {
                     ((MainFrame) (getParent().getParent().getParent().getParent().getParent())).setFullScreenMode(false);
                     ((JFrame) (getParent().getParent().getParent().getParent().getParent())).setSize(950, 600);
-                } else {
+                }
+                else
+                {
                     Dimension dimPant = Toolkit.getDefaultToolkit().getScreenSize();
                     ((JFrame) (getParent().getParent().getParent().getParent().getParent())).setBounds(0, 0, (int) dimPant.getWidth(), (int) dimPant.getHeight() - 40);
                     ((MainFrame) (getParent().getParent().getParent().getParent().getParent())).setFullScreenMode(true);
                 }
             }
-            if (e.getSource() == minimize) {
+            if (e.getSource() == minimize)
+            {
                 ((JFrame) (getParent().getParent().getParent().getParent().getParent())).setState(Frame.ICONIFIED);
             }
         }
 
         @Override
-        public void mousePressed(MouseEvent e) {
+        public void mousePressed(MouseEvent e)
+        {
 
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void mouseReleased(MouseEvent e)
+        {
 
         }
 
         @Override
-        public void mouseEntered(MouseEvent e) {
-            if (e.getSource() == close) {
+        public void mouseEntered(MouseEvent e)
+        {
+            if (e.getSource() == close)
+            {
                 close.setBackground(new Color(255, 22, 14));
             }
-            if (e.getSource() == restoreDown) {
+            if (e.getSource() == restoreDown)
+            {
                 restoreDown.setBackground(new Color(100, 100, 100));
             }
-            if (e.getSource() == minimize) {
+            if (e.getSource() == minimize)
+            {
                 minimize.setBackground(new Color(100, 100, 100));
             }
         }
 
         @Override
-        public void mouseExited(MouseEvent e) {
-            if (e.getSource() == close) {
+        public void mouseExited(MouseEvent e)
+        {
+            if (e.getSource() == close)
+            {
                 close.setBackground(new Color(24, 24, 24));
             }
-            if (e.getSource() == restoreDown) {
+            if (e.getSource() == restoreDown)
+            {
                 restoreDown.setBackground(new Color(24, 24, 24));
             }
-            if (e.getSource() == minimize) {
+            if (e.getSource() == minimize)
+            {
                 minimize.setBackground(new Color(24, 24, 24));
             }
         }

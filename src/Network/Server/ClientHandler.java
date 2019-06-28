@@ -1,7 +1,7 @@
 package Network.Server;
 
-import Model.PlayingMusic;
 import Model.Request;
+import Model.User;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,11 +11,13 @@ import java.util.Vector;
 
 public class ClientHandler implements Runnable
 {
-    static Vector<String> users = new Vector<>();
+    static Vector<User> users = new Vector<>();
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
-    private static ObjectOutputStream thisOut;
+    //    private static User thisUser;
     private Socket socket;
+    private boolean flag = false;
+    private int fileSize;
 
     public ClientHandler(Socket client) throws Exception
     {
@@ -33,18 +35,49 @@ public class ClientHandler implements Runnable
             while (!socket.isClosed())
             {
                 System.out.println("im listening");
-                Request request = (Request) objectInputStream.readObject();
-                System.out.println(request);
-                System.out.println(request.getMusic());
-                if (request.getMusic() != null && request.getMusic().isLocal())
+                if (flag)
                 {
-                    thisOut = objectOutputStream;
-                    System.out.println("Welcome to your server " + request.getUser().getUserName());
+                    byte[] byteArray = new byte[fileSize];
+                    objectOutputStream.write(objectInputStream.read(byteArray));
+                    flag=false;
                 }
                 else
                 {
-                    System.out.println(request.getReqsMusic());
-                    thisOut.writeObject(request);
+                    Request request = (Request) objectInputStream.readObject();
+                    System.out.println(request.getReqsMusic() + " :||||");
+                    if (request.getReqsMusic() == 0)
+                    {
+                        request.getUser().setObjectOutputStream(objectOutputStream);
+                        request.getUser().setObjectInputStream(objectInputStream);
+                        users.add(request.getUser());
+                        System.out.println(socket.getInetAddress());
+//                    System.out.println("Welcome to your server " + request.getUser().getUserName());
+                    }
+                    else
+                    {
+                        if (request.getReqsMusic() == 1 || request.getReqsMusic() == 4)
+                        {
+                            for (User user : users)
+//TODO                            if (!user.equals(request.getUser()))
+                                user.getObjectOutputStream().writeObject(request);
+                        }
+                        else if (request.getReqsMusic() == 2)
+                        {
+                            for (User user : users)
+                                if (user.equals(request.getUser()))
+                                    user.getObjectOutputStream().writeObject(request);
+                        }
+                        else if (request.getReqsMusic() == 3)
+                        {
+                            for (User user : users)
+                                if (user.equals(request.getUser()))
+                                {
+                                    user.getObjectOutputStream().writeObject(request);
+                                }
+                            flag = true;
+                            fileSize = request.getFileSize();
+                        }
+                    }
                 }
             }
         }

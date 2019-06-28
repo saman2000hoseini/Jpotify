@@ -4,24 +4,53 @@ import java.io.Serializable;
 
 public class Request implements Serializable
 {
-    private PlayingMusic music = null;
+    private Music music = null;
     private Integer fileSize = null;
-    private Library sharedLibrary =null;
-    private boolean wantsMusic = false;
+    private Library sharedLibrary = null;
     private User user;
+    private User wants;
     private int reqsMusic;
 
     public Request(User user)
     {
         this.user = user;
-        reqsMusic=3;
+        reqsMusic = 0;
+        //to share user
     }
 
-    public Request(PlayingMusic music, User user)
+    public Request(Music music, User user)
     {
         this.user = user;
-        reqsMusic = 0;
+        reqsMusic = 1;
         this.music = music;
+        //to share music
+    }
+
+    public Request( User user,User wants,Music music)
+    {
+        this.user = user;
+        this.wants=wants;
+        reqsMusic = 2;
+        this.music = music;
+        //to get music
+    }
+
+    public Request(Integer fileSize, Music music, User user)
+    {
+        this.user = user;
+        reqsMusic = 3;
+        this.music = music;
+        this.fileSize = fileSize;
+        //to send music
+    }
+
+
+    public Request(Library sharedLibrary, User user)
+    {
+        this.user = user;
+        this.sharedLibrary = sharedLibrary;
+        this.reqsMusic = 4;
+        //to share playlist
     }
 
     public User getUser()
@@ -29,7 +58,7 @@ public class Request implements Serializable
         return user;
     }
 
-    public PlayingMusic getMusic()
+    public Music getMusic()
     {
         return music;
     }
@@ -44,36 +73,13 @@ public class Request implements Serializable
         return sharedLibrary;
     }
 
-    public boolean wantsMusic()
+    public User getWants()
     {
-        return wantsMusic;
+        return wants;
     }
 
     public int getReqsMusic()
     {
         return reqsMusic;
-    }
-
-    public Request(Integer fileSize, PlayingMusic music,User user)
-    {
-        this.user = user;
-        reqsMusic = 1;
-        this.music=music;
-        this.fileSize = fileSize;
-    }
-    public Request(PlayingMusic music,boolean wantsMusic,User user)
-    {
-        this.user = user;
-        this.wantsMusic = wantsMusic;
-        reqsMusic = 1;
-        this.music=music;
-    }
-
-    public Request(Library sharedLibrary,User user)
-    {
-        this.user = user;
-        this.fileSize = fileSize;
-        this.sharedLibrary = sharedLibrary;
-        this.reqsMusic = 2;
     }
 }
