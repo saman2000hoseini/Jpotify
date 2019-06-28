@@ -8,6 +8,8 @@ import View.MainFrame;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Vector;
 
@@ -28,6 +30,8 @@ public class MainClient
         this.mainFrame = mainFrame;
         this.user = user;
         this.musics=musics;
+        user.setIp(InetAddress.getLocalHost().getHostAddress());
+        System.out.println(user.getIp());
         port = 6500;
         client = new Socket("localhost", port);
         try

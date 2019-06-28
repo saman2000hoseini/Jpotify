@@ -71,6 +71,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         try
         {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+//            MainClient.user.
             objectOutputStream.writeObject(new Request(MainClient.user));
             objectOutputStream.close();
         }
@@ -123,6 +124,8 @@ public class Sharing implements Runnable, RequestToGetMusic
                         }
                     }
                     Socket temp = new Socket(request.getUser().getIp(), 6500);
+                    System.out.println(temp.getInetAddress()+" joinedddddddddddddddddddd");
+
                     request.getUser().setObjectOutputStream(new ObjectOutputStream(temp.getOutputStream()));
                     users.add(request.getUser());
                     System.out.println(request.getUser().getUserName() + " has joined Your server");

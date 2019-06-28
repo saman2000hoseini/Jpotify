@@ -42,4 +42,9 @@ public class User implements Serializable
             return true;
         return false;
     }
+
+    public void setIp(String ip)
+    {
+        this.ip = ip;
+    }
 }
