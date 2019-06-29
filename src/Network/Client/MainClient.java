@@ -58,6 +58,7 @@ public class MainClient
         ServerHandler serverHandler = new ServerHandler(temp);
         Thread thread = new Thread(serverHandler);
         sockets.add(temp);
+        thread.start();
         serverHandler.hiFriend();
     }
 
