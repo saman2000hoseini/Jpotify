@@ -10,8 +10,8 @@ import java.util.Vector;
 public class MainFrame extends JFrame
 {
     private final String WINDOW_TITLE = "JPotify";
-    private final int WIDTH = 1920;
-    private final int HEIGHT = 1030;
+    public static int width = 950;
+    public static int height = 600;
     private final int X = 0;
     private final int Y = 0;
     private MainPanel mainPanel;
@@ -52,6 +52,8 @@ public class MainFrame extends JFrame
                     sizeIn.height = 600;
                 frame.setSize(sizeIn);
                 frame.revalidate();
+                width = (int)sizeIn.getWidth();
+                height = (int)sizeIn.getHeight();
                 mainPanel.setSize(sizeIn);
                 mainPanel.update();
                 mainPanel.repaint();

@@ -63,17 +63,33 @@ public class PlayListForWestPanel extends JList {
         @Override
         public void mouseClicked(MouseEvent e) {
             int index = locationToIndex(e.getPoint());
-            if (index != prevSelectedIndex) {
+            if (index != prevSelectedIndex || index == 3) {
                 try {
-                    if (index != 5 && index != 6)
-                        centrePanel.updateTable((String) defaultListModel.getElementAt(index));
-                    else {
-                        if (index == 5)
-                            centrePanel.updateTable("Favourites");
-                        if (index == 6)
-                            centrePanel.updateTable("Shared Playlist");
+                    if (index != 5 && index != 6) {
+                        if (index != 3) {
+                            centrePanel.updateTable((String) defaultListModel.getElementAt(index), null, false);
+                            centrePanel.setState(0);
+                            centrePanel.update();
+                        }
+                        else
+                        {
+                            centrePanel.setState(1);
+                            centrePanel.update();
+                        }
+
                     }
-                    centrePanel.update();
+                    else {
+                        if (index == 5) {
+                            centrePanel.updateTable("Favourites", null,false);
+                            centrePanel.setState(0);
+                            centrePanel.update();
+                        }
+                        if (index == 6) {
+                            centrePanel.updateTable("Shared Playlist", null, false);
+                            centrePanel.setState(0);
+                            centrePanel.update();
+                        }
+                    }
                     prevSelectedIndex = index;
                 } catch (InvalidDataException e1) {
                     e1.printStackTrace();

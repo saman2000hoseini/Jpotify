@@ -3,6 +3,9 @@ package View;
 import Controller.LoadingLibrary;
 import Controller.Main;
 import Listeners.UserLoginListener;
+import Model.Albums;
+import Model.Library;
+import Model.Music;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -12,14 +15,17 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.Vector;
 
-public class CentrePanel extends JPanel implements UserLoginListener
-{
+public class CentrePanel extends JPanel implements UserLoginListener {
     private CustomTextField search = new CustomTextField(175, 24, Icons.rescaleIcon(Icons.SEARCH2_ICON, 15, 15)
             , Icons.rescaleIcon(Icons.CLOSE2_ICON, 10, 10));
+
     private SongsMainPanel songsMainPanel;
+    private AlbumsMainPanel albumsMainPanel;
     private ListenerForMouse listenerForMouse;
     private int frameWidth, frameHeight;
+    static int state = 0;
     private JLabel previous = new JLabel("‹");
     private JLabel next = new JLabel("›");
     private JLabel userPic = new JLabel(Icons.rescaleIcon(Icons.USER4_ICON, 25, 25));
@@ -44,8 +50,7 @@ public class CentrePanel extends JPanel implements UserLoginListener
     private TransparentButton minimize = new TransparentButton("⚊", false);
 
     @Override
-    public void setUser(String user)
-    {
+    public void setUser(String user) {
         userName.setText(user);
     }
 
@@ -145,6 +150,7 @@ public class CentrePanel extends JPanel implements UserLoginListener
         previous.setForeground(new Color(155, 155, 155));
         next.setForeground(new Color(155, 155, 155));
         songsMainPanel = new SongsMainPanel();
+        albumsMainPanel = new AlbumsMainPanel(this);
         setBackground(new Color(18, 18, 18));
         setVisible(true);
     }
@@ -169,6 +175,10 @@ public class CentrePanel extends JPanel implements UserLoginListener
         this.getLayout().removeLayoutComponent(this);
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
+        if (state == 0)
+            remove(albumsMainPanel);
+        else
+            remove(songsMainPanel);
         if (frameWidth >= 1070) {
             if (minimize != null)
                 remove(minimize);
@@ -176,6 +186,7 @@ public class CentrePanel extends JPanel implements UserLoginListener
                 remove(close);
             if (restoreDown != null)
                 remove(restoreDown);
+            albumsMainPanel.repaint();
             layout.setHorizontalGroup(layout.createParallelGroup()
                     .addGroup(layout.createSequentialGroup()
                             .addContainerGap(20, 20)
@@ -191,7 +202,7 @@ public class CentrePanel extends JPanel implements UserLoginListener
                             .addGap(12, 12, 12)
                             .addComponent(userMenu, 20, 20, 20)
                             .addContainerGap(35, 35))
-                    .addComponent(songsMainPanel, 500, 1066, 1066));
+                    .addComponent((state == 0) ? songsMainPanel : albumsMainPanel, 500, 1066, 1066));
 
             layout.setVerticalGroup(
                     layout.createSequentialGroup()
@@ -208,84 +219,89 @@ public class CentrePanel extends JPanel implements UserLoginListener
                                                     .addComponent(userPic, 25, 25, 25)
                                                     .addComponent(userName, 25, 25, 25)
                                                     .addComponent(userMenu, 20, 20, 20))))
-                            .addComponent(songsMainPanel, 300, 716, 716));
+                            .addComponent((state == 0) ? songsMainPanel : albumsMainPanel, 300, 516, 716));
         } else {
             layout.setHorizontalGroup(layout.createParallelGroup().
                     addGroup(layout.createSequentialGroup()
-                    .addContainerGap(20, 20)
-                    .addComponent(previous, 20, 20, 20)
-                    .addGap(11, 11, 11)
-                    .addComponent(next, 20, 20, 20)
-                    .addGap(17, 17, 17)
-                    .addComponent(search, 175, 175, 175)
-                    .addGap(50, 660, 660)
-                    .addComponent(userPic, 25, 25, 25)
-                    .addGap(11, 11, 11)
-                    .addComponent(userName, 50, 50, 50)
-                    .addGap(13, 13, 13)
-                    .addComponent(userMenu, 20, 20, 20)
-                    .addGap(20, 20, 20)
-                    .addComponent(minimize, 45, 45, 45)
-                    .addComponent(restoreDown, 45, 45, 45)
-                    .addComponent(close, 45, 45, 45))
-                .addComponent(songsMainPanel , 737, 737, 1066));
+                            .addContainerGap(20, 20)
+                            .addComponent(previous, 20, 20, 20)
+                            .addGap(11, 11, 11)
+                            .addComponent(next, 20, 20, 20)
+                            .addGap(17, 17, 17)
+                            .addComponent(search, 175, 175, 175)
+                            .addGap(50, 660, 660)
+                            .addComponent(userPic, 25, 25, 25)
+                            .addGap(11, 11, 11)
+                            .addComponent(userName, 50, 50, 50)
+                            .addGap(13, 13, 13)
+                            .addComponent(userMenu, 20, 20, 20)
+                            .addGap(20, 20, 20)
+                            .addComponent(minimize, 45, 45, 45)
+                            .addComponent(restoreDown, 45, 45, 45)
+                            .addComponent(close, 45, 45, 45))
+                    .addComponent((state == 0) ? songsMainPanel : albumsMainPanel, 737, 737, 1066));
 
             layout.setVerticalGroup(
                     layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup()
-                    .addComponent(minimize, 30, 30, 30)
-                    .addComponent(restoreDown, 30, 30, 30)
-                    .addComponent(close, 30, 30, 30)
-                    .addGroup(layout.createParallelGroup()
-                            .addGroup(layout.createSequentialGroup()
-                                    .addGap(13, 13, 13)
+                            .addGroup(layout.createParallelGroup()
+                                    .addComponent(minimize, 30, 30, 30)
+                                    .addComponent(restoreDown, 30, 30, 30)
+                                    .addComponent(close, 30, 30, 30)
                                     .addGroup(layout.createParallelGroup()
-                                            .addComponent(previous, 20, 20, 20)
-                                            .addComponent(next, 20, 20, 20)
-                                            .addComponent(search, 24, 24, 24)))
-                            .addGroup(layout.createSequentialGroup()
-                                    .addGap(10, 10, 10)
-                                    .addGroup(layout.createParallelGroup()
-                                            .addComponent(userPic, 25, 25, 25)
-                                            .addComponent(userName, 25, 25, 25)
-                                            .addComponent(userMenu, 20, 20, 20)))))
-                .addComponent(songsMainPanel, 200, 716, 716));
+                                            .addGroup(layout.createSequentialGroup()
+                                                    .addGap(13, 13, 13)
+                                                    .addGroup(layout.createParallelGroup()
+                                                            .addComponent(previous, 20, 20, 20)
+                                                            .addComponent(next, 20, 20, 20)
+                                                            .addComponent(search, 24, 24, 24)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                    .addGap(10, 10, 10)
+                                                    .addGroup(layout.createParallelGroup()
+                                                            .addComponent(userPic, 25, 25, 25)
+                                                            .addComponent(userName, 25, 25, 25)
+                                                            .addComponent(userMenu, 20, 20, 20)))))
+                            .addComponent((state == 0) ? songsMainPanel : albumsMainPanel, 200, 716, 716));
         }
         repaint();
     }
 
-    public void updateTable(String playListName) throws InvalidDataException, IOException, UnsupportedTagException {
-        if (!playListName.equals(songsMainPanel.getSongsPanel().getLabelText())) {
-            if ((!playListName.equals("Songs")) && (!playListName.equals("Albums")) && (!playListName.equals("Artists"))
-            && (!playListName.equals("YOUR LIBRARY")) && (!playListName.equals("PLAYLISTS")) && (!playListName.equals("Made For You"))
-            && (!playListName.equals("Shared Playlist")) && (!playListName.equals("Favourites"))) {
-                for (int i = 0; i < Main.playLists.size(); i++) {
-                    if (playListName.equals(Main.playLists.get(i).getName())) {
-                        getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.playLists.get(i).getMusics()));
-                        getSongsMainPanel().getSongsPanel().setLabelText(Main.playLists.get(i).getName());
-                        break;
+    public void updateTable(String playListName, Library album, boolean albumRequest) throws InvalidDataException, IOException, UnsupportedTagException {
+        if (!albumRequest) {
+            if (!playListName.equals(songsMainPanel.getSongsPanel().getLabelText())) {
+                if ((!playListName.equals("Songs")) && (!playListName.equals("Albums")) && (!playListName.equals("Artists"))
+                        && (!playListName.equals("YOUR LIBRARY")) && (!playListName.equals("PLAYLISTS")) && (!playListName.equals("Made For You"))
+                        && (!playListName.equals("Shared Playlist")) && (!playListName.equals("Favourites"))) {
+                    for (int i = 0; i < Main.playLists.size(); i++) {
+                        if (playListName.equals(Main.playLists.get(i).getName())) {
+                            getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.playLists.get(i).getMusics()));
+                            getSongsMainPanel().getSongsPanel().setLabelText(Main.playLists.get(i).getName());
+                            break;
+                        }
                     }
+                    songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
                 }
-                songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
+                if (playListName.equals("Songs")) {
+                    getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.musics));
+                    songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
+                    getSongsMainPanel().getSongsPanel().setLabelText("Songs");
+                }
+                if (playListName.equals("Shared Playlist")) {
+                    getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.sharedPlaylist.getMusics()));
+                    songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
+                    getSongsMainPanel().getSongsPanel().setLabelText("Shared Songs");
+                }
+                if (playListName.equals("Favourites")) {
+                    getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.favourites.getMusics()));
+                    songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
+                    getSongsMainPanel().getSongsPanel().setLabelText("Favourites");
+                }
             }
-            if (playListName.equals("Songs"))
-            {
-                getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.musics));
-                songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
-                getSongsMainPanel().getSongsPanel().setLabelText("Songs");
-            }
-            if (playListName.equals("Shared Playlist"))
-            {
-                getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.sharedPlaylist.getMusics()));
-                songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
-                getSongsMainPanel().getSongsPanel().setLabelText("Shared Songs");
-            }
-            if (playListName.equals("Favourites"))
-            {
-                getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.favourites.getMusics()));
-                songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
-                getSongsMainPanel().getSongsPanel().setLabelText("Favourites");
-            }
+        }
+        else
+        {
+            getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(album.getMusics()));
+            songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
+            getSongsMainPanel().getSongsPanel().setLabelText(album.getName());
         }
     }
 
@@ -373,8 +389,15 @@ public class CentrePanel extends JPanel implements UserLoginListener
         }
     }
 
-    public SongsMainPanel getSongsMainPanel()
-    {
+    public SongsMainPanel getSongsMainPanel() {
         return songsMainPanel;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

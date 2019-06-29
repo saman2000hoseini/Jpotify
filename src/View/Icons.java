@@ -36,6 +36,7 @@ public class Icons {
     static ImageIcon USER4_ICON = new ImageIcon("src/View/Icons/user4.png");
     static ImageIcon PAUSE_ICON = new ImageIcon("src/View/Icons/pause.png");
     static ImageIcon JPOTIFYLOGIN_ICON = new ImageIcon("src/View/Icons/JPotifyLogo.png");
+    static ImageIcon NO_ARTWORK = new ImageIcon("src/View/Icons/no_artwork");
 
     public static ImageIcon rescaleIcon(ImageIcon imageIcon, int width, int height) {
         Image image = imageIcon.getImage();

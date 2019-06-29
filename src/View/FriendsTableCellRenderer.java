@@ -29,7 +29,7 @@ public class FriendsTableCellRenderer extends JPanel implements TableCellRendere
         setBackground(new Color(18, 18, 18));
         friendsActivity = (FriendsActivity) value;
         userName.setText(friendsActivity.getUser());
-        title.setText(friendsActivity.getMusicArtist());
+        title.setText(friendsActivity.getMusicTitle());
         album.setText(friendsActivity.getMusicAlbum());
         artist.setText(friendsActivity.getMusicArtist());
         image.setIcon(ImageEditor.rescaleImage(ImageEditor.circleMaskImage(friendsActivity.getMusicImage()), 50, 50));

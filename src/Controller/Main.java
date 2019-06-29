@@ -23,7 +23,7 @@ public class Main {
     private static MainFrame mainFrame;
     private static LoginMainFrame loginMainFrame;
     public static Vector<Library> playLists;
-    private static Albums albums;
+    public static Albums albums;
     private static SongsTableListener songsTableListener = null;
     private static LoadingLibrary loadingLibrary = new LoadingLibrary();
     public static String username;
@@ -69,11 +69,11 @@ public class Main {
         albums = new Albums(musics);
         loginMainFrame = new LoginMainFrame();
         playlist = musics;
+        albums.loadAlbums();
         mainFrame = new MainFrame();
         loginMainFrame.setMainFrame(mainFrame);
         mainFrame.getMainPanel().update();
         setLinkers();
-        albums.loadAlbums();
         songsTableListener.addSongs(loadingLibrary.generateTable(musics));
         mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().getMenuForMusics().addLibraries(playLists);
     }
