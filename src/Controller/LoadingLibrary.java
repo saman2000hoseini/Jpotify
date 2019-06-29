@@ -1,38 +1,29 @@
 package Controller;
 
-/*import com.sun.deploy.util.StringUtils;
-import getlyrics.RavGetLyrics;*/
-
-import java.io.*;
-
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
 import Model.ID3v1;
-import Model.Library;
 import Model.Music;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
-import com.sun.jdi.IntegerValue;
 import org.farng.mp3.MP3File;
 import org.farng.mp3.TagException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
+import java.io.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
 public class LoadingLibrary
 {
-    public Vector<Music> loadFilesFromFolders(String path) throws IOException, ClassNotFoundException, TagException
+    Vector<Music> loadFilesFromFolders(String path) throws IOException, ClassNotFoundException, TagException
     {
         ArrayList<String> audios = new ArrayList<>();
         Vector<Music> musics = new Vector<>();
@@ -65,7 +56,7 @@ public class LoadingLibrary
     private final static String songLyricsURL = "http://www.songlyrics.com";
 
 
-    public List<String> getSongLyrics(String band, String songTitle) throws IOException
+    private List<String> getSongLyrics(String band, String songTitle) throws IOException
     {
         Connection connection;
 
@@ -96,7 +87,7 @@ public class LoadingLibrary
         return lyrics;
     }
 
-    public List<String> getLyrics(String singer, String song) throws IOException
+    private List<String> getLyrics(String singer, String song) throws IOException
     {
         Connection connection;
 
@@ -124,7 +115,7 @@ public class LoadingLibrary
         return lyrics;
     }
 
-    public List<String> getPersianSongLyrics(String band, String songTitle) throws IOException
+    private List<String> getPersianSongLyrics(String band, String songTitle) throws IOException
     {
         Connection connection;
         //connect to the website
@@ -148,7 +139,7 @@ public class LoadingLibrary
         return lyrics;
     }
 
-    public List<String> getPersianLyrics(String band, String songTitle) throws IOException
+    private List<String> getPersianLyrics(String band, String songTitle) throws IOException
     {
         Connection connection;
 
@@ -182,7 +173,7 @@ public class LoadingLibrary
 
     private static int counter = 0;
 
-    public List<String> findLyrics(String singer, String song)
+    private List<String> findLyrics(String singer, String song)
     {
         List<String> lyrics = null;
         try
@@ -226,7 +217,7 @@ public class LoadingLibrary
         return lyrics;
     }
 
-    public void restCounter()
+    private void restCounter()
     {
         counter = 0;
     }
@@ -288,7 +279,7 @@ public class LoadingLibrary
         return str;
     }
 
-    public Music processFile(String directory) throws IOException, TagException
+    Music processFile(String directory) throws IOException, TagException
     {
         File file = new File(directory);
         MP3File mp3File = new MP3File(file);
@@ -371,8 +362,7 @@ public class LoadingLibrary
         {
             genre = normalized(new ID3v1().getGENRES(mp3File.getID3v1Tag().getGenre()));
         }
-        Music music = new Music(directory, artist, title, year, LocalDateTime.now(), null, genre, album);
-        return music;
+        return new Music(directory, artist, title, year, LocalDateTime.now(), null, genre, album);
     }
 
     public static String[][] generateTable(Vector<Music> musics) throws InvalidDataException, IOException, UnsupportedTagException

@@ -2,6 +2,7 @@ package Network.Server;
 
 import Model.Request;
 import Model.User;
+import Network.Client.MainClient;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -37,9 +38,21 @@ public class ClientHandler implements Runnable
                 System.out.println("im listening");
                 if (flag)
                 {
-                    byte[] byteArray = new byte[fileSize];
-                    objectOutputStream.write(objectInputStream.read(byteArray));
-                    flag=false;
+//                    byte[] bytes = new byte[16*1024];
+//                    int count;
+//                    while ((count = objectInputStream.read(bytes,0,bytes.length)) != -1)
+//                    {
+//                        objectOutputStream.write(bytes, 0, count);
+//                        System.out.println("here");
+//                        fileSize-=count;
+//                        System.out.println(fileSize);
+//                    }
+                    byte[] bytes = new byte[fileSize];
+                    int count = objectInputStream.read(bytes);
+                    objectOutputStream.write(bytes);
+                    System.out.println(count);
+                    System.out.println("reached here");
+                    flag = false;
                 }
                 else
                 {
@@ -58,8 +71,8 @@ public class ClientHandler implements Runnable
                         if (request.getReqsMusic() == 1 || request.getReqsMusic() == 4)
                         {
                             for (User user : users)
-//TODO                            if (!user.equals(request.getUser()))
-                                user.getObjectOutputStream().writeObject(request);
+                                if (!user.equals(request.getUser()))
+                                    user.getObjectOutputStream().writeObject(request);
                         }
                         else if (request.getReqsMusic() == 2)
                         {

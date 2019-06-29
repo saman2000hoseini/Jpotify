@@ -81,8 +81,9 @@ public class FriendsPanel extends JPanel implements AddPlayingMusic
         {
             FriendsActivity[][] temp;
             f = new FriendsActivity(music, user.getUserName());
-            if (!Main.playlist.contains(music))
+            if (Main.playlist.contains(music))
             {
+                System.out.println(MainClient.user.getUserName());
                 requestToGetMusic.send(new Request(new User(user.getUserName(), user.getIp()), new User(MainClient.user.getUserName(), MainClient.user.getIp()), music));
             }
             if (friendsActivities == null)

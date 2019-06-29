@@ -29,7 +29,6 @@ public class Sharing implements Runnable, RequestToGetMusic
 
     public Sharing(Vector<Socket> connections, Socket client) throws IOException
     {
-
         this.connections = connections;
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(new Runnable()
@@ -66,7 +65,7 @@ public class Sharing implements Runnable, RequestToGetMusic
                     e.printStackTrace();
                 }
             }
-        }, 0, 10, TimeUnit.SECONDS);
+        }, 0, 5, TimeUnit.SECONDS);
     }
 
     public void hiFriend(Socket socket)
@@ -89,7 +88,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         MainClient.user.getObjectOutputStream().writeObject(new Request(new User(MainClient.user.getUserName(), MainClient.user.getIp())));
     }
 
-    public void shareMusic(Request request) throws IOException
+    public synchronized void shareMusic(Request request) throws IOException
     {
         try
         {
@@ -120,15 +119,20 @@ public class Sharing implements Runnable, RequestToGetMusic
                     System.out.println(request.getUser().getUserName() + " wants music " + request.getMusic().getName());
                     File file = new File(MainClient.musics.get(MainClient.musics.indexOf(request.getMusic())).getFileLocation());
                     FileInputStream inputStream = (new FileInputStream(file));
-                    Request req = new Request((int) file.length(), request.getMusic(), request.getWants());
-                    MainClient.user.getObjectOutputStream().writeObject(req);
+                    System.out.println(file.length());
+                    int fileSize =(int) file.length();
+                    System.out.println(request.getWants().getUserName());
+                    Request req = new Request(fileSize, request.getMusic(), request.getWants());
+                    shareMusic(req);
                     System.out.println("Sending the file");
-                    byte[] bytes = new byte[req.getFileSize()];
+                    byte[] bytes = new byte[fileSize];
                     inputStream.read(bytes);
                     MainClient.user.getObjectOutputStream().write(bytes);
-//                    byte[] bytes = new byte[8*1024];
-//                    int count;
-//                    while ((count = inputStream.read(bytes)) > 0) {
+                    System.out.println("writing finished");
+//                    int count,counter=0;
+//                    while ((count = inputStream.read(bytes,0,bytes.length)) != -1) {
+//                        counter+=count;
+//                        System.out.println("sending "+counter);
 //                        MainClient.user.getObjectOutputStream().write(bytes, 0, count);
 //                    }
                     inputStream.close();
@@ -136,11 +140,17 @@ public class Sharing implements Runnable, RequestToGetMusic
                 else if (request.getReqsMusic() == 3)
                 {
                     System.out.println(request.getMusic().getName() + " Receiving from " + request.getUser().getUserName());
-                    byte[] byteArray = new byte[request.getFileSize()];
-                    MainClient.user.getObjectInputStream().read(byteArray);
+//                    byte[] byteArray = new byte[request.getFileSize()];
+//                    MainClient.user.getObjectInputStream().read(byteArray);
                     OutputStream outputStream = new ObjectOutputStream(new FileOutputStream("./SharedMusics/" + request.getMusic().getName().toLowerCase() + ".mp3"));
                     request.getMusic().setFileLocation("./SharedMusics/" + request.getMusic().getName().toLowerCase() + ".mp3");
-                    outputStream.write(byteArray);
+                    byte[] bytes = new byte[8*1024];
+                    int count;
+                    while ((count = MainClient.user.getObjectInputStream().read(bytes)) > 0) {
+                        outputStream.write(bytes, 0, count);
+                        System.out.println("trying to reach here");
+                    }
+                    System.out.println("finally reached here");
                     outputStream.close();
                     fileAndFolderBrowsing.addFileFolder(request.getMusic().getFileLocation(), MainClient.musics);
                 }
