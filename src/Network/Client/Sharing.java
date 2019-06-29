@@ -73,7 +73,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         try
         {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectOutputStream.writeObject(new Request(MainClient.user));
+            objectOutputStream.writeObject(new Request(new User(MainClient.user.getUserName(),MainClient.user.getIp())));
             objectOutputStream.close();
         }
         catch (IOException e)
