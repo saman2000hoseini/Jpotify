@@ -35,7 +35,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         exec.scheduleAtFixedRate(new Runnable()
         {
             @Override
-            public void run()
+            public  synchronized void run()
             {
                 try
                 {
@@ -143,7 +143,6 @@ public class Sharing implements Runnable, RequestToGetMusic
                     outputStream.write(byteArray);
                     outputStream.close();
                     fileAndFolderBrowsing.addFileFolder(request.getMusic().getFileLocation(), MainClient.musics);
-                    MainClient.mainFrame.setMusics(MainClient.musics);
                 }
                 else if (request.getReqsMusic() == 4)
                 {
@@ -180,7 +179,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         return connections;
     }
 
-    public void setConnections(Vector<Socket> connections) throws IOException
+    public synchronized void setConnections(Vector<Socket> connections) throws IOException
     {
         this.connections = connections;
         if (this.connections == null)
@@ -200,7 +199,7 @@ public class Sharing implements Runnable, RequestToGetMusic
     }
 
     @Override
-    public void send(Request request) throws IOException
+    public  synchronized void send(Request request) throws IOException
     {
         shareMusic(request);
     }

@@ -1,5 +1,7 @@
 package View;
 
+import Controller.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -23,7 +25,7 @@ public class MainPanel extends JPanel {
         centrePanel = new CentrePanel(getWidth(), getHeight(), this);
         westPanel = new WestPanel(this);
         centrePanel.update();
-        playPanel = new PlayPanel(this, getWidth(), MainFrame.musics, 100);
+        playPanel = new PlayPanel(this, getWidth(), Main.playlist, 100);
         this.setBackground(new Color(24, 24, 24));
         friendsPanel = new FriendsPanel(getHeight());
     }

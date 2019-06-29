@@ -18,11 +18,9 @@ public class MainFrame extends JFrame
     private FrameComponent frame;
     private BackgroundComponentDragger backgroundComponentDragger;
     private Boolean fullScreenMode;
-    static Vector<Music> musics;
-    public MainFrame(Vector<Music> musics)
+    public MainFrame()
     {
         super();
-        this.musics=musics;
         mainPanel = new MainPanel(950, 600);
         this.setTitle(WINDOW_TITLE);
         frame = new FrameComponent(new Insets(5, 5, 5, 5));
@@ -127,9 +125,5 @@ public class MainFrame extends JFrame
     {
         return mainPanel;
     }
-
-    public static void setMusics(Vector<Music> musics)
-    {
-        MainFrame.musics = musics;
-    }
+    
 }

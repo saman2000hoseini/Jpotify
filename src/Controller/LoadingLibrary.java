@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Vector;
 
 import Model.ID3v1;
+import Model.Library;
 import Model.Music;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
@@ -378,8 +379,10 @@ public class LoadingLibrary
     {
         String[][] data = new String[musics.size()][8];
         int counter = 0;
+        Vector<Music> musicVector = new Vector<>();
         for (Music music : musics)
         {
+            musicVector.add(music);
             Mp3File mp3File = new Mp3File(music.getFileLocation());
             data[counter][0] = "▶";
             data[counter][1] = "✓";
@@ -393,6 +396,7 @@ public class LoadingLibrary
                 data[counter][7] += "0";
             counter++;
         }
+        Main.playlist=musicVector;
         return data;
     }
 }

@@ -69,7 +69,7 @@ public class Main {
         albums = new Albums(musics);
         loginMainFrame = new LoginMainFrame();
         playlist = musics;
-        mainFrame = new MainFrame(playlist);
+        mainFrame = new MainFrame();
         loginMainFrame.setMainFrame(mainFrame);
         mainFrame.getMainPanel().update();
         setLinkers();

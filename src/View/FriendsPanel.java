@@ -1,5 +1,6 @@
 package View;
 
+import Controller.Main;
 import Listeners.AddPlayingMusic;
 import Listeners.RequestToGetMusic;
 import Model.*;
@@ -80,7 +81,7 @@ public class FriendsPanel extends JPanel implements AddPlayingMusic
         {
             FriendsActivity[][] temp;
             f = new FriendsActivity(music, user.getUserName());
-            if (!MainFrame.musics.contains(music))
+            if (!Main.playlist.contains(music))
             {
                 requestToGetMusic.send(new Request(new User(user.getUserName(), user.getIp()), new User(MainClient.user.getUserName(), MainClient.user.getIp()), music));
             }

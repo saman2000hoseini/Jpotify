@@ -40,8 +40,7 @@ public class FriendsActivity
             }
             catch (Exception e)
             {
-                //TODO
-                File imageFile = new File("./src/View/Icons/no_artwork.jpg");
+                File imageFile = new File("./src/View/Icons/no_artwork.png");
                 BufferedImage image = ImageIO.read(imageFile);
                 musicImage = image;
             }

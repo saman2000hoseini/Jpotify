@@ -160,6 +160,7 @@ public class SongsTable extends JTable implements PlayingMusicChanged
             selectedRowIndex = row;
             try
             {
+                System.out.println(row);
                 selectedArtist = (String) this.getValueAt(row, 3);
                 selectedSongName = (String) this.getValueAt(row, 2);
             }

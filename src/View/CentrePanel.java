@@ -13,8 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
-import static View.MainFrame.musics;
-
 public class CentrePanel extends JPanel implements UserLoginListener
 {
     private CustomTextField search = new CustomTextField(175, 24, Icons.rescaleIcon(Icons.SEARCH2_ICON, 15, 15)
@@ -272,7 +270,7 @@ public class CentrePanel extends JPanel implements UserLoginListener
             }
             if (playListName.equals("Songs"))
             {
-                getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(musics));
+                getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.playlist));
                 songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
                 getSongsMainPanel().getSongsPanel().setLabelText("Songs");
             }

@@ -79,8 +79,7 @@ public class SongPanelForPlayPanel extends JPanel implements LoadPlayingPanel
             }
             catch (Exception e)
             {
-                //TODO
-                File imageFile = new File("./src/View/Icons/no_artwork.jpg");
+                File imageFile = new File("./src/View/Icons/no_artwork.png");
                 BufferedImage image = ImageIO.read(imageFile);
                 setMusicImage(image);
             }
