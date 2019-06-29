@@ -18,6 +18,10 @@ public class AddSongAction implements AddSongToLibrary
         System.out.println(music.getArtist());
         music = Main.playlist.get(Main.playlist.indexOf(music));
         System.out.println(music.getName());
+        if (temp.equals(Main.sharedPlaylist))
+            Main.sharedPlaylist.addMusic(music);
+        else if (temp.equals(Main.favourites))
+            Main.favourites.addMusic(music);
         temp.addMusic(music);
         temp.savePlaylist();
     }

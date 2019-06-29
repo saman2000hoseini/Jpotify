@@ -335,7 +335,6 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
             Main.playlist.get(index).setLastPlayed(LocalDateTime.now());
             audioPlayer.playMusic(player);
             jSliderListener.playPause(Main.playlist.get(index), 1);
-
             loadPlayingPanel.addMusicToActivity(Main.playlist.get(index));
             Sharing.setMusic(Main.playlist.get(index));
         }
@@ -351,7 +350,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     }
 
     @Override
-    public Music getPlayingMusic()
+    public Music getPlayingMusic() throws IOException
     {
         return playingMusic;
     }

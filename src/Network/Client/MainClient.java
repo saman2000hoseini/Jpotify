@@ -1,5 +1,6 @@
 package Network.Client;
 
+import Controller.Main;
 import Model.Music;
 import Model.User;
 import View.MainFrame;
@@ -58,6 +59,7 @@ public class MainClient
         ServerHandler serverHandler = new ServerHandler(temp);
         Thread thread = new Thread(serverHandler);
         sockets.add(temp);
+        serverHandler.setAddPlayingMusic(mainFrame.getMainPanel().getFriendsPanel());
         thread.start();
         serverHandler.hiFriend();
     }

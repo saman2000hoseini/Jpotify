@@ -222,7 +222,7 @@ public class LoadingLibrary
         counter = 0;
     }
 
-    public List<String> gatherMusic(String singer, String song) throws IOException
+    public List<String> gatherMusicLyrics(String singer, String song) throws IOException
     {
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;

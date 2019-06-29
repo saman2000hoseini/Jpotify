@@ -16,7 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
-public class Main {
+public class Main
+{
     public static Vector<Music> musics = new Vector<>();
     public static Vector<Music> playlist;
     private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
@@ -33,38 +34,71 @@ public class Main {
     public static Library sharedPlaylist;
     public static Library favourites;
 
-    public static void main(String[] args) throws IOException, InvalidDataException, UnsupportedTagException {
+    public static void main(String[] args) throws IOException, InvalidDataException, UnsupportedTagException
+    {
         createDirs();
         int port = 6500;
-        try {
+        try
+        {
             Thread t = new Thread(new MainServer(port));
             t.start();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                try {
+        javax.swing.SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                try
+                {
                     createAndShowGUI();
-                } catch (UnsupportedTagException e) {
+                }
+                catch (UnsupportedTagException e)
+                {
                     e.printStackTrace();
-                } catch (InvalidDataException e) {
+                }
+                catch (InvalidDataException e)
+                {
                     e.printStackTrace();
-                } catch (IOException e) {
+                }
+                catch (IOException e)
+                {
                     e.printStackTrace();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     e.printStackTrace();
                 }
             }
         });
     }
 
-    private static void createAndShowGUI() throws IOException, InvalidDataException, UnsupportedTagException, InterruptedException {
+    private static void createAndShowGUI() throws IOException, InvalidDataException, UnsupportedTagException, InterruptedException
+    {
         fileAndFolderBrowsing.loadFiles(musics);
+        Thread t = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (Music music : musics)
+                    try
+                    {
+                        new LoadingLibrary().gatherMusicLyrics(music.getArtist(), music.getName());
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+            }
+        });
+        t.start();
         playLists = fileAndFolderBrowsing.loadLibraries();
         sharedPlaylist = playLists.get(Main.getPlayLists().indexOf(new Library("Shared playlist")));
         favourites = playLists.get(Main.getPlayLists().indexOf(new Library("Favourites")));
-        for(Music m:Main.sharedPlaylist.getMusics())
+        for (Music m : Main.sharedPlaylist.getMusics())
             System.out.println(m.getName());
         albums = new Albums(musics);
         loginMainFrame = new LoginMainFrame();
@@ -78,7 +112,8 @@ public class Main {
         mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().getMenuForMusics().addLibraries(playLists);
     }
 
-    private static void createDirs() throws IOException {
+    private static void createDirs() throws IOException
+    {
         makeDir("./Lyrics/");
         makeDir("./Library/");
         makeDir("./SharedMusics/");
@@ -86,7 +121,8 @@ public class Main {
         makeDir("./Library/shared playlist.bin");
     }
 
-    private static void makeDir(String path) throws IOException {
+    private static void makeDir(String path) throws IOException
+    {
         File file = new File(path);
         if (!file.exists())
             if (file.isDirectory())
@@ -95,7 +131,8 @@ public class Main {
                 file.createNewFile();
     }
 
-    private static void setLinkers() {
+    private static void setLinkers()
+    {
         PlayPanelActions playPanelActions = new PlayPanelActions();
         mainFrame.getMainPanel().getPlayPanel().setPlayPanelListener(playPanelActions);
         TopLeftMenuActions topLeftMenuActions = new TopLeftMenuActions(albums);
@@ -119,17 +156,21 @@ public class Main {
         mainFrame.getMainPanel().getPlayPanel().getLightSliderUI().setJsliderValueChanged(playPanelActions);
         playPanelActions.setResetPlaystate(mainFrame.getMainPanel().getPlayPanel());
         mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().setGetPlayingMusic(playPanelActions);
+
     }
 
-    public static int getStatus() {
+    public static int getStatus()
+    {
         return status;
     }
 
-    public static void setStatus(int status) {
+    public static void setStatus(int status)
+    {
         Main.status = status;
     }
 
-    public static MainFrame getMainFrame() {
+    public static MainFrame getMainFrame()
+    {
         return mainFrame;
     }
 

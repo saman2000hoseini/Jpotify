@@ -1,11 +1,16 @@
 package Network.Client;
 
+import Controller.FileAndFolderBrowsing;
+import Controller.Main;
+import Listeners.AddPlayingMusic;
+import Model.Music;
 import Model.Request;
 import Model.User;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
+import org.farng.mp3.TagException;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.Vector;
 
@@ -17,7 +22,8 @@ public class ServerHandler implements Runnable
     private ObjectOutputStream objectOutputStream = null;
     private boolean flag = false;
     private int fileSize;
-
+    private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
+    private AddPlayingMusic addPlayingMusic = null;
     public ServerHandler(Socket server) throws IOException
     {
         this.server = server;
@@ -28,55 +34,97 @@ public class ServerHandler implements Runnable
     @Override
     public void run()
     {
-        try
+        while (true)
         {
-            while (!server.isClosed())
+            try
             {
-                System.out.println("im listening");
-                if (flag)
+                Request request = (Request) objectInputStream.readObject();
+                if (request.getReqsMusic() == 1)
                 {
-//                    byte[] bytes = new byte[16*1024];
-//                    int count;
-//                    while ((count = objectInputStream.read(bytes,0,bytes.length)) != -1)
-//                    {
-//                        objectOutputStream.write(bytes, 0, count);
-//                        System.out.println("here");
-//                        fileSize-=count;
-//                        System.out.println(fileSize);
-//                    }
-                    byte[] bytes = new byte[fileSize];
-                    int count = objectInputStream.read(bytes);
-                    objectOutputStream.write(bytes);
-                    System.out.println(count);
-                    System.out.println("reached here");
-                    flag = false;
+                    System.out.println(request.getUser().getUserName() + " is playing music" + request.getMusic().getName());
+                    addPlayingMusic.addMusicToActivity(request.getMusic(), request.getUser());
                 }
-                else
+                else if (request.getReqsMusic() == 2)
                 {
-                    Request request = (Request) objectInputStream.readObject();
-                    System.out.println(request.getReqsMusic() + " :||||");
-                    if (request.getReqsMusic() == 0)
+                    System.out.println(request.getUser().getUserName() + " wants music " + request.getMusic().getName());
+                    File file = new File(MainClient.musics.get(MainClient.musics.indexOf(request.getMusic())).getFileLocation());
+                    FileInputStream inputStream = (new FileInputStream(file));
+                    System.out.println(file.length());
+                    int fileSize = (int) file.length();
+                    System.out.println(request.getWants().getUserName());
+                    Request req = new Request(fileSize, request.getMusic(), request.getWants());
+                    shareMusic(req);
+                    System.out.println("Sending the file");
+                    byte[] bytes = new byte[fileSize];
+                    inputStream.read(bytes);
+                    objectOutputStream.write(bytes);
+                    System.out.println("writing finished");
+//                    int count,counter=0;
+//                    while ((count = inputStream.read(bytes,0,bytes.length)) != -1) {
+//                        counter+=count;
+//                        System.out.println("sending "+counter);
+//                        MainClient.user.getObjectOutputStream().write(bytes, 0, count);
+//                    }
+                    inputStream.close();
+                }
+                else if (request.getReqsMusic() == 3)
+                {
+                    System.out.println(request.getMusic().getName() + " Receiving from " + request.getUser().getUserName());
+//                    byte[] byteArray = new byte[request.getFileSize()];
+//                    MainClient.user.getObjectInputStream().read(byteArray);
+                    OutputStream outputStream = new ObjectOutputStream(new FileOutputStream("./SharedMusics/" + request.getMusic().getName().toLowerCase() + ".mp3"));
+                    request.getMusic().setFileLocation("./SharedMusics/" + request.getMusic().getName().toLowerCase() + ".mp3");
+                    byte[] bytes = new byte[8 * 1024];
+                    int count;
+                    while ((count = objectInputStream.read(bytes)) > 0)
                     {
-                        request.getUser().setObjectOutputStream(objectOutputStream);
-                        request.getUser().setObjectInputStream(objectInputStream);
-                        users.add(request.getUser());
-                        System.out.println(server.getInetAddress());
-                        System.out.println("Welcome to server " + request.getUser().getUserName());
+                        outputStream.write(bytes, 0, count);
+                        System.out.println("trying to reach here");
                     }
-                    else
-                    {
-                        MainClient.user.getObjectOutputStream().writeObject(request);
-                    }
+                    System.out.println("finally reached here");
+                    outputStream.close();
+                    fileAndFolderBrowsing.addFileFolder(request.getMusic().getFileLocation(), MainClient.musics);
+                }
+                else if (request.getReqsMusic() == 4)
+                {
+                    Main.sharedPlaylist.setMusics(request.getSharedLibrary());
+                    for (Music m : Main.sharedPlaylist.getMusics())
+                        System.out.println(m.getName());
                 }
             }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            catch (ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+            catch (TagException e)
+            {
+                e.printStackTrace();
+            }
+            catch (InvalidDataException e)
+            {
+                e.printStackTrace();
+            }
+            catch (UnsupportedTagException e)
+            {
+                e.printStackTrace();
+            }
         }
-        catch (IOException e)
+    }
+
+    public synchronized void shareMusic(Request request) throws IOException
+    {
+        try
         {
-            e.printStackTrace();
+            MainClient.user.getObjectOutputStream().writeObject(request);
+            System.out.println("sending request to " + request.getUser().getUserName());
         }
-        catch (ClassNotFoundException e)
+        catch (Exception e)
         {
-            e.printStackTrace();
+
         }
     }
 
@@ -92,5 +140,10 @@ public class ServerHandler implements Runnable
         {
             e.printStackTrace();
         }
+    }
+
+    public void setAddPlayingMusic(AddPlayingMusic addPlayingMusic)
+    {
+        this.addPlayingMusic = addPlayingMusic;
     }
 }

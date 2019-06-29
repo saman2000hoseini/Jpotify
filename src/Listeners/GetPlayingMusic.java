@@ -2,7 +2,9 @@ package Listeners;
 
 import Model.Music;
 
+import java.io.IOException;
+
 public interface GetPlayingMusic
 {
-    Music getPlayingMusic();
+    Music getPlayingMusic() throws IOException;
 }

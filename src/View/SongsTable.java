@@ -414,7 +414,7 @@ public class SongsTable extends JTable implements PlayingMusicChanged
         }
     }
 
-    public void updateTableModel()
+    public void updateTableModel() throws IOException
     {
         boolean flag = false;
         rollOverRowIndex = -1;

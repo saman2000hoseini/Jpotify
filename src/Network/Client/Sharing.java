@@ -99,7 +99,7 @@ public class Sharing implements Runnable, RequestToGetMusic
                 if (request.getReqsMusic() == 1)
                 {
                     System.out.println(request.getUser().getUserName() + " is playing music" + request.getMusic().getName());
-                    addPlayingMusic.addMusicToActivity(music, request.getUser());
+                    addPlayingMusic.addMusicToActivity(request.getMusic(), request.getUser());
                 }
                 else if (request.getReqsMusic() == 2)
                 {

@@ -62,7 +62,7 @@ public class ClientHandler implements Runnable
                         if (request.getReqsMusic() == 1 || request.getReqsMusic() == 4)
                         {
                             for (User user : users)
-//                                if (!user.equals(request.getUser()))
+                                if (!user.equals(request.getUser()))
                                     user.getObjectOutputStream().writeObject(request);
                         }
                         else if (request.getReqsMusic() == 2)
