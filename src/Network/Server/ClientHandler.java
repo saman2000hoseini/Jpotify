@@ -38,15 +38,6 @@ public class ClientHandler implements Runnable
                 System.out.println("im listening");
                 if (flag)
                 {
-//                    byte[] bytes = new byte[16*1024];
-//                    int count;
-//                    while ((count = objectInputStream.read(bytes,0,bytes.length)) != -1)
-//                    {
-//                        objectOutputStream.write(bytes, 0, count);
-//                        System.out.println("here");
-//                        fileSize-=count;
-//                        System.out.println(fileSize);
-//                    }
                     byte[] bytes = new byte[fileSize];
                     int count = objectInputStream.read(bytes);
                     objectOutputStream.write(bytes);

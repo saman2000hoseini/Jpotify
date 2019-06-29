@@ -55,39 +55,7 @@ public class ServerHandler implements Runnable
                 {
                     Request request = (Request) objectInputStream.readObject();
                     System.out.println(request.getReqsMusic() + " :||||");
-                    if (request.getReqsMusic() == 0)
-                    {
-                        request.getUser().setObjectOutputStream(objectOutputStream);
-                        request.getUser().setObjectInputStream(objectInputStream);
-                        users.add(request.getUser());
-                        System.out.println(server.getInetAddress());
-                        System.out.println("Welcome to server " + request.getUser().getUserName());
-                    }
-                    else
-                    {
-                        if (request.getReqsMusic() == 1 || request.getReqsMusic() == 4)
-                        {
-                            for (User user : users)
-//                                if (!user.equals(request.getUser()))
-                                    user.getObjectOutputStream().writeObject(request);
-                        }
-                        else if (request.getReqsMusic() == 2)
-                        {
-                            for (User user : users)
-                                if (user.equals(request.getUser()))
-                                    user.getObjectOutputStream().writeObject(request);
-                        }
-                        else if (request.getReqsMusic() == 3)
-                        {
-                            for (User user : users)
-                                if (user.equals(request.getUser()))
-                                {
-                                    user.getObjectOutputStream().writeObject(request);
-                                }
-                            flag = true;
-                            fileSize = request.getFileSize();
-                        }
-                    }
+                    MainClient.user.getObjectOutputStream().writeObject(request);
                 }
             }
         }
