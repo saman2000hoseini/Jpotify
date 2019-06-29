@@ -1,12 +1,14 @@
 package Model;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 public class Request implements Serializable
 {
     private Music music = null;
     private Integer fileSize = null;
-    private Library sharedLibrary = null;
+    private Vector<Music> sharedLibrary = null;
+//    private Library sharedLibrary = null;
     private User user;
     private User wants;
     private int reqsMusic;
@@ -45,10 +47,11 @@ public class Request implements Serializable
     }
 
 
+//    public Request(Library sharedLibrary, User user)
     public Request(Library sharedLibrary, User user)
     {
         this.user = user;
-        this.sharedLibrary = sharedLibrary;
+        this.sharedLibrary = sharedLibrary.getMusics();
         this.reqsMusic = 4;
         //to share playlist
     }
@@ -68,7 +71,7 @@ public class Request implements Serializable
         return fileSize;
     }
 
-    public Library getSharedLibrary()
+    public Vector<Music> getSharedLibrary()
     {
         return sharedLibrary;
     }

@@ -99,4 +99,9 @@ public class Library implements Serializable
             return true;
         return false;
     }
+
+    public void setMusics(Vector<Music> musics)
+    {
+        this.musics = musics;
+    }
 }

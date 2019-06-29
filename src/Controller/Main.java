@@ -22,7 +22,7 @@ public class Main {
     private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private static MainFrame mainFrame;
     private static LoginMainFrame loginMainFrame;
-    static Vector<Library> playLists;
+    public static Vector<Library> playLists;
     private static Albums albums;
     private static SongsTableListener songsTableListener = null;
     private static LoadingLibrary loadingLibrary = new LoadingLibrary();
@@ -30,6 +30,8 @@ public class Main {
     public static String ip;
     static int status = 0;
     static MainClient mainClient;
+    public static Library sharedPlaylist;
+    public static Library favourites;
 
     public static void main(String[] args) throws IOException, InvalidDataException, UnsupportedTagException {
         createDirs();
@@ -60,6 +62,10 @@ public class Main {
     private static void createAndShowGUI() throws IOException, InvalidDataException, UnsupportedTagException, InterruptedException {
         fileAndFolderBrowsing.loadFiles(musics);
         playLists = fileAndFolderBrowsing.loadLibraries();
+        sharedPlaylist = playLists.get(Main.getPlayLists().indexOf(new Library("Shared playlist")));
+        favourites = playLists.get(Main.getPlayLists().indexOf(new Library("Favourites")));
+        for(Music m:Main.sharedPlaylist.getMusics())
+            System.out.println(m.getName());
         albums = new Albums(musics);
         loginMainFrame = new LoginMainFrame();
         playlist = musics;
@@ -69,8 +75,6 @@ public class Main {
         setLinkers();
         albums.loadAlbums();
         songsTableListener.addSongs(loadingLibrary.generateTable(musics));
-        for (Library library : albums.getAlbums())
-            System.out.println(library.getName() + " " + library.getMusics().size());
         mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().getMenuForMusics().addLibraries(playLists);
     }
 
