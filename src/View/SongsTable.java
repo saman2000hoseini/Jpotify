@@ -1,9 +1,6 @@
 package View;
 
-import Listeners.AddSongToLibrary;
-import Listeners.PlayListChanged;
-import Listeners.PlayingMusicChanged;
-import Listeners.SongsTableButtons;
+import Listeners.*;
 import Model.Music;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -38,6 +35,8 @@ public class SongsTable extends JTable implements PlayingMusicChanged
     private DefaultTableModel defaultTableModel;
     private PlayListChanged playListChanged = null;
     private boolean isPlayedFromTable = false;
+    private GetPlayingMusic getPlayingMusic;
+
     public SongsTable(DefaultTableModel defaultTableModel)
     {
         super(defaultTableModel);
@@ -367,7 +366,7 @@ public class SongsTable extends JTable implements PlayingMusicChanged
             }
             else if (col == 6)
             {
-                Music temp = new Music(null,(String)table.getValueAt(row,3),(String)table.getValueAt(row,2),null,null,null,null,null);
+                Music temp = new Music(null, (String) table.getValueAt(row, 3), (String) table.getValueAt(row, 2), null, null, null, null, null);
 //                menuForMusics.getComponent().addMouseListener(new menuListener(row,table));
 //                menuForMusics.addMouseListener(new menuListener(row,table));
                 menuForMusics.setMusic(temp);
@@ -410,13 +409,16 @@ public class SongsTable extends JTable implements PlayingMusicChanged
         setDefaultRenderer(Object.class, new SongsTableCellRenderer(false, -1));
         for (int i = 0; i < getModel().getRowCount(); i++)
         {
-            if (getValueAt(i, 2).equals(selectedSongName) && getValueAt(i, 3).equals(selectedArtist)) {
-                selectedRowIndex = i;
-                flag = true;
-                ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(this, this.getValueAt(i, 0), true
-                        , true, i, 0)).setSelectedRow(i);
-                break;
-            }
+            Music music = getPlayingMusic.getPlayingMusic();
+            if (music != null)
+                if (getValueAt(i, 2).equals(music.getName()) && getValueAt(i, 3).equals(music.getArtist()))
+                {
+                    selectedRowIndex = i;
+                    flag = true;
+                    ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(this, this.getValueAt(i, 0), true
+                            , true, i, 0)).setSelectedRow(i);
+                    break;
+                }
         }
         if (flag == false)
         {
@@ -472,4 +474,8 @@ public class SongsTable extends JTable implements PlayingMusicChanged
         return menuForMusics;
     }
 
+    public void setGetPlayingMusic(GetPlayingMusic getPlayingMusic)
+    {
+        this.getPlayingMusic = getPlayingMusic;
+    }
 }

@@ -19,16 +19,14 @@ import java.util.Vector;
 
 public class TopLeftMenuActions implements TopLeftMenuListener, AddNewPlaylistListener
 {
-    private Vector<Music> musics;
     private Albums albums;
     private SongsTableListener songsTableListener = null;
     private LoadingLibrary loadingLibrary = new LoadingLibrary();
     private AddLibrariesListener addLibrariesListener = null;
 
-    public TopLeftMenuActions(Vector<Music> musics, Albums albums)
+    public TopLeftMenuActions(Albums albums)
     {
         this.albums = albums;
-        this.musics = musics;
     }
 
     @Override
@@ -46,9 +44,9 @@ public class TopLeftMenuActions implements TopLeftMenuListener, AddNewPlaylistLi
             {
                 try
                 {
-                    customizedFileChooser.writeFiles(musics);
+                    customizedFileChooser.writeFiles(Main.playlist);
                     albums.loadAlbums();
-                    songsTableListener.addSongs(loadingLibrary.generateTable(musics));
+                    songsTableListener.addSongs(loadingLibrary.generateTable(Main.playlist));
                 }
                 catch (TagException ex)
                 {

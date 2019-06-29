@@ -18,7 +18,7 @@ import java.util.Vector;
 
 public class Main {
     private static Vector<Music> musics = new Vector<>();
-    static Vector<Music> playlist;
+    public static Vector<Music> playlist;
     private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private static MainFrame mainFrame;
     private static LoginMainFrame loginMainFrame;
@@ -96,9 +96,9 @@ public class Main {
     }
 
     private static void setLinkers() {
-        PlayPanelActions playPanelActions = new PlayPanelActions(playlist);
+        PlayPanelActions playPanelActions = new PlayPanelActions();
         mainFrame.getMainPanel().getPlayPanel().setPlayPanelListener(playPanelActions);
-        TopLeftMenuActions topLeftMenuActions = new TopLeftMenuActions(playlist, albums);
+        TopLeftMenuActions topLeftMenuActions = new TopLeftMenuActions(albums);
         mainFrame.getMainPanel().getWestPanel().getMenuForWestPanel().setTopLeftMenuListener(topLeftMenuActions);
         songsTableListener = mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel();
         topLeftMenuActions.setSongsTableListener(mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel());
@@ -118,6 +118,7 @@ public class Main {
         JSliderActions.getInstance().setMusicFinishedListener(playPanelActions);
         mainFrame.getMainPanel().getPlayPanel().getLightSliderUI().setJsliderValueChanged(playPanelActions);
         playPanelActions.setResetPlaystate(mainFrame.getMainPanel().getPlayPanel());
+        mainFrame.getMainPanel().getCentrePanel().getSongsMainPanel().getSongsTablePanel().getSongsTable().setGetPlayingMusic(playPanelActions);
     }
 
     public static int getStatus() {

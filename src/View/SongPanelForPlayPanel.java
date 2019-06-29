@@ -72,7 +72,14 @@ public class SongPanelForPlayPanel extends JPanel implements LoadPlayingPanel
             ID3v2 id3v2tag = song.getId3v2Tag();
             byte[] imageData = id3v2tag.getAlbumImage();
             //converting the bytes to an image
-            setMusicImage(ImageIO.read(new ByteArrayInputStream(imageData)));
+            try
+            {
+                setMusicImage(ImageIO.read(new ByteArrayInputStream(imageData)));
+            }
+            catch (Exception e)
+            {
+                //TODO
+            }
         }
         setSongName(music.getName());
         setSongArtist(music.getArtist());

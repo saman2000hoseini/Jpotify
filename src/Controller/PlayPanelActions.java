@@ -14,12 +14,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Vector;
 
-public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, SongsPanelListener, PlayListChanged, MusicFinishedListener,JsliderValueChanged
+public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, SongsPanelListener, PlayListChanged, MusicFinishedListener, JsliderValueChanged, GetPlayingMusic
 {
     private static AudioPlayer audioPlayer;
     private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private static int index = 0;
-    static Vector<Music> playlist;
     private static Sort sort;
     private static int sortState = 8, lastSort = 8;
     //    private AudioDevice audioDevice = System.out. ;
@@ -31,9 +30,10 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     private JSliderListener jSliderListener = null;
     private LoadPlayingPanel loadPlayingPanel = null;
     private ResetPlaystate resetPlaystate = null;
-    public PlayPanelActions(Vector<Music> playlist)
+    private Music playingMusic = null;
+
+    public PlayPanelActions()
     {
-        this.playlist = playlist;
         sortPlaylist();
     }
 
@@ -64,6 +64,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
                 try
                 {
                     audioPlayer.stop();
+                    playingMusic = null;
                 }
                 catch (Exception ex)
                 {
@@ -72,9 +73,9 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
                 index--;
                 this.playState = 2;
                 if (index < 0)
-                    index = playlist.size() - 1;
+                    index = Main.playlist.size() - 1;
                 playingMusicChanged.setRow(index);
-                jSliderListener.playPause(playlist.get(index), 0);
+                jSliderListener.playPause(Main.playlist.get(index), 0);
                 startPlayingMusic();
                 break;
             case 2:
@@ -82,20 +83,20 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
                 {
                     if (playState == 0)
                     {
-                        jSliderListener.playPause(playlist.get(index), 0);
+                        jSliderListener.playPause(Main.playlist.get(index), 0);
                         startPlayingMusic();
                         this.playState = 2;
                     }
                     else
                     {
-                        jSliderListener.playPause(playlist.get(index), 1);
+                        jSliderListener.playPause(Main.playlist.get(index), 1);
                         this.playState = 2;
                         audioPlayer.resume();
                     }
                 }
                 else
                 {
-                    jSliderListener.playPause(playlist.get(index), 2);
+                    jSliderListener.playPause(Main.playlist.get(index), 2);
                     this.playState = 1;
                     audioPlayer.pauseMusic();
                 }
@@ -104,17 +105,18 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
                 try
                 {
                     audioPlayer.stop();
+                    playingMusic = null;
                 }
                 catch (Exception ex)
                 {
 
                 }
                 index++;
-                if (index > playlist.size() - 1)
+                if (index > Main.playlist.size() - 1)
                     index = 0;
                 this.playState = 2;
                 playingMusicChanged.setRow(index);
-                jSliderListener.playPause(playlist.get(index), 0);
+                jSliderListener.playPause(Main.playlist.get(index), 0);
                 startPlayingMusic();
                 break;
             case 4:
@@ -138,13 +140,14 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     {
         try
         {
-            Mp3File mp3File = new Mp3File(playlist.get(index).getFileLocation());
-            audioPlayer = new AudioPlayer(playlist.get(index).getFileLocation(), mp3File.getFrameCount());
+            Mp3File mp3File = new Mp3File(Main.playlist.get(index).getFileLocation());
+            audioPlayer = new AudioPlayer(Main.playlist.get(index).getFileLocation(), mp3File.getFrameCount());
             player = new Thread(audioPlayer);
-            playlist.get(index).setLastPlayed(LocalDateTime.now());
+            Main.playlist.get(index).setLastPlayed(LocalDateTime.now());
             audioPlayer.playMusic(player);
-            loadPlayingPanel.addMusicToActivity(playlist.get(index));
-            Sharing.setMusic(playlist.get(index));
+            playingMusic = Main.playlist.get(index);
+            loadPlayingPanel.addMusicToActivity(Main.playlist.get(index));
+            Sharing.setMusic(Main.playlist.get(index));
         }
         catch (Exception ex)
         {
@@ -155,7 +158,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     private void sortPlaylist()
     {
         index = 0;
-        sort = new Sort(this.playlist);
+        sort = new Sort(Main.playlist);
         switch (sortState)
         {
             case 0:
@@ -199,11 +202,11 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     {
         for (int i = 0; i < playlist.size(); i++)
         {
-            int temp = this.playlist.indexOf(playlist.get(i));
-            playlist.set(i, this.playlist.get(temp));
+            int temp = Main.playlist.indexOf(playlist.get(i));
+            playlist.set(i, Main.playlist.get(temp));
         }
-        index = playlist.indexOf(this.playlist.get(index));
-        this.playlist = playlist;
+        index = playlist.indexOf(Main.playlist.get(index));
+        Main.playlist = playlist;
     }
 
     @Override
@@ -214,8 +217,8 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
             Music temp = new Music(null, artist, name, null, null, null, null, null);
 //            index = playlist.indexOf(temp) - 1;
 //            temp = playlist.get(index + 1);
-            index = playlist.indexOf(temp);
-            temp = playlist.get(index);
+            index = Main.playlist.indexOf(temp);
+            temp = Main.playlist.get(index);
             if (playState == 2 && audioPlayer != null && audioPlayer.getPath() == temp.getFileLocation())
             {
                 state(shuffleState, repeatState, playState, 2);
@@ -230,6 +233,7 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
                 else
                 {
                     audioPlayer.stop();
+                    playingMusic = null;
                     playState = 0;
                     state(shuffleState, repeatState, playState, 2);
                 }
@@ -240,15 +244,16 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
         else if (col == 1)
         {
             Music temp = new Music(null, artist, name, null, null, null, null, null);
-            temp = playlist.get(playlist.indexOf(temp));
+            temp = Main.playlist.get(Main.playlist.indexOf(temp));
             File file = new File(temp.getFileLocation());
             file.delete();
-            playlist.remove(temp);
+            Main.playlist.remove(temp);
             if (playState == 2 && audioPlayer.getPath() == temp.getFileLocation())
             {
                 index = 0;
                 playState = 0;
                 audioPlayer.stop();
+                playingMusic = null;
             }
         }
     }
@@ -257,14 +262,14 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     public void playMusic(boolean isPaused, String name, String artist) throws InterruptedException, UnsupportedTagException, TagException, InvalidDataException, IOException
     {
         Music temp = new Music(null, artist, name, null, null, null, null, null);
-        temp = playlist.get(playlist.indexOf(temp));
+        temp = Main.playlist.get(Main.playlist.indexOf(temp));
         if (isPaused)
         {
             state(shuffleState, repeatState, playState, 2);
         }
         else if (playState == 0)
         {
-            index = playlist.indexOf(temp);
+            index = Main.playlist.indexOf(temp);
             state(shuffleState, repeatState, playState, 2);
         }
         else
@@ -293,44 +298,46 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     {
         if (repeatState == 0)
         {
-            if (index == playlist.size() - 1)
+            if (index == Main.playlist.size() - 1)
             {
-                jSliderListener.playPause(playlist.get(index), 4);
+                jSliderListener.playPause(Main.playlist.get(index), 4);
                 resetPlaystate.rest();
             }
             else
-                state(shuffleState,repeatState,playState,3);
+                state(shuffleState, repeatState, playState, 3);
         }
         else if (repeatState == 1)
         {
-            state(shuffleState,repeatState,playState,3);
+            state(shuffleState, repeatState, playState, 3);
         }
         else
         {
             index--;
-            state(shuffleState,repeatState,playState,3);
+            state(shuffleState, repeatState, playState, 3);
         }
     }
 
     @Override
-    public void setAudioPlayer(int value,int max)
+    public void setAudioPlayer(int value, int max)
     {
         try
         {
-            jSliderListener.playPause(playlist.get(index),2);
-            System.out.println("reached here "+ value);
+            jSliderListener.playPause(Main.playlist.get(index), 2);
+            System.out.println("reached here " + value);
             audioPlayer.stop();
+            playingMusic = null;
             player.stop();
-            Mp3File mp3File = new Mp3File(playlist.get(index).getFileLocation());
-            audioPlayer = new AudioPlayer(playlist.get(index).getFileLocation(), mp3File.getFrameCount());
-            audioPlayer.setPlayLocation(value* mp3File.getFrameCount()/max);
+            Mp3File mp3File = new Mp3File(Main.playlist.get(index).getFileLocation());
+            audioPlayer = new AudioPlayer(Main.playlist.get(index).getFileLocation(), mp3File.getFrameCount());
+            playingMusic = Main.playlist.get(index);
+            audioPlayer.setPlayLocation(value * mp3File.getFrameCount() / max);
             player = new Thread(audioPlayer);
-            playlist.get(index).setLastPlayed(LocalDateTime.now());
+            Main.playlist.get(index).setLastPlayed(LocalDateTime.now());
             audioPlayer.playMusic(player);
-            jSliderListener.playPause(playlist.get(index),1);
+            jSliderListener.playPause(Main.playlist.get(index), 1);
 
-            loadPlayingPanel.addMusicToActivity(playlist.get(index));
-            Sharing.setMusic(playlist.get(index));
+            loadPlayingPanel.addMusicToActivity(Main.playlist.get(index));
+            Sharing.setMusic(Main.playlist.get(index));
         }
         catch (Exception ex)
         {
@@ -341,5 +348,11 @@ public class PlayPanelActions implements PlayPanelListener, SongsTableButtons, S
     public void setResetPlaystate(ResetPlaystate resetPlaystate)
     {
         this.resetPlaystate = resetPlaystate;
+    }
+
+    @Override
+    public Music getPlayingMusic()
+    {
+        return playingMusic;
     }
 }

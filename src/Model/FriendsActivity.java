@@ -33,7 +33,14 @@ public class FriendsActivity
             ID3v2 id3v2tag = song.getId3v2Tag();
             byte[] imageData = id3v2tag.getAlbumImage();
             //converting the bytes to an image
-            musicImage = ImageIO.read(new ByteArrayInputStream(imageData));
+            try
+            {
+                musicImage = ImageIO.read(new ByteArrayInputStream(imageData));
+            }
+            catch (Exception e)
+            {
+                //TODO
+            }
         }
 //        musicImage = new ImageIcon(ImageIO.read(new ByteArrayInputStream(new MP3File(music.getFileLocation()).getID3v2Tag().get)).getScaledInstance((80, 80, Image.SCALE_SMOOTH)));
     }
