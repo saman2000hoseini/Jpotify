@@ -25,7 +25,7 @@ public class Sharing implements Runnable, RequestToGetMusic
     private Vector<User> users = new Vector<>();
     static Music music;
     private AddPlayingMusic addPlayingMusic = null;
-    private static int count = 0;
+    private static int count = -1;
 
     public Sharing(Vector<Socket> connections, Socket client) throws IOException
     {
@@ -34,7 +34,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         exec.scheduleAtFixedRate(new Runnable()
         {
             @Override
-            public  synchronized void run()
+            public synchronized void run()
             {
                 try
                 {
@@ -43,17 +43,18 @@ public class Sharing implements Runnable, RequestToGetMusic
                     {
                         count++;
                         System.out.println("playing music is " + music);
-                        if (music != null && count % 2 == 1)
-                        {
-                            request = new Request(music, new User(MainClient.user.getUserName(), MainClient.user.getIp()));
-                            System.out.println("sending music " + music.getName());
-                            shareMusic(request);
-                        }
-                        if (Main.sharedPlaylist != null && Main.sharedPlaylist.getMusics().size() > 0 && count % 2 == 0)
-                        {
-                            request = new Request(Main.sharedPlaylist, new User(MainClient.user.getUserName(), MainClient.user.getIp()));
-                            shareMusic(request);
-                        }
+                        if (count != 0)
+                            if (music != null && count % 2 == 1)
+                            {
+                                request = new Request(music, new User(MainClient.user.getUserName(), MainClient.user.getIp()));
+                                System.out.println("sending music " + music.getName());
+                                shareMusic(request);
+                            }
+                            else if (Main.sharedPlaylist != null && Main.sharedPlaylist.getMusics().size() > 0 && count % 2 == 0)
+                            {
+                                request = new Request(Main.sharedPlaylist, new User(MainClient.user.getUserName(), MainClient.user.getIp()));
+                                shareMusic(request);
+                            }
                     }
                     catch (IOException e)
                     {
@@ -65,7 +66,7 @@ public class Sharing implements Runnable, RequestToGetMusic
                     e.printStackTrace();
                 }
             }
-        }, 0, 5, TimeUnit.SECONDS);
+        }, 0, 10, TimeUnit.SECONDS);
     }
 
     public void hiFriend(Socket socket)
@@ -73,7 +74,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         try
         {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectOutputStream.writeObject(new Request(new User(MainClient.user.getUserName(),MainClient.user.getIp())));
+            objectOutputStream.writeObject(new Request(new User(MainClient.user.getUserName(), MainClient.user.getIp())));
             objectOutputStream.close();
         }
         catch (IOException e)
@@ -120,7 +121,7 @@ public class Sharing implements Runnable, RequestToGetMusic
                     File file = new File(MainClient.musics.get(MainClient.musics.indexOf(request.getMusic())).getFileLocation());
                     FileInputStream inputStream = (new FileInputStream(file));
                     System.out.println(file.length());
-                    int fileSize =(int) file.length();
+                    int fileSize = (int) file.length();
                     System.out.println(request.getWants().getUserName());
                     Request req = new Request(fileSize, request.getMusic(), request.getWants());
                     shareMusic(req);
@@ -144,9 +145,10 @@ public class Sharing implements Runnable, RequestToGetMusic
 //                    MainClient.user.getObjectInputStream().read(byteArray);
                     OutputStream outputStream = new ObjectOutputStream(new FileOutputStream("./SharedMusics/" + request.getMusic().getName().toLowerCase() + ".mp3"));
                     request.getMusic().setFileLocation("./SharedMusics/" + request.getMusic().getName().toLowerCase() + ".mp3");
-                    byte[] bytes = new byte[8*1024];
+                    byte[] bytes = new byte[8 * 1024];
                     int count;
-                    while ((count = MainClient.user.getObjectInputStream().read(bytes)) > 0) {
+                    while ((count = MainClient.user.getObjectInputStream().read(bytes)) > 0)
+                    {
                         outputStream.write(bytes, 0, count);
                         System.out.println("trying to reach here");
                     }
@@ -209,7 +211,7 @@ public class Sharing implements Runnable, RequestToGetMusic
     }
 
     @Override
-    public  synchronized void send(Request request) throws IOException
+    public synchronized void send(Request request) throws IOException
     {
         shareMusic(request);
     }
