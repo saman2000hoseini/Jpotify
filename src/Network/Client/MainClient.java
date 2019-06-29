@@ -55,8 +55,10 @@ public class MainClient
     {
         friends.add(ip);
         Socket temp = new Socket(ip, port);
+        ServerHandler serverHandler = new ServerHandler(temp);
+        Thread thread = new Thread(serverHandler);
         sockets.add(temp);
-        sharing.hiFriend(temp);
+        serverHandler.hiFriend();
     }
 
     public Sharing getSharing()

@@ -67,19 +67,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         }, 0, 10, TimeUnit.SECONDS);
     }
 
-    public void hiFriend(Socket socket)
-    {
-        try
-        {
-            System.out.println(MainClient.user.getUserName()+":"+ MainClient.user.getIp());
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectOutputStream.writeObject(new Request(new User(MainClient.user.getUserName(), MainClient.user.getIp())));
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
+
 
     public void hiServer() throws IOException
     {
@@ -92,7 +80,7 @@ public class Sharing implements Runnable, RequestToGetMusic
         try
         {
             MainClient.user.getObjectOutputStream().writeObject(request);
-            System.out.println("sending to " + request.getUser().getUserName());
+            System.out.println("sending request to " + request.getUser().getUserName());
         }
         catch (Exception e)
         {
