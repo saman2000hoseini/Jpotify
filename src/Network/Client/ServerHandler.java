@@ -55,18 +55,7 @@ public class ServerHandler implements Runnable
                 {
                     Request request = (Request) objectInputStream.readObject();
                     System.out.println(request.getReqsMusic() + " :||||");
-                    if (request.getReqsMusic() == 0)
-                    {
-                        request.getUser().setObjectOutputStream(objectOutputStream);
-                        request.getUser().setObjectInputStream(objectInputStream);
-                        users.add(request.getUser());
-                        System.out.println(server.getInetAddress());
-                        System.out.println("Welcome to server " + request.getUser().getUserName());
-                    }
-                    else
-                    {
-                        MainClient.user.getObjectOutputStream().writeObject(request);
-                    }
+                    MainClient.user.getObjectOutputStream().writeObject(request);
                 }
             }
         }
