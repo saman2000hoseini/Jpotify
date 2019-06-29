@@ -64,7 +64,7 @@ public class ClientHandler implements Runnable
                         request.getUser().setObjectInputStream(objectInputStream);
                         users.add(request.getUser());
                         System.out.println(socket.getInetAddress());
-//                    System.out.println("Welcome to your server " + request.getUser().getUserName());
+                        System.out.println("Welcome to server " + request.getUser().getUserName());
                     }
                     else
                     {

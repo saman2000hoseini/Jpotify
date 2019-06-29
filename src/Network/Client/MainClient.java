@@ -17,6 +17,7 @@ public class MainClient
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
     private Socket client;
+    private Vector<Socket> sockets = new Vector<>();
     private Vector<String> friends = new Vector<>();
     static Vector<Music> musics = new Vector<>();
     private Sharing sharing;
@@ -53,7 +54,9 @@ public class MainClient
     public void addFriend(String ip) throws IOException
     {
         friends.add(ip);
-        sharing.hiFriend(new Socket(ip, port));
+        Socket temp = new Socket(ip, port);
+        sockets.add(temp);
+        sharing.hiFriend(temp);
     }
 
     public Sharing getSharing()
