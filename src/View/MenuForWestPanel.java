@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
 public class MenuForWestPanel extends JMenuBar
 {
@@ -98,16 +99,30 @@ public class MenuForWestPanel extends JMenuBar
         @Override
         public void mouseClicked(MouseEvent e)
         {
-            menuActions(e);
+            try
+            {
+                menuActions(e);
+            }
+            catch (IOException ex)
+            {
+                ex.printStackTrace();
+            }
         }
 
         @Override
         public void mousePressed(MouseEvent e)
         {
-            menuActions(e);
+            try
+            {
+                menuActions(e);
+            }
+            catch (IOException ex)
+            {
+                ex.printStackTrace();
+            }
         }
 
-        private void menuActions(MouseEvent e)
+        private void menuActions(MouseEvent e) throws IOException
         {
             if (e.getSource() == exit)
                 topLeftMenuListener.state(0);

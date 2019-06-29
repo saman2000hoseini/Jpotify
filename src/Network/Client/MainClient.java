@@ -18,18 +18,18 @@ public class MainClient
     private ObjectInputStream inputStream;
     private Socket client;
     private Vector<String> friends = new Vector<>();
-    private Vector<Socket> connections = new Vector<>();
     static Vector<Music> musics = new Vector<>();
     private Sharing sharing;
     private int port;
     public static User user;
     static MainFrame mainFrame;
+
     public MainClient(Vector<Music> musics, User user, MainFrame mainFrame) throws IOException
     {
         this.mainFrame = mainFrame;
         this.user = user;
-        this.musics=musics;
-        user.setIp(InetAddress.getLocalHost().getHostAddress());
+        this.musics = musics;
+        this.user.setIp(InetAddress.getLocalHost().getHostAddress());
         System.out.println(user.getIp());
         port = 6500;
         client = new Socket("localhost", port);
@@ -37,9 +37,9 @@ public class MainClient
         {
             outputStream = new ObjectOutputStream(client.getOutputStream());
             inputStream = new ObjectInputStream(client.getInputStream());
-            sharing = new Sharing(connections,client);
-            user.setObjectOutputStream(outputStream);
-            user.setObjectInputStream(inputStream);
+            this.user.setObjectOutputStream(outputStream);
+            this.user.setObjectInputStream(inputStream);
+            sharing = new Sharing();
             Thread t = new Thread(sharing);
             t.start();
             sharing.hiServer();
@@ -53,13 +53,7 @@ public class MainClient
     public void addFriend(String ip) throws IOException
     {
         friends.add(ip);
-        openSocket(ip);
-    }
-
-    public void openSocket(String ip) throws IOException
-    {
-        connections.add(new Socket(ip, port));
-        sharing.setConnections(connections);
+        sharing.hiFriend(new Socket(ip, port));
     }
 
     public Sharing getSharing()

@@ -21,15 +21,13 @@ import java.util.concurrent.TimeUnit;
 public class Sharing implements Runnable, RequestToGetMusic
 {
     private FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
-    private Vector<Socket> connections;
     private Vector<User> users = new Vector<>();
     static Music music;
     private AddPlayingMusic addPlayingMusic = null;
     private static int count = -1;
 
-    public Sharing(Vector<Socket> connections, Socket client) throws IOException
+    public Sharing()
     {
-        this.connections = connections;
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(new Runnable()
         {
@@ -73,6 +71,7 @@ public class Sharing implements Runnable, RequestToGetMusic
     {
         try
         {
+            System.out.println(MainClient.user.getUserName()+":"+ MainClient.user.getIp());
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             objectOutputStream.writeObject(new Request(new User(MainClient.user.getUserName(), MainClient.user.getIp())));
             objectOutputStream.close();
@@ -184,20 +183,6 @@ public class Sharing implements Runnable, RequestToGetMusic
                 e.printStackTrace();
             }
         }
-    }
-
-    public Vector<Socket> getConnections()
-    {
-        return connections;
-    }
-
-    public synchronized void setConnections(Vector<Socket> connections) throws IOException
-    {
-        this.connections = connections;
-        if (this.connections == null)
-            this.connections = new Vector<>();
-        hiFriend(connections.get(connections.size() - 1));
-        System.out.println("saying hello");
     }
 
     public static void setMusic(Music music)

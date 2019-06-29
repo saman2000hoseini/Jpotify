@@ -30,7 +30,7 @@ public class TopLeftMenuActions implements TopLeftMenuListener, AddNewPlaylistLi
     }
 
     @Override
-    public void state(int statues)
+    public void state(int statues) throws IOException
     {
         if (statues == 0)
         {
@@ -74,14 +74,7 @@ public class TopLeftMenuActions implements TopLeftMenuListener, AddNewPlaylistLi
         {
             System.out.println("here");
             String ip = JOptionPane.showInputDialog("Enter your friends ip ", "Add Friend");
-            try
-            {
-                Main.mainClient.addFriend(ip);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            Main.mainClient.addFriend(ip);
         }
         else if (statues == 3)
         {
