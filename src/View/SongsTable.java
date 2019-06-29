@@ -163,17 +163,31 @@ public class SongsTable extends JTable implements PlayingMusicChanged
                 System.out.println(row);
                 selectedArtist = (String) this.getValueAt(row, 3);
                 selectedSongName = (String) this.getValueAt(row, 2);
+                ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(this, this.getValueAt(row, 0), true
+                        , true, row, 0)).setSelectedRow(row);
             }
             catch (ArrayIndexOutOfBoundsException e)
             {
                 row = 0;
-                selectedArtist = (String) this.getValueAt(row, 3);
-                selectedSongName = (String) this.getValueAt(row, 2);
+                try
+                {
+                    selectedArtist = (String) this.getValueAt(row, 3);
+                    selectedSongName = (String) this.getValueAt(row, 2);
+                    ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(this, this.getValueAt(row, 0), true
+                            , true, row, 0)).setSelectedRow(row);
+                }
+                catch (ArrayIndexOutOfBoundsException ex)
+                {
+
+                }
+            }
+            catch (IndexOutOfBoundsException e)
+            {
+
             }
             isPlayedFromTable = true;
         }
-        ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(this, this.getValueAt(row, 0), true
-                , true, row, 0)).setSelectedRow(row);
+
         repaint();
     }
 

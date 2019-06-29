@@ -53,9 +53,9 @@ public class LoadingLibrary
         for (String directory : audios)
         {
             Music music = this.processFile(directory);
-            if (music!=null && music.getAddDate() == null)
+            if (music != null && music.getAddDate() == null)
                 music.setAddDate(LocalDateTime.now());
-            if (music!=null && !musics.contains(music))
+            if (music != null && !musics.contains(music))
                 musics.add(music);
         }
         return musics;
@@ -292,7 +292,7 @@ public class LoadingLibrary
     {
         File file = new File(directory);
         MP3File mp3File = new MP3File(file);
-        String title= null, artist= null, album = null, year= null, genre= null;
+        String title = null, artist = null, album = null, year = null, genre = null;
         /* extra point
         BufferedInputStream bufferedReader = new BufferedInputStream(new FileInputStream(file));
         int len = (int) (file.length()-128);
@@ -327,7 +327,7 @@ public class LoadingLibrary
         bufferedReader.close();
          */
 
-        if (mp3File.getID3v1Tag()!=null)
+        if (mp3File.getID3v1Tag() != null)
         {
             title = normalized(mp3File.getID3v1Tag().getTitle());
         }
@@ -337,7 +337,7 @@ public class LoadingLibrary
         }
         else return null;
 
-        if (mp3File.getID3v1Tag()!=null)
+        if (mp3File.getID3v1Tag() != null)
         {
             artist = normalized(mp3File.getID3v1Tag().getArtist());
         }
@@ -347,7 +347,7 @@ public class LoadingLibrary
         }
         else return null;
 
-        if (mp3File.getID3v1Tag()!=null)
+        if (mp3File.getID3v1Tag() != null)
         {
             album = normalized(mp3File.getID3v1Tag().getAlbum());
         }
@@ -359,7 +359,7 @@ public class LoadingLibrary
         {
             year = normalized(mp3File.getID3v2Tag().getYearReleased());
         }
-        else if (mp3File.getID3v1Tag()!=null)
+        else if (mp3File.getID3v1Tag() != null)
         {
             year = normalized(mp3File.getID3v1Tag().getYear());
         }
@@ -367,7 +367,7 @@ public class LoadingLibrary
         {
             genre = normalized(mp3File.getID3v2Tag().getSongGenre());
         }
-        else if (mp3File.getID3v1Tag()!=null)
+        else if (mp3File.getID3v1Tag() != null)
         {
             genre = normalized(new ID3v1().getGENRES(mp3File.getID3v1Tag().getGenre()));
         }
@@ -396,7 +396,8 @@ public class LoadingLibrary
                 data[counter][7] += "0";
             counter++;
         }
-        Main.playlist=musicVector;
+        if (musicVector.size() > 0)
+            Main.playlist = musicVector;
         return data;
     }
 }
