@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class Main {
-    private static Vector<Music> musics = new Vector<>();
+    public static Vector<Music> musics = new Vector<>();
     public static Vector<Music> playlist;
     private static FileAndFolderBrowsing fileAndFolderBrowsing = new FileAndFolderBrowsing();
     private static MainFrame mainFrame;

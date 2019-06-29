@@ -270,7 +270,7 @@ public class CentrePanel extends JPanel implements UserLoginListener
             }
             if (playListName.equals("Songs"))
             {
-                getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.playlist));
+                getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.musics));
                 songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
                 getSongsMainPanel().getSongsPanel().setLabelText("Songs");
             }
