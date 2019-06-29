@@ -65,7 +65,14 @@ public class PlayListForWestPanel extends JList {
             int index = locationToIndex(e.getPoint());
             if (index != prevSelectedIndex) {
                 try {
-                    centrePanel.updateTable((String) defaultListModel.getElementAt(index));
+                    if (index != 5 && index != 6)
+                        centrePanel.updateTable((String) defaultListModel.getElementAt(index));
+                    else {
+                        if (index == 5)
+                            centrePanel.updateTable("Favourites");
+                        if (index == 6)
+                            centrePanel.updateTable("Shared Playlist");
+                    }
                     centrePanel.update();
                     prevSelectedIndex = index;
                 } catch (InvalidDataException e1) {

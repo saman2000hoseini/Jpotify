@@ -259,7 +259,8 @@ public class CentrePanel extends JPanel implements UserLoginListener
     public void updateTable(String playListName) throws InvalidDataException, IOException, UnsupportedTagException {
         if (!playListName.equals(songsMainPanel.getSongsPanel().getLabelText())) {
             if ((!playListName.equals("Songs")) && (!playListName.equals("Albums")) && (!playListName.equals("Artists"))
-            && (!playListName.equals("YOUR LIBRARY")) && (!playListName.equals("PLAYLISTS")) && (!playListName.equals("Made For You"))) {
+            && (!playListName.equals("YOUR LIBRARY")) && (!playListName.equals("PLAYLISTS")) && (!playListName.equals("Made For You"))
+            && (!playListName.equals("Shared Playlist")) && (!playListName.equals("Favourites"))) {
                 for (int i = 0; i < Main.playLists.size(); i++) {
                     if (playListName.equals(Main.playLists.get(i).getName())) {
                         getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.playLists.get(i).getMusics()));
@@ -273,6 +274,19 @@ public class CentrePanel extends JPanel implements UserLoginListener
             {
                 getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(musics));
                 songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
+                getSongsMainPanel().getSongsPanel().setLabelText("Songs");
+            }
+            if (playListName.equals("Shared Playlist"))
+            {
+                getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.sharedPlaylist.getMusics()));
+                songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
+                getSongsMainPanel().getSongsPanel().setLabelText("Shared Songs");
+            }
+            if (playListName.equals("Favourites"))
+            {
+                getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.favourites.getMusics()));
+                songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
+                getSongsMainPanel().getSongsPanel().setLabelText("Favourites");
             }
         }
     }

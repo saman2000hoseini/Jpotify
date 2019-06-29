@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 
 public class SongPanelForPlayPanel extends JPanel implements LoadPlayingPanel
@@ -79,6 +80,9 @@ public class SongPanelForPlayPanel extends JPanel implements LoadPlayingPanel
             catch (Exception e)
             {
                 //TODO
+                File imageFile = new File("./src/View/Icons/no_artwork.jpg");
+                BufferedImage image = ImageIO.read(imageFile);
+                setMusicImage(image);
             }
         }
         setSongName(music.getName());

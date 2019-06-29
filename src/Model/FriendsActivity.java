@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 
 public class FriendsActivity
@@ -40,6 +41,9 @@ public class FriendsActivity
             catch (Exception e)
             {
                 //TODO
+                File imageFile = new File("./src/View/Icons/no_artwork.jpg");
+                BufferedImage image = ImageIO.read(imageFile);
+                musicImage = image;
             }
         }
 //        musicImage = new ImageIcon(ImageIO.read(new ByteArrayInputStream(new MP3File(music.getFileLocation()).getID3v2Tag().get)).getScaledInstance((80, 80, Image.SCALE_SMOOTH)));
