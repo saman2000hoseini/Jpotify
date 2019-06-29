@@ -7,7 +7,7 @@ import java.awt.event.ComponentEvent;
 import java.lang.reflect.Constructor;
 
 public class MainPanel extends JPanel {
-    private WestPanel westPanel = new WestPanel();
+    private WestPanel westPanel;
     private CentrePanel centrePanel;
     private FriendsPanel friendsPanel;
     private PlayPanel playPanel;
@@ -20,8 +20,8 @@ public class MainPanel extends JPanel {
         prevHeight = height;
         prevWidth = width;
         setSize(width, height);
-        westPanel = new WestPanel();
         centrePanel = new CentrePanel(getWidth(), getHeight(), this);
+        westPanel = new WestPanel(this);
         centrePanel.update();
         playPanel = new PlayPanel(this, getWidth(), MainFrame.musics, 100);
         this.setBackground(new Color(24, 24, 24));

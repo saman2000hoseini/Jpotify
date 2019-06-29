@@ -137,7 +137,17 @@ public class SongsPanel extends JPanel
 
     public void setSongsPanelListener(SongsPanelListener songsPanelListener)
     {
-        System.out.println("here");
         this.songsPanelListener = songsPanelListener;
+    }
+
+    public void setLabelText(String text)
+    {
+        songs.setText(text);
+        repaint();
+    }
+
+    public String getLabelText()
+    {
+        return songs.getText();
     }
 }

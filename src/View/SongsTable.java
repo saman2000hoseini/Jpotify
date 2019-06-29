@@ -38,13 +38,11 @@ public class SongsTable extends JTable implements PlayingMusicChanged
     private DefaultTableModel defaultTableModel;
     private PlayListChanged playListChanged = null;
     private boolean isPlayedFromTable = false;
-    private DefaultListModel defaultListModel;
-    public SongsTable(DefaultTableModel defaultTableModel, DefaultListModel defaultListModel)
+    public SongsTable(DefaultTableModel defaultTableModel)
     {
         super(defaultTableModel);
         this.defaultTableModel = defaultTableModel;
-        this.defaultListModel = defaultListModel;
-        menuForMusics = new MenuForMusics(defaultListModel);
+        menuForMusics = new MenuForMusics();
         setBorder(null);
         setBackground(new Color(24, 24, 24));
         RollOverListener lst = new RollOverListener(this);
@@ -350,7 +348,6 @@ public class SongsTable extends JTable implements PlayingMusicChanged
                     selectedSongName = "";
                     rollOverRowIndex = -2;
                     isPlayedFromTable = false;
-                    System.out.println("OMG");
                 }
                 else
                 {
@@ -401,6 +398,33 @@ public class SongsTable extends JTable implements PlayingMusicChanged
                 repaint();
             }
         }
+    }
+
+    public void updateTableModel()
+    {
+        boolean flag = false;
+        rollOverRowIndex = -1;
+        rollOverColumnIndex = -1;
+        rollOverHeaderColumnIndex = -1;
+        setDefaultRenderer(Object.class, new SongsTableCellRenderer(false, -1));
+        setDefaultRenderer(Object.class, new SongsTableCellRenderer(false, -1));
+        for (int i = 0; i < getModel().getRowCount(); i++)
+        {
+            if (getValueAt(i, 2).equals(selectedSongName) && getValueAt(i, 3).equals(selectedArtist)) {
+                selectedRowIndex = i;
+                flag = true;
+                ((SongsTableCellRenderer) getDefaultRenderer(Object.class).getTableCellRendererComponent(this, this.getValueAt(i, 0), true
+                        , true, i, 0)).setSelectedRow(i);
+                break;
+            }
+        }
+        if (flag == false)
+        {
+            selectedRowIndex = -1;
+            selectedArtist = "";
+            selectedSongName = "";
+        }
+        repaint();
     }
 
     private class menuListener extends MouseInputAdapter

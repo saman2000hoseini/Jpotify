@@ -1,11 +1,19 @@
 package View;
 
+import Controller.LoadingLibrary;
+import Controller.Main;
 import Listeners.UserLoginListener;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+
+import static View.MainFrame.musics;
 
 public class CentrePanel extends JPanel implements UserLoginListener
 {
@@ -138,7 +146,7 @@ public class CentrePanel extends JPanel implements UserLoginListener
         userMenu.setForeground(new Color(180, 180, 180));
         previous.setForeground(new Color(155, 155, 155));
         next.setForeground(new Color(155, 155, 155));
-        songsMainPanel = new SongsMainPanel(mainPanel.getWestPanel().getDefaultListModel());
+        songsMainPanel = new SongsMainPanel();
         setBackground(new Color(18, 18, 18));
         setVisible(true);
     }
@@ -246,6 +254,27 @@ public class CentrePanel extends JPanel implements UserLoginListener
                 .addComponent(songsMainPanel, 200, 716, 716));
         }
         repaint();
+    }
+
+    public void updateTable(String playListName) throws InvalidDataException, IOException, UnsupportedTagException {
+        if (!playListName.equals(songsMainPanel.getSongsPanel().getLabelText())) {
+            if ((!playListName.equals("Songs")) && (!playListName.equals("Albums")) && (!playListName.equals("Artists"))
+            && (!playListName.equals("YOUR LIBRARY")) && (!playListName.equals("PLAYLISTS")) && (!playListName.equals("Made For You"))) {
+                for (int i = 0; i < Main.playLists.size(); i++) {
+                    if (playListName.equals(Main.playLists.get(i).getName())) {
+                        getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(Main.playLists.get(i).getMusics()));
+                        getSongsMainPanel().getSongsPanel().setLabelText(Main.playLists.get(i).getName());
+                        break;
+                    }
+                }
+                songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
+            }
+            if (playListName.equals("Songs"))
+            {
+                getSongsMainPanel().getSongsTablePanel().addSongs(LoadingLibrary.generateTable(musics));
+                songsMainPanel.getSongsTablePanel().getSongsTable().updateTableModel();
+            }
+        }
     }
 
     private class ListenerForMouse implements MouseListener {

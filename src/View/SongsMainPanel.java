@@ -9,10 +9,10 @@ public class SongsMainPanel extends JPanel {
     private SongsPanel songsPanel;
     private FilterPanel filterPanel;
 
-    SongsMainPanel(DefaultListModel defaultListModel) {
+    SongsMainPanel() {
         super();
         songsPanel = new SongsPanel();
-        songsTablePanel = new SongsTablePanel(defaultListModel);
+        songsTablePanel = new SongsTablePanel();
         filterPanel = new FilterPanel(1066, 30, songsTablePanel.getSongsTable());
         layout = new GroupLayout(this);
         setBackground(new Color(18, 18, 18));

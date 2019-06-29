@@ -1,37 +1,47 @@
 package View;
 
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 
-public class PlayListForWestPanel extends JList{
+public class PlayListForWestPanel extends JList {
     private DefaultListModel defaultListModel;
-    int rolledOverRowIndex = -1;
+    private int rolledOverRowIndex = -1;
+    CentrePanel centrePanel;
+    private int prevSelectedIndex = -1;
 
-    PlayListForWestPanel(DefaultListModel defaultListModel, WestPanel westPanel) {
+    PlayListForWestPanel(DefaultListModel defaultListModel, WestPanel westPanel, CentrePanel centrePanel) {
         super(defaultListModel);
         this.defaultListModel = defaultListModel;
-        addMouseMotionListener(new MouseListenerForPlayList(this));
+        this.centrePanel = centrePanel;
+        addMouseMotionListener(new MouseMotionListenerForPlayList(this));
+        addMouseListener(new MouseListenerForPlayList());
         setCellRenderer(new PlayListCellRendererForWestPanel(westPanel));
         setOpaque(true);
         setVisibleRowCount(-1);
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setFixedCellHeight(30);
         setLayoutOrientation(VERTICAL);
-        setBackground(new Color(18,18,18));
+        setBackground(new Color(18, 18, 18));
         setBorder(BorderFactory.createEmptyBorder());
     }
 
-    public class MouseListenerForPlayList implements MouseMotionListener {
+    public class MouseMotionListenerForPlayList implements MouseMotionListener {
         private JList list;
-        MouseListenerForPlayList(JList list)
-        {
+
+        MouseMotionListenerForPlayList(JList list) {
             this.list = list;
         }
+
         @Override
         public void mouseMoved(MouseEvent e) {
             int row = locationToIndex(e.getPoint());
@@ -48,4 +58,45 @@ public class PlayListForWestPanel extends JList{
 
         }
     }
+
+    public class MouseListenerForPlayList implements MouseListener {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int index = locationToIndex(e.getPoint());
+            if (index != prevSelectedIndex) {
+                try {
+                    centrePanel.updateTable((String) defaultListModel.getElementAt(index));
+                    centrePanel.update();
+                    prevSelectedIndex = index;
+                } catch (InvalidDataException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                } catch (UnsupportedTagException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+    }
+
 }

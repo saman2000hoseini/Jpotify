@@ -10,9 +10,9 @@ public class PlayListPanel extends JPanel {
     private ModernScrollPane modernScrollPane;
     private GroupLayout layout = new GroupLayout(this);
 
-    PlayListPanel(DefaultListModel defaultListModel, WestPanel westPanel) {
+    PlayListPanel(DefaultListModel defaultListModel, WestPanel westPanel, CentrePanel centrePanel) {
         this.defaultListModel = defaultListModel;
-        list = new PlayListForWestPanel(defaultListModel, westPanel);
+        list = new PlayListForWestPanel(defaultListModel, westPanel, centrePanel);
         setBackground(new Color(18,18,18));
         modernScrollPane = new ModernScrollPane(list, new Color(18, 18, 18));
         modernScrollPane.setHorizontalScrollBar(null);

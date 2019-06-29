@@ -374,7 +374,7 @@ public class LoadingLibrary
         return music;
     }
 
-    public String[][] generateTable(Vector<Music> musics) throws InvalidDataException, IOException, UnsupportedTagException
+    public static String[][] generateTable(Vector<Music> musics) throws InvalidDataException, IOException, UnsupportedTagException
     {
         String[][] data = new String[musics.size()][8];
         int counter = 0;

@@ -21,8 +21,10 @@ public class WestPanel extends JPanel {
     private AddNewPlaylistListener addNewPlaylistListener = null;
     private PlayListPanel playListPanel;
     public static DefaultListModel<String> defaultListModel;
-    WestPanel() {
+    private  MainPanel mainPanel;
+    WestPanel(MainPanel mainPanel) {
         super();
+        this.mainPanel = mainPanel;
         newPlaylistSeparator = new JSeparator();
         newPlaylistSeparator.setBackground(new Color(40, 40, 40));
         newPlaylistSeparator.setForeground(new Color(40, 40, 40));
@@ -69,7 +71,7 @@ public class WestPanel extends JPanel {
             if ((!name.equals("Shared playlist")) && (!name.equals("Favourites")))
                 defaultListModel.addElement(name);
         }
-        playListPanel = new PlayListPanel(defaultListModel, this);
+        playListPanel = new PlayListPanel(defaultListModel, this, mainPanel.getCentrePanel());
         layout = new GroupLayout(this);
         this.setLayout(layout);
         setBackground(new Color(18, 18, 18));

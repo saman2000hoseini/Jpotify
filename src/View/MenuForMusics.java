@@ -18,10 +18,8 @@ public class MenuForMusics extends JPopupMenu implements AddLibrariesListener
     private JMenu addToPlaylist = new JMenu("Add to playlist");
     private AddSongToLibrary addSongToLibrary = null;
     private Music music;
-    private DefaultListModel defaultListModel;
-    public MenuForMusics(DefaultListModel defaultListModel)
+    public MenuForMusics()
     {
-        this.defaultListModel = defaultListModel;
         this.add(addToPlaylist);
         this.setBackground(new Color(24, 24, 24));
         this.setForeground(Color.white);
