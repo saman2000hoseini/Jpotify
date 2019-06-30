@@ -97,7 +97,7 @@ public class LoadingLibrary
         //specify user agent
         connection.userAgent("Mozilla/5.0");
         connection.header("Host", "genius.com");
-        connection.timeout(500);
+        connection.timeout(1000);
         //get the HTML document
         List<String> lyrics = new ArrayList<>();
         Document lyricPage = connection.get();
@@ -257,6 +257,7 @@ public class LoadingLibrary
             }
             else
             {
+                lyrics = new ArrayList<>();
                 lyrics.add("Please check Your Connection and try again");
             }
         }

@@ -44,9 +44,9 @@ public class TopLeftMenuActions implements TopLeftMenuListener, AddNewPlaylistLi
             {
                 try
                 {
-                    customizedFileChooser.writeFiles(Main.playlist);
+                    customizedFileChooser.writeFiles(Main.musics);
                     albums.loadAlbums();
-                    songsTableListener.addSongs(loadingLibrary.generateTable(Main.playlist));
+                    songsTableListener.addSongs(loadingLibrary.generateTable(Main.musics));
                 }
                 catch (TagException ex)
                 {

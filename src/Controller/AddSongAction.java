@@ -22,7 +22,8 @@ public class AddSongAction implements AddSongToLibrary
             Main.sharedPlaylist.addMusic(music);
         else if (temp.equals(Main.favourites))
             Main.favourites.addMusic(music);
-        temp.addMusic(music);
+        else
+            temp.addMusic(music);
         temp.savePlaylist();
     }
 }

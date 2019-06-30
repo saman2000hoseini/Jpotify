@@ -86,7 +86,20 @@ public class Main
                 for (Music music : musics)
                     try
                     {
-                        new LoadingLibrary().gatherMusicLyrics(music.getArtist(), music.getName());
+                        System.out.println(new LoadingLibrary().gatherMusicLyrics("u2", "with or without you"));
+                        System.out.println("Gathering lyrics for " + music.getName());
+                        System.out.println(new LoadingLibrary().gatherMusicLyrics(music.getArtist(), music.getName()));
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                for (Music music : musics)
+                    try
+                    {
+                        new LoadingLibrary().gatherMusicLyrics("u2", "with or without you");
+                        System.out.println("Gathering lyrics for " + music.getName());
+                        System.out.println(new LoadingLibrary().gatherMusicLyrics(music.getArtist().replaceAll("[^a-zA-Z0-9 ._-]", ""), music.getName().replaceAll("[^a-zA-Z0-9 ._-]", "")));
                     }
                     catch (Exception e)
                     {
